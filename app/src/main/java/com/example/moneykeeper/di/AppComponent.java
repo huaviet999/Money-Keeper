@@ -1,4 +1,25 @@
 package com.example.moneykeeper.di;
 
-public class AppComponent {
+import com.example.moneykeeper.myapp.MyApp;
+
+import javax.inject.Singleton;
+
+import dagger.BindsInstance;
+import dagger.Component;
+import dagger.android.AndroidInjectionModule;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+
+@Singleton
+@Component(modules = {AndroidInjectionModule.class, AppModule.class, AppBindingModule.class})
+public interface AppComponent extends AndroidInjector<DaggerApplication> {
+    void inject(MyApp instance);
+
+    @Component.Builder
+    interface Builder {
+        AppComponent build();
+
+        @BindsInstance
+        Builder application(MyApp application);
+    }
 }

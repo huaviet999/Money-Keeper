@@ -3,17 +3,24 @@ package com.example.moneykeeper.presentation.base;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
 import utils.AndroidDialogUtils;
 
 /**
  * Created by Viet Hua on 3/11/2020
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements HasAndroidInjector {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +28,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected abstract int getResLayoutId();
+
+    @Inject
+    DispatchingAndroidInjector<Object> androidInjector;
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
+    }
+
+    Unbinder unbinder;
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        unbinder = ButterKnife.bind(this);
+    }
 
     //Show Toast Message
     public void showToastMessage(String message) {
@@ -57,13 +78,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(fragmentManager.findFragmentById(resId)).commit();
     }
+
     /**
      * Show / hide Progress Dialog
      */
-    public void showProgressDialog(){
-        AndroidDialogUtils.getInstance().showProgressDialog(this,"");
+    public void showProgressDialog() {
+        AndroidDialogUtils.getInstance().showProgressDialog(this, "");
     }
-    public void hideProgressDialog(){
+
+    public void hideProgressDialog() {
         AndroidDialogUtils.getInstance().hideProgressDilog();
     }
 }

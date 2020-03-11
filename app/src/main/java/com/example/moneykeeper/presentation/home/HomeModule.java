@@ -1,4 +1,10 @@
 package com.example.moneykeeper.presentation.home;
 
-public class HomeModule {
+import dagger.Binds;
+import dagger.Module;
+
+@Module
+public abstract class HomeModule {
+    @Binds
+    public abstract HomeContract.Presenter homePresenter(HomePresenterImpl impl);
 }

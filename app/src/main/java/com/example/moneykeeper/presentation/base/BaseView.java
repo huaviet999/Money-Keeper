@@ -1,4 +1,6 @@
 package com.example.moneykeeper.presentation.base;
 
-public class BaseView {
+public interface BaseView {
+    void showProgressDialog();
+    void hideProgressDialog();
 }
