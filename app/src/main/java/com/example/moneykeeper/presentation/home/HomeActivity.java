@@ -1,5 +1,6 @@
 package com.example.moneykeeper.presentation.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -10,9 +11,14 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
+import com.example.moneykeeper.presentation.base.ItemClickListener;
+import com.example.moneykeeper.presentation.chart.ChartActivity;
 import com.google.android.material.navigation.NavigationView;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -21,6 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
@@ -34,6 +42,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     NavigationView navigationView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.rv_transaction)
+    RecyclerView recyclerView;
     @Inject
     HomeContract.Presenter presenter;
 
@@ -48,7 +58,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
         setupToolbar();
-       setupNavigationView();
+        setupNavigationView();
+        setupRecyclerView();
     }
 
     @Override
@@ -113,24 +124,48 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     }
 
+    private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
+
+    public void setupRecyclerView() {
+        homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(this, listener);
+        homeRecyclerViewAdapter.setData(testData());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(homeRecyclerViewAdapter);
+
+
+    }
+
+    private ItemClickListener<Transaction> listener = new ItemClickListener<Transaction>() {
+        @Override
+        public void onClickListener(int position, Transaction transaction) {
+            showToastMessage("On Click");
+        }
+
+        @Override
+        public void onLongClickListener(int position, Transaction transaction) {
+            showToastMessage("On Long Click");
+        }
+    };
     private NavigationView.OnNavigationItemSelectedListener itemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.item_overview:
-                    showToastMessage("Overview");
+                    openScreenByTag(TAG_OVERVIEW);
                     break;
                 case R.id.item_summary:
-                    showToastMessage("Summary");
+                    openScreenByTag(TAG_SUMMARY);
                     break;
                 case R.id.item_transaction:
-                    showToastMessage("Transaction");
+                    openScreenByTag(TAG_TRANSACTION);
                     break;
                 case R.id.item_chart:
-                    showToastMessage("Chart");
+                    openScreenByTag(TAG_CHART);
                     break;
                 case R.id.item_setting:
-                    showToastMessage("Setting");
+                    openScreenByTag(TAG_SETTING);
                     break;
                 default:
                     return false;
@@ -139,6 +174,36 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             return true;
         }
     };
+    private static final int TAG_OVERVIEW = 0;
+    private static final int TAG_SUMMARY = 1;
+    private static final int TAG_TRANSACTION = 2;
+    private static final int TAG_CHART = 3;
+    private static final int TAG_SETTING = 4;
 
+    private void openScreenByTag(int tag) {
+        switch (tag) {
+            case TAG_OVERVIEW:
+                showToastMessage("OVERVIEW");
+                break;
+            case TAG_SUMMARY:
+                showToastMessage("SUMMARY");
+                break;
+            case TAG_TRANSACTION:
+                showToastMessage("TRANSACTION");
+                break;
+            case TAG_CHART:
+                ChartActivity.startChartActivity(this);
+                break;
+            case TAG_SETTING:
+                showToastMessage("SETTING");
+                break;
+        }
+    }
+
+    private List<Transaction> testData() {
+        List<Transaction> mData = new ArrayList<>();
+        mData.add(new Transaction("Bank", "1233456", "Viet", "22/03/2020"));
+        return mData;
+    }
 
 }

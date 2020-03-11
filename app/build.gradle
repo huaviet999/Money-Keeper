@@ -44,4 +44,8 @@ dependencies {
     //Butterknife
     implementation "com.jakewharton:butterknife:$rootProject.ext.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnifeVersion"
+    //Animated Pie View
+    implementation 'com.github.razerdp:AnimatedPieView:1.2.6'
+    //Import Module
+    implementation project(":Domain")
 }
