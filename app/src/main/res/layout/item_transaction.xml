@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"></ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/spacing_16"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/spacing_48">
+
+            <TextView
+                android:id="@+id/txt_expense_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pets"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_26"></TextView>
+
+            <TextView
+                android:id="@+id/txt_expense_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="-123.4566 đ"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_26"
+                android:textStyle="bold"></TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/spacing_48">
+
+            <TextView
+                android:id="@+id/txt_wallet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wallet"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_18_title"></TextView>
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="11/03/2020"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_18_title"></TextView>
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

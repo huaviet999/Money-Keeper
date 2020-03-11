@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 import com.example.moneykeeper.R;
@@ -98,9 +99,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     public void setupNavigationView() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(drawerLayout == null){
-            Log.d("DRAWERNULL","NULL");
-        }
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {

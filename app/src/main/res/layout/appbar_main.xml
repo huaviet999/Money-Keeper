@@ -38,17 +38,33 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_4">
+        android:fillViewport="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HOME ACTIVITY">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_10"
+            android:background="@color/gray_7"
+            android:orientation="vertical">
 
-        </TextView>
-    </LinearLayout>
+            <include
+                layout="@layout/layout_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></include>
+
+            <include
+                layout="@layout/layout_seven_days_expense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_10"></include>
+            <include
+                layout="@layout/layout_transaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_10"></include>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
