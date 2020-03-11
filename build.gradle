@@ -27,5 +27,5 @@ task clean(type: Delete) {
 }
 ext{
     dagger2Version = '2.26'
-    butterKnifeVersion = '10.2.1'
+    butterKnifeVersion = '10.1.0'
 }

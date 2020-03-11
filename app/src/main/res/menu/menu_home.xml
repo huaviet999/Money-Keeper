@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_sync"
+        android:icon="@drawable/ic_sync_black_24dp"
+        android:title="@string/sync"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/item_help"
+        android:title="@string/help"
+        app:showAsAction=""></item>
+    <item
+        android:id="@+id/item_option"
+        android:title="@string/option"></item>
+</menu>

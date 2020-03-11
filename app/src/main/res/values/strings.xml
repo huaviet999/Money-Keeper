@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Money Keeper</string>
+    <string name="help">Trợ giúp</string>
+    <string name="option">Tùy chọn</string>
+    <string name="sync">Đồng bộ</string>
+    <string name="overview">Tổng quát</string>
+    <string name="summary">Sơ lược</string>
+    <string name="transaction">Giao dịch</string>
+    <string name="chart">Biểu đồ</string>
+    <string name="setting">Cài đặt</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

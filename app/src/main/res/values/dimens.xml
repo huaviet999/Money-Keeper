@@ -1,0 +1,95 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="margin_part_normal">5dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="spacing_20">20dp</dimen>
+
+    <dimen name="magrin_1x">10dp</dimen>
+    <dimen name="magrin_2x">20dp</dimen>
+    <dimen name="magrin_3x">30dp</dimen>
+    <dimen name="magrin_4x">40dp</dimen>
+    <dimen name="magrin_5x">50dp</dimen>
+    <dimen name="magrin_6x">60dp</dimen>
+    <dimen name="magrin_7x">70dp</dimen>
+
+    <dimen name="spacing_0">0dp</dimen>
+    <dimen name="spacing_2">2dp</dimen>
+    <dimen name="spacing_3">3dp</dimen>
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_5">5dp</dimen>
+    <dimen name="spacing_6">6dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_10">10dp</dimen>
+    <dimen name="spacing_12">12dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+    <dimen name="spacing_24">24dp</dimen>
+    <dimen name="spacing_32">32dp</dimen>
+    <dimen name="spacing_48">48dp</dimen>
+    <dimen name="spacing_64">64dp</dimen>
+    <dimen name="spacing_72">72dp</dimen>
+    <dimen name="spacing_80">80dp</dimen>
+    <dimen name="spacing_88">88dp</dimen>
+    <dimen name="spacing_96">96dp</dimen>
+    <dimen name="spacing_104">104dp</dimen>
+    <dimen name="spacing__8">-18dp</dimen>
+    <dimen name="spacing__3">-3dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="corner_radius_4">4dp</dimen>
+
+    <!-- font size -->
+    <dimen name="font_64">64sp</dimen>
+    <dimen name="font_42">42sp</dimen>
+    <dimen name="font_40">40sp</dimen>
+    <dimen name="font_38">38sp</dimen>
+    <dimen name="font_36">36sp</dimen>
+    <dimen name="font_32">32sp</dimen>
+    <dimen name="font_30">30sp</dimen>
+    <dimen name="font_28">28sp</dimen>
+    <dimen name="font_26">26sp</dimen>
+    <dimen name="font_24">24sp</dimen>
+    <dimen name="font_20">20sp</dimen>
+    <dimen name="font_18_title">18sp</dimen>
+    <dimen name="font_16_subtitle">16sp</dimen>
+    <dimen name="font_14">14sp</dimen>
+    <dimen name="font_13">13sp</dimen>
+    <dimen name="font_12">12sp</dimen>
+    <dimen name="font_10">10sp</dimen>
+    <dimen name="font_8">8sp</dimen>
+
+    <dimen name="row_height_default">40dp</dimen>
+    <dimen name="divider_height">0.5dp</dimen>
+    <dimen name="btn_height_normal">48dp</dimen>
+
+    <dimen name="edt_height">40dp</dimen>
+    <dimen name="edt_height_48">48dp</dimen>
+    <dimen name="btn_height">40dp</dimen>
+    <dimen name="thumbnail_48">48dp</dimen>
+    <dimen name="spacing_18">18dp</dimen>
+    <dimen name="thumbnail_40">40dp</dimen>
+    <dimen name="font_22">22sp</dimen>
+
+    <dimen name="thumbnail_32">32dp</dimen>
+    <dimen name="thumbnail_72">72dp</dimen>
+
+    <!-- button -->
+    <dimen name="button_corner_radius">30.0dip</dimen>
+    <dimen name="stroke_remote_button">1.0dp</dimen>
+    <dimen name="stroke_remote_button_1px">1px</dimen>
+    <dimen name="button_text_size">14.0sp</dimen>
+    <dimen name="button_width">40.0dip</dimen>
+    <dimen name="button_height">40.0dip</dimen>
+    <dimen name="button_b_corner_radius">55.0dip</dimen>
+    <dimen name="button_b_height">55.0dip</dimen>
+    <dimen name="button_b_width">55.0dip</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+
+    <dimen name="default_radius_corner_4">4dp</dimen>
+    <!-- used for the on-screen icons, e.g., Settings etc -->
+    <dimen name="onscreen_button_size">60dp</dimen>
+</resources>
