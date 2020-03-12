@@ -2,20 +2,24 @@ package com.example.moneykeeper.presentation.home;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 
+import com.example.domain.model.Account;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
 import com.example.moneykeeper.presentation.chart.ChartActivity;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,11 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_transaction)
-    RecyclerView recyclerView;
+    RecyclerView transactionRecyclerView;
+    @BindView(R.id.rv_summary)
+    RecyclerView summaryRecyclerView;
+    @BindView(R.id.chart_bar)
+    BarChart barChart;
     @Inject
     HomeContract.Presenter presenter;
 
@@ -60,6 +68,32 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         setupToolbar();
         setupNavigationView();
         setupRecyclerView();
+        List<BarEntry> barEntries = new ArrayList<>();
+        barEntries.add(new BarEntry(1,10000000));
+        barEntries.add(new BarEntry(2,500000));
+        barEntries.add(new BarEntry(3,500000));
+        barEntries.add(new BarEntry(4,500000));
+        barEntries.add(new BarEntry(5,500000));
+        barEntries.add(new BarEntry(6,500000));
+        barEntries.add(new BarEntry(7,500000));
+        BarDataSet barDataSet = new BarDataSet(barEntries,"");
+        List<Integer> colorList = new ArrayList<>();
+        colorList.add(Color.parseColor("#00ff00"));
+        colorList.add(Color.parseColor("#ff0000"));
+        barDataSet.setColors(colorList);
+        barDataSet.setValueTextSize(10f);
+        BarData data = new BarData(barDataSet);
+        data.setBarWidth(0.8f);
+        barChart.animateY(2000);
+        barChart.setPinchZoom(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getXAxis().setDrawGridLines(false);
+        barChart.getXAxis().setDrawLabels(false);
+        barChart.getAxisLeft().setDrawLabels(false);
+        barChart.getAxisRight().setDrawLabels(false);
+        barChart.getLegend().setEnabled(false);
+        barChart.getDescription().setEnabled(false);
+        barChart.setData(data);
     }
 
     @Override
@@ -124,20 +158,27 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     }
 
-    private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
+    private TransactionRecyclerViewAdapter transactionRecyclerViewAdapter;
+    private SummaryRecyclerViewAdapter summaryRecyclerViewAdapter;
 
     public void setupRecyclerView() {
-        homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(this, listener);
-        homeRecyclerViewAdapter.setData(testData());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(homeRecyclerViewAdapter);
+        //TRANSACTION RECYCLER VIEW
+        transactionRecyclerViewAdapter = new TransactionRecyclerViewAdapter(this, transactionListener);
+        transactionRecyclerViewAdapter.setData(testData());
+        transactionRecyclerView.setLayoutManager(linearLayoutManager);
+        transactionRecyclerView.setAdapter(transactionRecyclerViewAdapter);
 
+//        //SUMMARY RECYCLER VIEW
+        summaryRecyclerViewAdapter = new SummaryRecyclerViewAdapter(this, accountListener);
+        summaryRecyclerViewAdapter.setData(testData2());
+        summaryRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+       summaryRecyclerView.setAdapter(summaryRecyclerViewAdapter);
 
     }
 
-    private ItemClickListener<Transaction> listener = new ItemClickListener<Transaction>() {
+    private ItemClickListener<Transaction> transactionListener = new ItemClickListener<Transaction>() {
         @Override
         public void onClickListener(int position, Transaction transaction) {
             showToastMessage("On Click");
@@ -145,6 +186,17 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
         @Override
         public void onLongClickListener(int position, Transaction transaction) {
+            showToastMessage("On Long Click");
+        }
+    };
+    private ItemClickListener<Account> accountListener = new ItemClickListener<Account>() {
+        @Override
+        public void onClickListener(int position, Account transaction) {
+            showToastMessage("On Click");
+        }
+
+        @Override
+        public void onLongClickListener(int position, Account transaction) {
             showToastMessage("On Long Click");
         }
     };
@@ -206,4 +258,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         return mData;
     }
 
+    private List<Account> testData2() {
+        List<Account> mData = new ArrayList<>();
+        mData.add(new Account(1000000, 300000));
+        mData.add(new Account(2000, 500000));
+        return mData;
+    }
 }

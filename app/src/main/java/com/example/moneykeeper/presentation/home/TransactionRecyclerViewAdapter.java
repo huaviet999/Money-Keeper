@@ -17,14 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by Viet Hua on 3/11/2020
  */
-public class HomeRecyclerViewAdapter extends BaseRecyclerViewAdapter<Transaction, HomeRecyclerViewAdapter.ViewHolder> {
-    public HomeRecyclerViewAdapter(Context context, ItemClickListener<Transaction> listener) {
-        super(context);
-        setListener(listener);
-    }
+public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Transaction, TransactionRecyclerViewAdapter.ViewHolder> {
+        public TransactionRecyclerViewAdapter(Context context, ItemClickListener<Transaction> listener) {
+            super(context);
+            setListener(listener);
+        }
 
-    @NonNull
-    @Override
+        @NonNull
+        @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout.item_transaction, parent, false);
         return new ViewHolder(view);

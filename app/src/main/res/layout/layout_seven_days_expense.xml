@@ -43,11 +43,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="EXPENSE CHART"
-                android:textSize="@dimen/font_24"></TextView>
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart_bar"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+            </com.github.mikephil.charting.charts.BarChart>
         </LinearLayout>
     </LinearLayout>

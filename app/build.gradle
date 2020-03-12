@@ -46,6 +46,8 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnifeVersion"
     //Animated Pie View
     implementation 'com.github.razerdp:AnimatedPieView:1.2.6'
+    //MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //Import Module
     implementation project(":Domain")
 }

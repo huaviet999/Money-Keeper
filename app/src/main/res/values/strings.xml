@@ -11,4 +11,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="expense_last_seven_days">Chi tiêu - 7 ngày gần đây</string>
+    <string name="income">Thu nhập:</string>
+    <string name="expense">Chi tiêu:</string>
+    <string name="balance">Số dư:</string>
 </resources>

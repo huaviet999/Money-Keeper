@@ -6,14 +6,23 @@ import android.os.Bundle;
 
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
@@ -34,18 +43,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         super.onCreate(savedInstanceState);
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
-        AnimatedPieView mAnimatedPieView = findViewById(R.id.chart_pie);
-        AnimatedPieViewConfig config = new AnimatedPieViewConfig();
-        config.strokeWidth(150);
-        config.textSize(60);
-        config.startAngle(-90)// Starting angle offset
-                .addData(new SimplePieInfo(30, Color.parseColor("#ff0000"), "Income"))//Data (bean that implements the IPieInfo interface)
-                .addData(new SimplePieInfo(18.0f, Color.parseColor("#00ff00"), "Expense")).drawText(true)
-      .duration(1000);// draw pie animation duration
 
-// The following two sentences can be replace directly 'mAnimatedPieView.start (config); '
-        mAnimatedPieView.applyConfig(config);
-        mAnimatedPieView.start();
     }
 
     @Override
