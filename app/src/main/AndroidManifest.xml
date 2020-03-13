@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.chart.ChartActivity"></activity>
+        <activity android:name=".presentation.summary.SummaryActivity"></activity>
     </application>
 
 </manifest>

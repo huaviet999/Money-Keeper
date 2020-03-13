@@ -12,6 +12,7 @@ import android.view.View;
 import com.example.domain.model.Account;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
+import com.example.moneykeeper.presentation.Navigator;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
 import com.example.moneykeeper.presentation.chart.ChartActivity;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.material.navigation.NavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     BarChart barChart;
     @Inject
     HomeContract.Presenter presenter;
+    @Inject
+    Navigator navigator;
 
     @Override
     protected int getResLayoutId() {
@@ -68,32 +72,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         setupToolbar();
         setupNavigationView();
         setupRecyclerView();
-        List<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1,10000000));
-        barEntries.add(new BarEntry(2,500000));
-        barEntries.add(new BarEntry(3,500000));
-        barEntries.add(new BarEntry(4,500000));
-        barEntries.add(new BarEntry(5,500000));
-        barEntries.add(new BarEntry(6,500000));
-        barEntries.add(new BarEntry(7,500000));
-        BarDataSet barDataSet = new BarDataSet(barEntries,"");
-        List<Integer> colorList = new ArrayList<>();
-        colorList.add(Color.parseColor("#00ff00"));
-        colorList.add(Color.parseColor("#ff0000"));
-        barDataSet.setColors(colorList);
-        barDataSet.setValueTextSize(10f);
-        BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.8f);
-        barChart.animateY(2000);
-        barChart.setPinchZoom(false);
-        barChart.getAxisLeft().setDrawGridLines(false);
-        barChart.getXAxis().setDrawGridLines(false);
-        barChart.getXAxis().setDrawLabels(false);
-        barChart.getAxisLeft().setDrawLabels(false);
-        barChart.getAxisRight().setDrawLabels(false);
-        barChart.getLegend().setEnabled(false);
-        barChart.getDescription().setEnabled(false);
-        barChart.setData(data);
+        setupBarChart();
     }
 
     @Override
@@ -170,12 +149,43 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         transactionRecyclerView.setLayoutManager(linearLayoutManager);
         transactionRecyclerView.setAdapter(transactionRecyclerViewAdapter);
 
-//        //SUMMARY RECYCLER VIEW
+        //SUMMARY RECYCLER VIEW
         summaryRecyclerViewAdapter = new SummaryRecyclerViewAdapter(this, accountListener);
         summaryRecyclerViewAdapter.setData(testData2());
-        summaryRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-       summaryRecyclerView.setAdapter(summaryRecyclerViewAdapter);
+        summaryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        summaryRecyclerView.setAdapter(summaryRecyclerViewAdapter);
 
+    }
+    public void setupBarChart(){
+        List<BarEntry> barEntries = new ArrayList<>();
+        barEntries.add(new BarEntry(1, 10000000));
+        barEntries.add(new BarEntry(2, 500000));
+        barEntries.add(new BarEntry(3, 500000));
+        barEntries.add(new BarEntry(4, 500000));
+        barEntries.add(new BarEntry(5, 500000));
+        barEntries.add(new BarEntry(6, 500000));
+        barEntries.add(new BarEntry(7, 500000));
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "");
+        List<Integer> colorList = new ArrayList<>();
+        colorList.add(Color.parseColor("#00ff00"));
+        colorList.add(Color.parseColor("#ff0000"));
+        barDataSet.setColors(colorList);
+        barDataSet.setValueTextSize(10f);
+
+        BarData data = new BarData(barDataSet);
+        data.setBarWidth(0.8f);
+
+        barChart.animateY(2000);
+        barChart.setPinchZoom(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getXAxis().setDrawGridLines(false);
+        barChart.getXAxis().setDrawLabels(false);
+        barChart.getAxisLeft().setDrawLabels(false);
+        barChart.getAxisRight().setDrawLabels(false);
+        barChart.getLegend().setEnabled(false);
+        barChart.getDescription().setEnabled(false);
+        barChart.setData(data);
     }
 
     private ItemClickListener<Transaction> transactionListener = new ItemClickListener<Transaction>() {
@@ -238,13 +248,13 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 showToastMessage("OVERVIEW");
                 break;
             case TAG_SUMMARY:
-                showToastMessage("SUMMARY");
+                navigator.openSummaryActivity(this);
                 break;
             case TAG_TRANSACTION:
                 showToastMessage("TRANSACTION");
                 break;
             case TAG_CHART:
-                ChartActivity.startChartActivity(this);
+                navigator.openChartActivity(this);
                 break;
             case TAG_SETTING:
                 showToastMessage("SETTING");
