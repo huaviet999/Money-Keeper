@@ -33,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +58,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     BarChart barChart;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.nsv)
+    NestedScrollView nestedScrollView;
     @Inject
     HomeContract.Presenter presenter;
     @Inject
@@ -200,6 +203,17 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             public void onClick(View view) {
                 showToastMessage("FAB CLICKED");
             }
+        });
+        nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                if (i1 > i3) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+            
         });
     }
 

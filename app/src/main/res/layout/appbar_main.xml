@@ -54,6 +54,7 @@
         android:layout_below="@id/appbarLayout">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
