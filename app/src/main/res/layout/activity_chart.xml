@@ -36,36 +36,35 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_10">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appbarLayout">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="EXPENSE BY CATEGORY"
-            android:textSize="@dimen/font_26"
-            android:textStyle="bold"></TextView>
-
-        <com.razerdp.widget.animatedpieview.AnimatedPieView
-            android:id="@+id/chart_pie"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:layout_marginTop="@dimen/spacing_10">
-
-        </com.razerdp.widget.animatedpieview.AnimatedPieView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_chart"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/spacing_10">
+            android:fillViewport="true">
 
-        </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_10">
 
+                <include
+                    layout="@layout/layout_piechart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </include>
+
+                <include
+                    layout="@layout/layout_expenselist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_10"></include>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 
 </LinearLayout>

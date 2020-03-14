@@ -21,6 +21,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     RecyclerView summaryRecyclerView;
     @BindView(R.id.chart_bar)
     BarChart barChart;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     @Inject
     HomeContract.Presenter presenter;
     @Inject
@@ -69,10 +72,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         super.onCreate(savedInstanceState);
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
-        setupToolbar();
-        setupNavigationView();
-        setupRecyclerView();
-        setupBarChart();
+        setupViews();
     }
 
     @Override
@@ -94,6 +94,13 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         return true;
     }
 
+    private void setupViews(){
+        setupToolbar();
+        setupNavigationView();
+        setupRecyclerView();
+        setupBarChart();
+        setupFab();
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
@@ -186,6 +193,14 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         barChart.getLegend().setEnabled(false);
         barChart.getDescription().setEnabled(false);
         barChart.setData(data);
+    }
+    private void setupFab(){
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showToastMessage("FAB CLICKED");
+            }
+        });
     }
 
     private ItemClickListener<Transaction> transactionListener = new ItemClickListener<Transaction>() {
