@@ -8,6 +8,7 @@
     <string name="transaction">Giao dịch</string>
     <string name="chart">Biểu đồ</string>
     <string name="category">Danh mục</string>
+    <string name="new_transaction">Giao dịch mới</string>
     <string name="setting">Cài đặt</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

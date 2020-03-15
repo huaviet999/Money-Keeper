@@ -1,4 +1,4 @@
-package com.example.moneykeeper.presentation.addcategory;
+package com.example.moneykeeper.presentation.category;
 
 import android.content.Context;
 import android.view.View;
@@ -14,8 +14,8 @@ import com.example.moneykeeper.presentation.base.ItemClickListener;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AddCategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTest1, AddCategoryRecyclerViewAdapter.ViewHolder> {
-    public AddCategoryRecyclerViewAdapter(Context context, ItemClickListener<ModelTest1> itemClickListener) {
+public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTest1, CategoryRecyclerViewAdapter.ViewHolder> {
+    public CategoryRecyclerViewAdapter(Context context, ItemClickListener<ModelTest1> itemClickListener) {
         super(context);
         setListener(itemClickListener);
     }

@@ -1,4 +1,4 @@
-package com.example.moneykeeper.presentation.addcategory;
+package com.example.moneykeeper.presentation.category;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,19 +30,19 @@ import dagger.android.AndroidInjection;
 /**
  * Created by Viet Hua on 3/15/2020
  */
-public class AddCategoryActivity extends BaseActivity implements AddCategoryContract.View {
+public class CategoryActivity extends BaseActivity implements CategoryContract.View {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_category)
     RecyclerView rvCategory;
 
-    public static void startAddCategoryActivity(AppCompatActivity activity) {
-        Intent intent = new Intent(activity, AddCategoryActivity.class);
+    public static void startCategoryActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, CategoryActivity.class);
         activity.startActivity(intent);
     }
 
     @Inject
-    AddCategoryContract.Presenter presenter;
+    CategoryContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class AddCategoryActivity extends BaseActivity implements AddCategoryCont
 
     @Override
     protected int getResLayoutId() {
-        return R.layout.activity_addcategory;
+        return R.layout.activity_category;
     }
 
     @Override
@@ -89,14 +89,14 @@ public class AddCategoryActivity extends BaseActivity implements AddCategoryCont
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    private AddCategoryRecyclerViewAdapter addCategoryRecyclerViewAdapter;
+    private CategoryRecyclerViewAdapter categoryRecyclerViewAdapter;
 
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(this, 4);
-        addCategoryRecyclerViewAdapter = new AddCategoryRecyclerViewAdapter(this, listener);
-        addCategoryRecyclerViewAdapter.setData(testData());
+        categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, listener);
+        categoryRecyclerViewAdapter.setData(testData());
         rvCategory.setLayoutManager(linearLayoutManager);
-        rvCategory.setAdapter(addCategoryRecyclerViewAdapter);
+        rvCategory.setAdapter(categoryRecyclerViewAdapter);
     }
 
     private ItemClickListener<ModelTest1> listener = new ItemClickListener<ModelTest1>() {

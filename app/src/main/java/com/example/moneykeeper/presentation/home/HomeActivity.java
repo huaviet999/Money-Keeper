@@ -13,12 +13,11 @@ import com.example.domain.model.Account;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.Navigator;
-import com.example.moneykeeper.presentation.addcategory.AddCategoryActivity;
+import com.example.moneykeeper.presentation.category.CategoryActivity;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
-import com.example.moneykeeper.presentation.chart.ChartActivity;
+import com.example.moneykeeper.presentation.newtransaction.NewTransactionActivity;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -295,7 +294,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             case TAG_SETTING:
                 showToastMessage("SETTING");
             case TAG_ADD_CATEGORY:
-                AddCategoryActivity.startAddCategoryActivity(this);
+                NewTransactionActivity.startNewTransactionActivity(this);
                 break;
         }
     }

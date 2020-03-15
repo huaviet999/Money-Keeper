@@ -19,7 +19,9 @@
         </activity>
         <activity android:name=".presentation.chart.ChartActivity"></activity>
         <activity android:name=".presentation.summary.SummaryActivity"></activity>
-        <activity android:name=".presentation.addcategory.AddCategoryActivity"></activity>
+        <activity
+            android:name=".presentation.category.CategoryActivity"></activity>
+        <activity android:name=".presentation.newtransaction.NewTransactionActivity"></activity>
     </application>
 
 </manifest>
