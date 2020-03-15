@@ -49,7 +49,7 @@ public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Mode
         }
 
         public void renderUI(ModelTest1 data) {
-            tvType.setText(data.getType());
+            tvType.setText(data.getExpenseType().toString());
             tvPercent.setText(data.getPercent());
             tvNumber.setText(data.getMoney());
         }

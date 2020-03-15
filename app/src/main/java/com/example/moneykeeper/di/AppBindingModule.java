@@ -1,5 +1,7 @@
 package com.example.moneykeeper.di;
 
+import com.example.moneykeeper.presentation.addcategory.AddCategoryActivity;
+import com.example.moneykeeper.presentation.addcategory.AddCategoryModule;
 import com.example.moneykeeper.presentation.chart.ChartActivity;
 import com.example.moneykeeper.presentation.chart.ChartModule;
 import com.example.moneykeeper.presentation.home.HomeActivity;
@@ -20,4 +22,6 @@ public abstract class AppBindingModule {
 
     @ContributesAndroidInjector(modules = SummaryModule.class)
     abstract SummaryActivity summaryActivity();
+    @ContributesAndroidInjector(modules = AddCategoryModule.class)
+    abstract AddCategoryActivity addCategoryActivity();
 }

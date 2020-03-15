@@ -1,22 +1,14 @@
 package com.example.domain.model;
 
 public class ModelTest1 {
-    private String type;
     private String percent;
     private String money;
+    private ExpenseType expenseType;
 
-    public ModelTest1(String type, String percent, String money) {
-        this.type = type;
+    public ModelTest1(String percent, String money, ExpenseType expenseType) {
         this.percent = percent;
         this.money = money;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+        this.expenseType = expenseType;
     }
 
     public String getPercent() {
@@ -33,5 +25,13 @@ public class ModelTest1 {
 
     public void setMoney(String money) {
         this.money = money;
+    }
+
+    public ExpenseType getExpenseType() {
+        return expenseType;
+    }
+
+    public void setExpenseType(ExpenseType expenseType) {
+        this.expenseType = expenseType;
     }
 }

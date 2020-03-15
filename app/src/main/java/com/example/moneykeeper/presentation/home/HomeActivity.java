@@ -13,6 +13,7 @@ import com.example.domain.model.Account;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.Navigator;
+import com.example.moneykeeper.presentation.addcategory.AddCategoryActivity;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
 import com.example.moneykeeper.presentation.chart.ChartActivity;
@@ -97,13 +98,14 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         return true;
     }
 
-    private void setupViews(){
+    private void setupViews() {
         setupToolbar();
         setupNavigationView();
         setupRecyclerView();
         setupBarChart();
         setupFab();
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
@@ -166,7 +168,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         summaryRecyclerView.setAdapter(summaryRecyclerViewAdapter);
 
     }
-    public void setupBarChart(){
+
+    public void setupBarChart() {
         List<BarEntry> barEntries = new ArrayList<>();
         barEntries.add(new BarEntry(1, 10000000));
         barEntries.add(new BarEntry(2, 500000));
@@ -197,13 +200,16 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         barChart.getDescription().setEnabled(false);
         barChart.setData(data);
     }
-    private void setupFab(){
+
+    private void setupFab() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showToastMessage("FAB CLICKED");
+                openScreenByTag(TAG_ADD_CATEGORY);
             }
         });
+
+        //Show-hide fab when scrolling
         nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View view, int i, int i1, int i2, int i3) {
@@ -213,7 +219,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                     fab.show();
                 }
             }
-            
+
         });
     }
 
@@ -270,6 +276,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private static final int TAG_TRANSACTION = 2;
     private static final int TAG_CHART = 3;
     private static final int TAG_SETTING = 4;
+    private static final int TAG_ADD_CATEGORY = 5;
 
     private void openScreenByTag(int tag) {
         switch (tag) {
@@ -287,6 +294,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 break;
             case TAG_SETTING:
                 showToastMessage("SETTING");
+            case TAG_ADD_CATEGORY:
+                AddCategoryActivity.startAddCategoryActivity(this);
                 break;
         }
     }

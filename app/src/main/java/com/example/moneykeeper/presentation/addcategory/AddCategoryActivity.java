@@ -1,19 +1,14 @@
-package com.example.moneykeeper.presentation.chart;
+package com.example.moneykeeper.presentation.addcategory;
 
-
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.domain.model.ExpenseType;
 import com.example.domain.model.ModelTest1;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
-import com.razerdp.widget.animatedpieview.AnimatedPieView;
-import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
-import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
+import com.example.moneykeeper.presentation.base.ItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +18,9 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -32,19 +28,21 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
 /**
- * Created by Viet Hua on 3/11/2020
+ * Created by Viet Hua on 3/15/2020
  */
-public class ChartActivity extends BaseActivity implements ChartContract.View {
-    @Inject
-    ChartContract.Presenter presenter;
-    @BindView(R.id.chart_pie)
-    AnimatedPieView animatedPieView;
+public class AddCategoryActivity extends BaseActivity implements AddCategoryContract.View {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.rv_expense_percent)
-    RecyclerView rvExpensePercent;
-    @BindView(R.id.rv_expense)
-    RecyclerView rvExpenseList;
+    @BindView(R.id.rv_category)
+    RecyclerView rvCategory;
+
+    public static void startAddCategoryActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, AddCategoryActivity.class);
+        activity.startActivity(intent);
+    }
+
+    @Inject
+    AddCategoryContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,13 +50,6 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
         setupViews();
-
-    }
-
-
-    @Override
-    protected int getResLayoutId() {
-        return R.layout.activity_chart;
     }
 
     @Override
@@ -74,10 +65,8 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_summary, menu);
-        return true;
+    protected int getResLayoutId() {
+        return R.layout.activity_addcategory;
     }
 
     @Override
@@ -85,14 +74,12 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                break;
         }
         return true;
     }
 
     private void setupViews() {
         setupToolbar();
-        setupPieChart();
         setupRecyclerView();
     }
 
@@ -102,35 +89,27 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    private PercentRecyclerViewAdapter percentRecyclerViewAdapter;
-    private ExpenseListRecyclerViewAdapter expenseListRecyclerViewAdapter;
+    private AddCategoryRecyclerViewAdapter addCategoryRecyclerViewAdapter;
 
     private void setupRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
-        percentRecyclerViewAdapter = new PercentRecyclerViewAdapter(this, null);
-        percentRecyclerViewAdapter.setData(testData());
-        rvExpensePercent.setLayoutManager(linearLayoutManager);
-        rvExpensePercent.setAdapter(percentRecyclerViewAdapter);
-
-        expenseListRecyclerViewAdapter = new ExpenseListRecyclerViewAdapter(this, null);
-        expenseListRecyclerViewAdapter.setData(testData());
-        rvExpenseList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rvExpenseList.setAdapter(expenseListRecyclerViewAdapter);
+        LinearLayoutManager linearLayoutManager = new GridLayoutManager(this, 4);
+        addCategoryRecyclerViewAdapter = new AddCategoryRecyclerViewAdapter(this, listener);
+        addCategoryRecyclerViewAdapter.setData(testData());
+        rvCategory.setLayoutManager(linearLayoutManager);
+        rvCategory.setAdapter(addCategoryRecyclerViewAdapter);
     }
 
-    private void setupPieChart() {
-        AnimatedPieViewConfig config = new AnimatedPieViewConfig();
-        config.strokeWidth(80);
-        config.startAngle(-90)// Starting angle offset
-                .addData(new SimplePieInfo(50f, Color.parseColor("#00ff00"), "Income"))
-                .addData(new SimplePieInfo(50f, Color.parseColor("#d34ede"), "CC"))
-                .addData(new SimplePieInfo(50f, Color.parseColor("#ff45ed"), "SS"))
-                .addData(new SimplePieInfo(50f, Color.parseColor("#ff0000"), "Expense"))
-                .duration(1000);// dr// aw pie animation duration
-        animatedPieView.applyConfig(config);
-        animatedPieView.start();
-    }
+    private ItemClickListener<ModelTest1> listener = new ItemClickListener<ModelTest1>() {
+        @Override
+        public void onClickListener(int position, ModelTest1 modelTest1) {
+            showToastMessage("On Click");
+        }
+
+        @Override
+        public void onLongClickListener(int position, ModelTest1 modelTest1) {
+            showToastMessage("On Long Click");
+        }
+    };
 
     private List<ModelTest1> testData() {
         List<ModelTest1> mData = new ArrayList<>();
