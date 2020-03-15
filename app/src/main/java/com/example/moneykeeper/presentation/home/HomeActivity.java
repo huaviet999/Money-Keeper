@@ -13,9 +13,11 @@ import com.example.domain.model.Account;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.Navigator;
+import com.example.moneykeeper.presentation.base.Constants;
 import com.example.moneykeeper.presentation.category.CategoryActivity;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
+import com.example.moneykeeper.presentation.detail.DetailActivity;
 import com.example.moneykeeper.presentation.newtransaction.NewTransactionActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -204,7 +206,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openScreenByTag(TAG_ADD_CATEGORY);
+                openScreenByTag(Constants.TAG_NEW_TRANSACTION);
             }
         });
 
@@ -225,7 +227,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private ItemClickListener<Transaction> transactionListener = new ItemClickListener<Transaction>() {
         @Override
         public void onClickListener(int position, Transaction transaction) {
-            showToastMessage("On Click");
+            openScreenByTag(Constants.TAG_DETAIL);
         }
 
         @Override
@@ -249,19 +251,19 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.item_overview:
-                    openScreenByTag(TAG_OVERVIEW);
+                    openScreenByTag(Constants.TAG_OVERVIEW);
                     break;
                 case R.id.item_summary:
-                    openScreenByTag(TAG_SUMMARY);
+                    openScreenByTag(Constants.TAG_SUMMARY);
                     break;
                 case R.id.item_transaction:
-                    openScreenByTag(TAG_TRANSACTION);
+                    openScreenByTag(Constants.TAG_TRANSACTION);
                     break;
                 case R.id.item_chart:
-                    openScreenByTag(TAG_CHART);
+                    openScreenByTag(Constants.TAG_CHART);
                     break;
                 case R.id.item_setting:
-                    openScreenByTag(TAG_SETTING);
+                    openScreenByTag(Constants.TAG_SETTING);
                     break;
                 default:
                     return false;
@@ -270,32 +272,32 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             return true;
         }
     };
-    private static final int TAG_OVERVIEW = 0;
-    private static final int TAG_SUMMARY = 1;
-    private static final int TAG_TRANSACTION = 2;
-    private static final int TAG_CHART = 3;
-    private static final int TAG_SETTING = 4;
-    private static final int TAG_ADD_CATEGORY = 5;
 
-    private void openScreenByTag(int tag) {
+
+    private void openScreenByTag(String tag) {
         switch (tag) {
-            case TAG_OVERVIEW:
+            case Constants.TAG_OVERVIEW:
                 showToastMessage("OVERVIEW");
                 break;
-            case TAG_SUMMARY:
+            case Constants.TAG_SUMMARY:
                 navigator.openSummaryActivity(this);
                 break;
-            case TAG_TRANSACTION:
+            case Constants.TAG_TRANSACTION:
                 showToastMessage("TRANSACTION");
                 break;
-            case TAG_CHART:
+            case Constants.TAG_CHART:
                 navigator.openChartActivity(this);
                 break;
-            case TAG_SETTING:
+            case Constants.TAG_SETTING:
                 showToastMessage("SETTING");
-            case TAG_ADD_CATEGORY:
+                break;
+            case Constants.TAG_NEW_TRANSACTION:
                 NewTransactionActivity.startNewTransactionActivity(this);
                 break;
+            case Constants.TAG_DETAIL:
+                DetailActivity.startDetailActivity(this);
+                break;
+
         }
     }
 

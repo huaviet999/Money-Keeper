@@ -4,6 +4,8 @@ import com.example.moneykeeper.presentation.category.CategoryActivity;
 import com.example.moneykeeper.presentation.category.CategoryModule;
 import com.example.moneykeeper.presentation.chart.ChartActivity;
 import com.example.moneykeeper.presentation.chart.ChartModule;
+import com.example.moneykeeper.presentation.detail.DetailActivity;
+import com.example.moneykeeper.presentation.detail.DetailModule;
 import com.example.moneykeeper.presentation.home.HomeActivity;
 import com.example.moneykeeper.presentation.home.HomeModule;
 import com.example.moneykeeper.presentation.newtransaction.NewTransactionActivity;
@@ -24,8 +26,13 @@ public abstract class AppBindingModule {
 
     @ContributesAndroidInjector(modules = SummaryModule.class)
     abstract SummaryActivity summaryActivity();
+
     @ContributesAndroidInjector(modules = CategoryModule.class)
     abstract CategoryActivity addCategoryActivity();
+
     @ContributesAndroidInjector(modules = NewTransactionModule.class)
     abstract NewTransactionActivity newTransactionActivity();
+
+    @ContributesAndroidInjector(modules = DetailModule.class)
+    abstract DetailActivity detailActivity();
 }
