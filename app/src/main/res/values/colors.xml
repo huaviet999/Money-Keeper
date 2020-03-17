@@ -14,7 +14,8 @@
     <color name="redEnd">#b0ff0612</color>
     <color name="transparent">#0000</color>
     <color name="bg_intro_activity">#e28471</color>
-
+    <color name="income_button_color">#2196F3</color>
+    <color name="expense_button_color">#F44336</color>
     <color name="bgColorTextFiled">#f5f5f5</color>
     <color name="bgColor">@color/gray_6</color>
     <color name="bg_white_in_out">#F6FCFB</color>

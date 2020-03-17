@@ -292,7 +292,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 showToastMessage("SETTING");
                 break;
             case Constants.TAG_NEW_TRANSACTION:
-                NewTransactionActivity.startNewTransactionActivity(this);
+                NewTransactionActivity.startNewTransactionActivity(this,"");
                 break;
             case Constants.TAG_DETAIL:
                 DetailActivity.startDetailActivity(this);

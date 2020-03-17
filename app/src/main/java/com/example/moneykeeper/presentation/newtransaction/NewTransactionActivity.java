@@ -2,9 +2,7 @@ package com.example.moneykeeper.presentation.newtransaction;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,13 +13,12 @@ import android.widget.TextView;
 
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
+import com.example.moneykeeper.presentation.base.Constants;
 import com.example.moneykeeper.presentation.category.CategoryActivity;
 import com.maltaisn.calcdialog.CalcDialog;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -30,18 +27,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import utils.MathUtils;
+import utils.TimeUtils;
 
 /**
  * Created by Viet Hua on 15/3/2020
  */
 public class NewTransactionActivity extends BaseActivity implements NewTransactionContract.View, CalcDialog.CalcDialogCallback {
+    public static String KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME; //Default transaction mode is Income
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.btn_income)
-    TextView btnIcome;
+    TextView btnIncome;
     @BindView(R.id.btn_expense)
     TextView btnExpense;
     @BindView(R.id.edt_date)
@@ -57,8 +58,12 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
     NewTransactionContract.Presenter presenter;
 
 
-    public static void startNewTransactionActivity(AppCompatActivity activity) {
+    public static final String KEY_CATEGORY = "KEY_CATEGORY";
+
+    public static void startNewTransactionActivity(AppCompatActivity activity, String categoryName) {
         Intent intent = new Intent(activity, NewTransactionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //Make sure this activity doesn't create repeeatly
+        intent.putExtra(KEY_CATEGORY, categoryName);
         activity.startActivity(intent);
     }
 
@@ -88,9 +93,19 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         return R.layout.activity_newtransaction;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CategoryActivity.CATEGORY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                edtCategory.setText(data.getStringExtra(CategoryActivity.KEY_CATEGORY_NAME));
+            }
+        }
+    }
+
     private void setupViews() {
         setupToolbar();
-        testSetup();
+        initViews();
     }
 
     @Override
@@ -107,7 +122,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
                 finish();
                 break;
             case R.id.item_confirm:
-                showToastMessage("confirm");
+                showToastMessage(KEY_TRANSACTION_SELECTED);
                 break;
         }
         return true;
@@ -119,28 +134,16 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
+
     private final Calendar myCalendar = Calendar.getInstance();
 
-    private void testSetup() {
-        btnIcome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnIcome.setBackgroundColor(Color.parseColor("#2196F3"));
-                btnIcome.setTextColor(Color.parseColor("#FFFFFF"));
-                btnExpense.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                btnExpense.setTextColor(Color.parseColor("#000000"));
-            }
-        });
-        btnExpense.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnIcome.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                btnIcome.setTextColor(Color.parseColor("#000000"));
-                btnExpense.setBackgroundColor(Color.parseColor("#F44336"));
-                btnExpense.setTextColor(Color.parseColor("#FFFFFF"));
+    private void initViews() {
+        edtDate.setText(TimeUtils.getToday()); //Get current date for init
 
-            }
-        });
+        btnIncome.setOnClickListener(onClickListener);
+        btnExpense.setOnClickListener(onClickListener);
+
+        //Show date dialog
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,12 +153,16 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
+
         edtCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CategoryActivity.startCategoryActivity(NewTransactionActivity.this);
+                CategoryActivity.startCategoryActivityForResult(NewTransactionActivity.this);
             }
         });
+
+
         edtAmount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,20 +170,46 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
                 calcDialog.getSettings().setInitialValue(null);
                 calcDialog.getSettings().setExpressionEditable(true);
                 calcDialog.getSettings().setExpressionShown(true);
-                calcDialog.show(getSupportFragmentManager(),"calc_dialog");
+                calcDialog.show(getSupportFragmentManager(), "calc_dialog");
             }
         });
     }
 
+    private void transactionButtonColorChange() {
+        int whiteColor = ResourcesCompat.getColor(getResources(), R.color.white, null);
+        int blackColor = ResourcesCompat.getColor(getResources(), R.color.black, null);
+        int incomeButtonColor = ResourcesCompat.getColor(getResources(), R.color.income_button_color, null);
+        int expenseButtonColor = ResourcesCompat.getColor(getResources(), R.color.expense_button_color, null);
+
+        btnIncome.setBackgroundColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : whiteColor);
+        btnIncome.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? whiteColor : blackColor);
+        btnExpense.setBackgroundColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_EXPENSE) ? expenseButtonColor : whiteColor);
+        btnExpense.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_EXPENSE) ? whiteColor : blackColor);
+    }
+
     @Override
     public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
-        edtAmount.setText(value.toString());
+        String formatedValue = MathUtils.getNumberWithVietNamCurrency(value.toString());
+        edtAmount.setText(formatedValue);
     }
 
     private DatePickerDialog.OnDateSetListener dataPickerDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
+            edtDate.setText(TimeUtils.getDateFormat(i, i1, i2));
         }
     };
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == R.id.btn_income) {
+                KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME;
+            } else {
+                KEY_TRANSACTION_SELECTED = Constants.KEY_EXPENSE;
+            }
+            transactionButtonColorChange();
+        }
+    };
+
 }

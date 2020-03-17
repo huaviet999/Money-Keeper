@@ -24,10 +24,12 @@ import utils.AndroidDialogUtils;
  * Created by Viet Hua on 3/11/2020
  */
 public abstract class BaseActivity extends AppCompatActivity implements HasAndroidInjector {
+    protected static Context mContext;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getResLayoutId());
+        mContext = getApplicationContext();
     }
 
     protected abstract int getResLayoutId();

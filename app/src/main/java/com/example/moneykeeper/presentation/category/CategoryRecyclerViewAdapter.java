@@ -15,7 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Category, CategoryRecyclerViewAdapter.ViewHolder> {
-    private  int categoryIndex = -1; //Default no category choose;
+    private int categoryIndex = -1; //Default no category choose;
+
     public CategoryRecyclerViewAdapter(Context context, ItemClickListener<Category> itemClickListener) {
         super(context);
         setListener(itemClickListener);
@@ -48,10 +49,10 @@ public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Categor
 
         public void renderUI(Category data) {
             tvCategory.setText(data.getName());
-            if(categoryIndex == getAdapterPosition()){
-                imageCategory.setImageResource(context.getResources().getIdentifier(data.getcImage(),"drawable",context.getPackageName()));
-            } else{
-                imageCategory.setImageResource(context.getResources().getIdentifier(data.getnImage(),"drawable",context.getPackageName()));
+            if (categoryIndex == getAdapterPosition()) {
+                imageCategory.setImageResource(context.getResources().getIdentifier(data.getcImage(), "drawable", context.getPackageName()));
+            } else {
+                imageCategory.setImageResource(context.getResources().getIdentifier(data.getnImage(), "drawable", context.getPackageName()));
             }
 
         }
@@ -59,11 +60,10 @@ public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Categor
         @Override
         public void onClick(View view) {
             if (mListener == null) return;
+            mListener.onClickListener(getAdapterPosition(), null);
+
             categoryIndex = getAdapterPosition();
             notifyDataSetChanged();
-
-
-            mListener.onClickListener(getAdapterPosition(), null);
         }
 
         @Override

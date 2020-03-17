@@ -98,8 +98,7 @@
                 android:layout_marginTop="@dimen/spacing_6"
                 android:clickable="true"
                 android:editable="false"
-                android:focusableInTouchMode="false"
-                android:hint="3/15/2020"></EditText>
+                android:focusableInTouchMode="false"></EditText>
 
             <TextView
                 android:layout_width="match_parent"
