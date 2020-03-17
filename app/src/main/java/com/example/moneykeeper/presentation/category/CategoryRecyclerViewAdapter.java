@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.domain.model.ModelTest1;
+import com.example.domain.model.Category;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
@@ -14,8 +14,9 @@ import com.example.moneykeeper.presentation.base.ItemClickListener;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTest1, CategoryRecyclerViewAdapter.ViewHolder> {
-    public CategoryRecyclerViewAdapter(Context context, ItemClickListener<ModelTest1> itemClickListener) {
+public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Category, CategoryRecyclerViewAdapter.ViewHolder> {
+    private  int categoryIndex = -1; //Default no category choose;
+    public CategoryRecyclerViewAdapter(Context context, ItemClickListener<Category> itemClickListener) {
         super(context);
         setListener(itemClickListener);
     }
@@ -29,8 +30,8 @@ public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelTest1 account = mListData.get(position);
-        holder.renderUI(account);
+        Category category = mListData.get(position);
+        holder.renderUI(category);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -45,13 +46,23 @@ public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTe
             tvCategory = itemView.findViewById(R.id.txt_category);
         }
 
-        public void renderUI(ModelTest1 data) {
-            tvCategory.setText(data.getExpenseType().toString());
+        public void renderUI(Category data) {
+            tvCategory.setText(data.getName());
+            if(categoryIndex == getAdapterPosition()){
+                imageCategory.setImageResource(context.getResources().getIdentifier(data.getcImage(),"drawable",context.getPackageName()));
+            } else{
+                imageCategory.setImageResource(context.getResources().getIdentifier(data.getnImage(),"drawable",context.getPackageName()));
+            }
+
         }
 
         @Override
         public void onClick(View view) {
             if (mListener == null) return;
+            categoryIndex = getAdapterPosition();
+            notifyDataSetChanged();
+
+
             mListener.onClickListener(getAdapterPosition(), null);
         }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.domain.model.Category;
 import com.example.domain.model.ExpenseType;
 import com.example.domain.model.ModelTest1;
 import com.example.moneykeeper.R;
@@ -56,6 +57,7 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
+        presenter.setDefaultCategoriesList();
     }
 
     @Override
@@ -94,39 +96,25 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(this, 4);
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, listener);
-        categoryRecyclerViewAdapter.setData(testData());
         rvCategory.setLayoutManager(linearLayoutManager);
         rvCategory.setAdapter(categoryRecyclerViewAdapter);
+
     }
 
-    private ItemClickListener<ModelTest1> listener = new ItemClickListener<ModelTest1>() {
+    private ItemClickListener<Category> listener = new ItemClickListener<Category>() {
         @Override
-        public void onClickListener(int position, ModelTest1 modelTest1) {
+        public void onClickListener(int position, Category modelTest1) {
             showToastMessage("On Click");
         }
 
         @Override
-        public void onLongClickListener(int position, ModelTest1 modelTest1) {
+        public void onLongClickListener(int position, Category modelTest1) {
             showToastMessage("On Long Click");
         }
     };
 
-    private List<ModelTest1> testData() {
-        List<ModelTest1> mData = new ArrayList<>();
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Food));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Transport));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Shopping));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Bills));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Health));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Telephones));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Home));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Education));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Travel));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Insurance));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Social));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Sport));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Gift));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Others));
-        return mData;
+    @Override
+    public void showCategoriesList(List<Category> categoryList) {
+        categoryRecyclerViewAdapter.setData(categoryList);
     }
 }

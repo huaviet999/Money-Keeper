@@ -42,7 +42,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/appbarLayout"
-        android:padding="@dimen/spacing_10">
+        android:paddingTop="@dimen/spacing_10"
+        android:paddingRight="@dimen/spacing_10"
+        android:paddingBottom="@dimen/spacing_10"
+        android:paddingLeft="@dimen/spacing_20">
 
     </androidx.recyclerview.widget.RecyclerView>
 
