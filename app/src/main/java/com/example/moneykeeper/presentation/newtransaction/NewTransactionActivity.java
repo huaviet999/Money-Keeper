@@ -31,8 +31,6 @@ import androidx.core.content.res.ResourcesCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
-import utils.MathUtils;
-import utils.TimeUtils;
 
 /**
  * Created by Viet Hua on 15/3/2020
@@ -80,6 +78,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
+        presenter.getDateFormat(0,0,0); //Get current date
     }
 
     @Override
@@ -122,7 +121,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
                 finish();
                 break;
             case R.id.item_confirm:
-                showToastMessage(KEY_TRANSACTION_SELECTED);
+                doTransactionData();
                 break;
         }
         return true;
@@ -134,23 +133,34 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
+    private void setupCalculator() {
+        CalcDialog calcDialog = new CalcDialog();
+        calcDialog.getSettings().setInitialValue(null);
+        calcDialog.getSettings().setExpressionEditable(true);
+        calcDialog.getSettings().setExpressionShown(true);
+        calcDialog.show(getSupportFragmentManager(), "calc_dialog");
+    }
+
+    private void setupDatePickerDialog() {
+        new DatePickerDialog(NewTransactionActivity.this, dataPickerDialogListener,
+                myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
 
     private final Calendar myCalendar = Calendar.getInstance();
 
     private void initViews() {
-        edtDate.setText(TimeUtils.getToday()); //Get current date for init
 
         btnIncome.setOnClickListener(onClickListener);
         btnExpense.setOnClickListener(onClickListener);
+
 
         //Show date dialog
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(NewTransactionActivity.this, dataPickerDialogListener,
-                        myCalendar.get(Calendar.YEAR),
-                        myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                setupDatePickerDialog();
             }
         });
 
@@ -166,14 +176,11 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         edtAmount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CalcDialog calcDialog = new CalcDialog();
-                calcDialog.getSettings().setInitialValue(null);
-                calcDialog.getSettings().setExpressionEditable(true);
-                calcDialog.getSettings().setExpressionShown(true);
-                calcDialog.show(getSupportFragmentManager(), "calc_dialog");
+                setupCalculator();
             }
         });
     }
+
 
     private void transactionButtonColorChange() {
         int whiteColor = ResourcesCompat.getColor(getResources(), R.color.white, null);
@@ -189,16 +196,25 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
 
     @Override
     public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
-        String formatedValue = MathUtils.getNumberWithVietNamCurrency(value.toString());
-        edtAmount.setText(formatedValue);
+        presenter.getAmountWithVietNamCurrency(value.toString());
+    }
+
+    @Override
+    public void showAmountValue(String value) {
+        edtAmount.setText(value);
     }
 
     private DatePickerDialog.OnDateSetListener dataPickerDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-            edtDate.setText(TimeUtils.getDateFormat(i, i1, i2));
+            presenter.getDateFormat(i, i1, i2);
         }
     };
+
+    @Override
+    public void showDateFormat(String formattedDate) {
+        edtDate.setText(formattedDate);
+    }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -212,4 +228,12 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         }
     };
 
+
+    public void doTransactionData() {
+        String type = KEY_TRANSACTION_SELECTED;
+        String category = edtCategory.getText().toString();
+        String amount = edtAmount.getText().toString();
+        String memo = edtMemo.getText().toString();
+        presenter.getNewTransactionData(type, category, amount, memo);
+    }
 }

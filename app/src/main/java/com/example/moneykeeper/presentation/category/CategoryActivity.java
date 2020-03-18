@@ -36,7 +36,7 @@ import dagger.android.AndroidInjection;
  * Created by Viet Hua on 3/15/2020
  */
 public class CategoryActivity extends BaseActivity implements CategoryContract.View {
-    public static final int CATEGORY_REQUEST_CODE = 1;
+    public static final int CATEGORY_REQUEST_CODE = 100;
     public static final String KEY_CATEGORY_NAME = "KEY_CATEGORY_NAME";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
