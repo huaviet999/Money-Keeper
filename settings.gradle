@@ -1,2 +1,2 @@
-include ':app', ':Domain'
+include ':app', ':Domain', ':Data', ':local'
 rootProject.name='Money Keeper'

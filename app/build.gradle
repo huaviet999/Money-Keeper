@@ -44,6 +44,9 @@ dependencies {
     //Butterknife
     implementation "com.jakewharton:butterknife:$rootProject.ext.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnifeVersion"
+    //RxJava , RxAndroid
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     //Animated Pie View
     implementation 'com.github.razerdp:AnimatedPieView:1.2.6'
     //MPAndroidChart
@@ -52,4 +55,9 @@ dependencies {
     implementation 'com.maltaisn:calcdialog:2.1.2'
     //Import Module
     implementation project(":Domain")
+    implementation project(":Data")
+    implementation project(":local")
+    //Room
+    implementation "androidx.room:room-runtime:2.2.4"
+    annotationProcessor "androidx.room:room-compiler:2.2.4"
 }

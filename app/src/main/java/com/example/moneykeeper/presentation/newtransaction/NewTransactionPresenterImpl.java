@@ -2,14 +2,22 @@ package com.example.moneykeeper.presentation.newtransaction;
 
 import android.util.Log;
 
+import com.example.domain.interactor.SaveTransactionUseCase;
+
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import utils.MathUtils;
 import utils.TimeUtils;
 
 public class NewTransactionPresenterImpl implements NewTransactionContract.Presenter {
     private long dateInMilliseconds = TimeUtils.getCurrentDateInMilliseconds();
+
     NewTransactionContract.View mView;
+
+    @Inject
+    SaveTransactionUseCase saveTransactionUseCase;
 
     @Inject
     public NewTransactionPresenterImpl() {
@@ -29,7 +37,7 @@ public class NewTransactionPresenterImpl implements NewTransactionContract.Prese
     @Override
     public void getDateFormat(int year, int month, int dayOfMonth) {
         dateInMilliseconds = TimeUtils.getCurrentDateInMilliseconds();
-        if(year != 0 && month != 0 && dayOfMonth != 0){
+        if (year != 0 && month != 0 && dayOfMonth != 0) {
             dateInMilliseconds = TimeUtils.getDateFormatInMilliseconds(year, month, dayOfMonth);
         }
         String formattedDate = TimeUtils.convertMillisecondsToDateFormat(dateInMilliseconds);
@@ -44,12 +52,20 @@ public class NewTransactionPresenterImpl implements NewTransactionContract.Prese
 
     @Override
     public void getNewTransactionData(String type, String categoryName, String amount, String memo) {
-
         long realAmount = MathUtils.convertNumberFromStringToLong(amount);
-        String date = TimeUtils.convertMillisecondsToDateFormat(dateInMilliseconds);
-
-        Log.d("TransactionData", type + " " + categoryName + " " + realAmount + " " + dateInMilliseconds + " " + date   + " " + memo);
+        saveTransactionUseCase.execute(new SaveTransactionObserver(), new SaveTransactionUseCase.Param(type, categoryName, memo, realAmount, dateInMilliseconds));
     }
 
+    private class SaveTransactionObserver extends DisposableCompletableObserver {
+        @Override
+        public void onComplete() {
+            mView.onSaveTransactionSucceed();
+        }
+
+        @Override
+        public void onError(@NonNull Throwable e) {
+
+        }
+    }
 
 }

@@ -228,6 +228,11 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         }
     };
 
+    @Override
+    public void onSaveTransactionSucceed() {
+        showToastMessage("SAVE SUCCESSFULLY");
+        finish();
+    }
 
     public void doTransactionData() {
         String type = KEY_TRANSACTION_SELECTED;

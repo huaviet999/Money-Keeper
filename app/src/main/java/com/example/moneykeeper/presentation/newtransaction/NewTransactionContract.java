@@ -7,6 +7,7 @@ public interface NewTransactionContract {
     interface View extends BaseView {
         void showDateFormat(String formattedDate);
         void showAmountValue(String value);
+        void onSaveTransactionSucceed();
     }
     interface Presenter extends BasePresenter<View>{
         void getDateFormat(int year, int month, int dayOfMonth);
