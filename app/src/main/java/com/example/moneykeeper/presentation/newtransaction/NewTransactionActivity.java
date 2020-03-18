@@ -79,6 +79,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         super.onStart();
         presenter.attachView(this);
         presenter.getDateFormat(0,0,0); //Get current date
+
     }
 
     @Override

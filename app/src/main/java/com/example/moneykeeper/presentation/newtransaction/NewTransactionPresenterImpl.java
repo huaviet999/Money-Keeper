@@ -12,8 +12,8 @@ import utils.MathUtils;
 import utils.TimeUtils;
 
 public class NewTransactionPresenterImpl implements NewTransactionContract.Presenter {
-    private long dateInMilliseconds = TimeUtils.getCurrentDateInMilliseconds();
-
+    private long dateInMilliseconds;
+    private boolean currentDateFlag = false;
     NewTransactionContract.View mView;
 
     @Inject
@@ -32,11 +32,15 @@ public class NewTransactionPresenterImpl implements NewTransactionContract.Prese
     @Override
     public void dropView() {
         mView = null;
+        saveTransactionUseCase.dispose();
     }
 
     @Override
     public void getDateFormat(int year, int month, int dayOfMonth) {
-        dateInMilliseconds = TimeUtils.getCurrentDateInMilliseconds();
+        if(!currentDateFlag){ //Make sure current date only show for the first time
+            dateInMilliseconds = TimeUtils.getCurrentDateInMilliseconds();
+            currentDateFlag = true;
+        }
         if (year != 0 && month != 0 && dayOfMonth != 0) {
             dateInMilliseconds = TimeUtils.getDateFormatInMilliseconds(year, month, dayOfMonth);
         }

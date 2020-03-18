@@ -84,6 +84,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
+        presenter.getAllTransactionData();
     }
 
     @Override
@@ -303,7 +304,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     private List<Transaction> testData() {
         List<Transaction> mData = new ArrayList<>();
-        mData.add(new Transaction("Bank", "1233456", "Viet", "22/03/2020"));
+//        mData.add(new Transaction("Bank", "1233456", "Viet", "22/03/2020"));
         return mData;
     }
 

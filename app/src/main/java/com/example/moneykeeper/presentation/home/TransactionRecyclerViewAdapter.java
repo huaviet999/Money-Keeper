@@ -50,10 +50,10 @@ public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Tran
             tvDate = itemView.findViewById(R.id.txt_date);
         }
         public void renderUI(Transaction data){
-            tvType.setText(data.getExpenseType());
-            tvExpenseNumber.setText(data.getExpenseNumber());
-            tvAccountName.setText(data.getAccountName());
-            tvDate.setText(data.getTransactionDate());
+//            tvType.setText(data.getExpenseType());
+//            tvExpenseNumber.setText(data.getExpenseNumber());
+//            tvAccountName.setText(data.getAccountName());
+//            tvDate.setText(data.getTransactionDate());
         }
         @Override
         public void onClick(View view) {

@@ -1,6 +1,6 @@
-package com.example.domain.model;
+package com.example.data.entity;
 
-public class Transaction {
+public class TransactionEntity {
     private int transactionId;
     private String type;
     private String categoryName;
