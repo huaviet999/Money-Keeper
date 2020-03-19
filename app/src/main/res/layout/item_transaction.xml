@@ -6,9 +6,9 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/img_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/img_category"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:src="@mipmap/ic_launcher"></ImageView>
 
     <LinearLayout
@@ -25,21 +25,21 @@
             android:paddingRight="@dimen/spacing_48">
 
             <TextView
-                android:id="@+id/txt_expense_type"
+                android:id="@+id/txt_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pets"
                 android:textColor="@color/black"
-                android:textSize="@dimen/font_22"></TextView>
+                android:textSize="@dimen/font_18_title"></TextView>
 
             <TextView
-                android:id="@+id/txt_expense_number"
+                android:id="@+id/txt_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="-123.4566 đ"
                 android:textColor="@color/black"
-                android:textSize="@dimen/font_22"
+                android:textSize="@dimen/font_18_title"
                 android:textStyle="bold"></TextView>
         </RelativeLayout>
 

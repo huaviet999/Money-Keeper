@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 
@@ -20,15 +22,29 @@ import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import utils.MathUtils;
+import utils.TimeUtils;
 
 public class DetailActivity extends BaseActivity implements DetailContract.View {
+    public static final String KEY_TRANSACTION_ID = "KEY_TRANSACTION_ID";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.txt_category)
+    TextView tvCategory;
+    @BindView(R.id.txt_transaction_type)
+    TextView tvTransactionType;
+    @BindView(R.id.txt_amount)
+    TextView tvAmount;
+    @BindView(R.id.txt_date)
+    TextView tvDate;
+    @BindView(R.id.txt_memo)
+    TextView tvMemo;
     @Inject
     DetailContract.Presenter presenter;
 
-    public static void startDetailActivity(AppCompatActivity activity) {
+    public static void startDetailActivity(AppCompatActivity activity, int transactionId) {
         Intent intent = new Intent(activity, DetailActivity.class);
+        intent.putExtra(KEY_TRANSACTION_ID, transactionId);
         activity.startActivity(intent);
 
     }
@@ -46,6 +62,9 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
+        Bundle bundle = getIntent().getExtras();
+        int transactionId = bundle.getInt(KEY_TRANSACTION_ID);
+        presenter.getTransactionDataById(transactionId);
     }
 
     @Override
@@ -90,5 +109,16 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_detail);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void showTransactionDetail(Transaction transaction) {
+        String amount = MathUtils.getFormatNumberFromLong(transaction.getAmount());
+        String date = TimeUtils.convertMillisecondsToDateFormat(transaction.getDate());
+        tvCategory.setText(transaction.getCategoryName());
+        tvTransactionType.setText(transaction.getType());
+        tvAmount.setText(amount);
+        tvMemo.setText(transaction.getMemo());
+        tvDate.setText(date);
     }
 }

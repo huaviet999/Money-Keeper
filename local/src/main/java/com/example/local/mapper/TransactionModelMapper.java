@@ -18,6 +18,7 @@ public class TransactionModelMapper implements BaseMapper<TransactionEntity, Tra
             return null;
         }
         TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.setTransactionId(transactionModel.getTransactionId());
         transactionEntity.setType(transactionModel.getType());
         transactionEntity.setCategoryName(transactionModel.getCategoryName());
         transactionEntity.setAmount(transactionModel.getAmount());

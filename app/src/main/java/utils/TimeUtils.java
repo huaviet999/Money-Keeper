@@ -53,5 +53,11 @@ public class TimeUtils {
         calendar.setTimeInMillis(milliSeconds);
         return formatter.format(calendar.getTime());
     }
+    public static String convertMillisecondsToShortDateFormat(long milliSeconds) {
+        SimpleDateFormat formatter = new SimpleDateFormat(VN_DATE_SHORT_FORMAT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
+    }
 
 }

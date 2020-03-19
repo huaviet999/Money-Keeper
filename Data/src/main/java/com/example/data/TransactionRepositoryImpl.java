@@ -41,4 +41,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             }
         });
     }
+
+    @Override
+    public Maybe<Transaction> getTransactionById(int transactionId) {
+        return transactionDataLocal.getTransactionById(transactionId).map(new Function<TransactionEntity, Transaction>() {
+            @Override
+            public Transaction apply(TransactionEntity transactionEntity) throws Throwable {
+                return transactionEntityMapper.mapFromEntity(transactionEntity);
+            }
+        });
+    }
 }

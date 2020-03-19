@@ -2,7 +2,8 @@ package com.example.moneykeeper.presentation.home;
 
 import android.util.Log;
 
-import com.example.domain.interactor.GetTransactionDataUseCase;
+import com.example.domain.interactor.transaction.GetTransactionByIdUseCase;
+import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
 import com.example.domain.model.EmptyParam;
 import com.example.domain.model.Transaction;
 
@@ -17,7 +18,9 @@ import utils.TimeUtils;
 public class HomePresenterImpl implements HomeContract.Presenter {
 
     @Inject
-    GetTransactionDataUseCase getTransactionDataUseCase;
+    GetTransactionsDataUseCase getTransactionsDataUseCase;
+    @Inject
+    GetTransactionByIdUseCase getTransactionByIdUseCase;
 
     private HomeContract.View mView;
 
@@ -39,17 +42,18 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
     @Override
     public void getAllTransactionData() {
-        getTransactionDataUseCase.execute(new GetAllTransactionsOberserver(), new EmptyParam());
+        getTransactionsDataUseCase.execute(new GetAllTransactionsObserver(), new EmptyParam());
     }
 
-    private class GetAllTransactionsOberserver extends DisposableMaybeObserver<List<Transaction>> {
+    private class GetAllTransactionsObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
             for (Transaction transaction : transactions) {
                 String formattedDate = TimeUtils.convertMillisecondsToDateFormat(transaction.getDate());
-                Log.e("TRANSACTIONDATA", transaction.getType() + " " +
+                Log.e("TRANSACTIONDATA", transaction.getTransactionId() + " " + transaction.getType() + " " +
                         transaction.getCategoryName() + " " + transaction.getAmount() + " " + formattedDate + " " + transaction.getMemo());
             }
+            mView.showTransactionsList(transactions);
         }
 
         @Override
@@ -62,4 +66,5 @@ public class HomePresenterImpl implements HomeContract.Presenter {
             Log.d("onComplete", "Completed");
         }
     }
+
 }

@@ -24,6 +24,10 @@ public class MathUtils {
             return -1;
         }
     }
+    public static String getFormatNumberFromLong(long value){
+        String formattedValue = String.format("%,d",value);
+        return String.valueOf(formattedValue + " " + VN_CURRENCY);
+    }
 
     public static String getNumberWithVietNamCurrency(String value) {
         return String.valueOf(getFormatNumberWithCommas(value) + " " + VN_CURRENCY);

@@ -1,6 +1,7 @@
 package com.example.data.repository;
 
 import com.example.data.entity.TransactionEntity;
+import com.example.domain.model.Transaction;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ import io.reactivex.rxjava3.core.Maybe;
 public interface TransactionDataLocal {
     Completable saveTransaction(String type,String categoryName,long amount,long date,String memo);
     Maybe<List<TransactionEntity>> getAllTransactionData();
+    Maybe<TransactionEntity> getTransactionById(int transactionId);
 }

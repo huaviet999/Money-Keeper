@@ -1,20 +1,14 @@
 package com.example.moneykeeper.presentation.chart;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.domain.model.Account;
 import com.example.domain.model.ModelTest1;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
-import com.razerdp.widget.animatedpieview.AnimatedPieView;
-import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
-import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +55,7 @@ public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTes
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            tvType = itemView.findViewById(R.id.txt_expense_type);
+            tvType = itemView.findViewById(R.id.txt_category);
             tvPercent = itemView.findViewById(R.id.txt_percent);
 
         }

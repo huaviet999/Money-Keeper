@@ -4,11 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.domain.model.Account;
-import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
@@ -50,7 +48,7 @@ public class SummaryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Account,
             itemView.setOnLongClickListener(this);
             animatedPieView = itemView.findViewById(R.id.chart_pie_summary);
             tvIncome = itemView.findViewById(R.id.txt_income_number);
-            tvExpense = itemView.findViewById(R.id.txt_expense_number);
+            tvExpense = itemView.findViewById(R.id.txt_amount);
             tvTotal = itemView.findViewById(R.id.txt_total_number);
 
         }

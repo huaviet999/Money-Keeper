@@ -1,10 +1,8 @@
 package com.example.moneykeeper.presentation.chart;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.domain.model.ModelTest1;
@@ -43,9 +41,9 @@ public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Mode
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            tvType = itemView.findViewById(R.id.txt_expense_type);
+            tvType = itemView.findViewById(R.id.txt_category);
             tvPercent = itemView.findViewById(R.id.txt_percent);
-            tvNumber = itemView.findViewById(R.id.txt_expense_number);
+            tvNumber = itemView.findViewById(R.id.txt_amount);
         }
 
         public void renderUI(ModelTest1 data) {

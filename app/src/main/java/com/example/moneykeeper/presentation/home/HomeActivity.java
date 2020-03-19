@@ -159,7 +159,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         //TRANSACTION RECYCLER VIEW
         transactionRecyclerViewAdapter = new TransactionRecyclerViewAdapter(this, transactionListener);
-        transactionRecyclerViewAdapter.setData(testData());
         transactionRecyclerView.setLayoutManager(linearLayoutManager);
         transactionRecyclerView.setAdapter(transactionRecyclerViewAdapter);
 
@@ -229,6 +228,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         @Override
         public void onClickListener(int position, Transaction transaction) {
             openScreenByTag(Constants.TAG_DETAIL);
+            int transactionId = transactionRecyclerViewAdapter.getItem(position).getTransactionId();
+            DetailActivity.startDetailActivity(HomeActivity.this, transactionId);
         }
 
         @Override
@@ -293,19 +294,18 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 showToastMessage("SETTING");
                 break;
             case Constants.TAG_NEW_TRANSACTION:
-                NewTransactionActivity.startNewTransactionActivity(this,"");
+                NewTransactionActivity.startNewTransactionActivity(this);
                 break;
             case Constants.TAG_DETAIL:
-                DetailActivity.startDetailActivity(this);
+
                 break;
 
         }
     }
 
-    private List<Transaction> testData() {
-        List<Transaction> mData = new ArrayList<>();
-//        mData.add(new Transaction("Bank", "1233456", "Viet", "22/03/2020"));
-        return mData;
+    @Override
+    public void showTransactionsList(List<Transaction> transactionList) {
+        transactionRecyclerViewAdapter.setData(transactionList);
     }
 
     private List<Account> testData2() {

@@ -56,12 +56,10 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
     NewTransactionContract.Presenter presenter;
 
 
-    public static final String KEY_CATEGORY = "KEY_CATEGORY";
 
-    public static void startNewTransactionActivity(AppCompatActivity activity, String categoryName) {
+    public static void startNewTransactionActivity(AppCompatActivity activity) {
         Intent intent = new Intent(activity, NewTransactionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //Make sure this activity doesn't create repeeatly
-        intent.putExtra(KEY_CATEGORY, categoryName);
         activity.startActivity(intent);
     }
 

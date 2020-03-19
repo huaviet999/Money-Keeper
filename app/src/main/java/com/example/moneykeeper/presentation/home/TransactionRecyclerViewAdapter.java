@@ -13,18 +13,20 @@ import com.example.moneykeeper.presentation.base.ItemClickListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import utils.MathUtils;
+import utils.TimeUtils;
 
 /**
  * Created by Viet Hua on 3/11/2020
  */
 public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Transaction, TransactionRecyclerViewAdapter.ViewHolder> {
-        public TransactionRecyclerViewAdapter(Context context, ItemClickListener<Transaction> listener) {
-            super(context);
-            setListener(listener);
-        }
+    public TransactionRecyclerViewAdapter(Context context, ItemClickListener<Transaction> listener) {
+        super(context);
+        setListener(listener);
+    }
 
-        @NonNull
-        @Override
+    @NonNull
+    @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout.item_transaction, parent, false);
         return new ViewHolder(view);
@@ -37,24 +39,28 @@ public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Tran
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        ImageView imgType;
-        TextView tvType,tvExpenseNumber,tvAccountName,tvDate;
+        ImageView imgCategory;
+        TextView tvCategory, tvAmount, tvAccountName, tvDate;
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            imgType = itemView.findViewById(R.id.img_type);
-            tvType = itemView.findViewById(R.id.txt_expense_type);
-            tvExpenseNumber = itemView.findViewById(R.id.txt_expense_number);
+            imgCategory = itemView.findViewById(R.id.img_category);
+            tvCategory = itemView.findViewById(R.id.txt_category);
+            tvAmount = itemView.findViewById(R.id.txt_amount);
             tvAccountName = itemView.findViewById(R.id.txt_wallet_name);
             tvDate = itemView.findViewById(R.id.txt_date);
         }
-        public void renderUI(Transaction data){
-//            tvType.setText(data.getExpenseType());
-//            tvExpenseNumber.setText(data.getExpenseNumber());
-//            tvAccountName.setText(data.getAccountName());
-//            tvDate.setText(data.getTransactionDate());
+
+        public void renderUI(Transaction data) {
+            String date = TimeUtils.convertMillisecondsToShortDateFormat(data.getDate());
+            String amount = MathUtils.getFormatNumberFromLong(data.getAmount());
+            tvDate.setText(date);
+            tvAmount.setText(amount);
+            tvCategory.setText(data.getCategoryName());
         }
+
         @Override
         public void onClick(View view) {
             if (mListener == null) return;

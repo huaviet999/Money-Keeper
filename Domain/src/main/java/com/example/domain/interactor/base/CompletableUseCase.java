@@ -1,4 +1,4 @@
-package com.example.domain.interactor;
+package com.example.domain.interactor.base;
 
 import com.example.domain.executor.ExecutionThread;
 

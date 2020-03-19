@@ -73,7 +73,7 @@
                         android:textSize="@dimen/font_18_title"></TextView>
 
                     <TextView
-                        android:id="@+id/txt_expense_number"
+                        android:id="@+id/txt_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

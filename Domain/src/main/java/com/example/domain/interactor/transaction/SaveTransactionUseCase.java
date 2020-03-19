@@ -1,6 +1,7 @@
-package com.example.domain.interactor;
+package com.example.domain.interactor.transaction;
 
 import com.example.domain.executor.ExecutionThread;
+import com.example.domain.interactor.base.CompletableUseCase;
 import com.example.domain.repository.TransactionRepository;
 
 import javax.inject.Inject;

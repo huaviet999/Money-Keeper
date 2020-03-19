@@ -1,8 +1,6 @@
 package com.example.moneykeeper.presentation.newtransaction;
 
-import android.util.Log;
-
-import com.example.domain.interactor.SaveTransactionUseCase;
+import com.example.domain.interactor.transaction.SaveTransactionUseCase;
 
 import javax.inject.Inject;
 

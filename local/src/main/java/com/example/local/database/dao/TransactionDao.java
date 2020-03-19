@@ -19,4 +19,6 @@ public abstract class TransactionDao {
     @Query("SELECT * FROM transaction_table")
     public abstract List<TransactionModel> getAllTransactionData();
 
+    @Query("SELECT * FROM transaction_table WHERE transaction_id=:transactionId")
+    public abstract TransactionModel getTransactionById(int transactionId);
 }
