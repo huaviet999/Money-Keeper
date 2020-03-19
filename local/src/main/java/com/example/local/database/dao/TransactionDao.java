@@ -21,4 +21,10 @@ public abstract class TransactionDao {
 
     @Query("SELECT * FROM transaction_table WHERE transaction_id=:transactionId")
     public abstract TransactionModel getTransactionById(int transactionId);
+
+    @Query("DELETE FROM transaction_table")
+    public abstract void deleteAllTransactionData();
+
+    @Query("DELETE FROM transaction_table WHERE transaction_id=:transactionId")
+    public abstract void deleteTransactionById(int transactionId);
 }

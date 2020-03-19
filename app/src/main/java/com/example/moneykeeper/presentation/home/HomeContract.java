@@ -13,5 +13,6 @@ public interface HomeContract {
 
     interface Presenter extends BasePresenter<View> {
         void getAllTransactionData();
+        void deleteAllTransactionData();
     }
 }

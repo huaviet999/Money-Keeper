@@ -12,6 +12,8 @@ import io.reactivex.rxjava3.core.Maybe;
  */
 public interface TransactionRepository {
     Completable saveTransaction(String type,String categoryName,long amount,long date,String memo);
+    Completable deleteAllTransactionData();
+    Completable deleteTransactionById(int transactionId);
     Maybe<List<Transaction>> getAllTransactionData();
     Maybe<Transaction> getTransactionById(int transactionId);
 }

@@ -76,4 +76,26 @@ public class TransactionDataLocalImpl implements TransactionDataLocal {
             }
         });
     }
+
+    @Override
+    public Completable deleteAllTransactionsData() {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Throwable {
+                transactionDao.deleteAllTransactionData();
+                emitter.onComplete();
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteTransactionById(final int transactionId) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Throwable {
+                transactionDao.deleteTransactionById(transactionId);
+                emitter.onComplete();
+            }
+        });
+    }
 }

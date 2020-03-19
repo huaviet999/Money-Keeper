@@ -51,4 +51,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             }
         });
     }
+
+    @Override
+    public Completable deleteAllTransactionData() {
+        return transactionDataLocal.deleteAllTransactionsData();
+    }
+
+    @Override
+    public Completable deleteTransactionById(int transactionId) {
+        return transactionDataLocal.deleteTransactionById(transactionId);
+    }
 }

@@ -2,6 +2,7 @@ package com.example.moneykeeper.presentation.home;
 
 import android.util.Log;
 
+import com.example.domain.interactor.transaction.DeleteTransactionsDataUseCase;
 import com.example.domain.interactor.transaction.GetTransactionByIdUseCase;
 import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
 import com.example.domain.model.EmptyParam;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 import utils.TimeUtils;
 
@@ -20,7 +22,7 @@ public class HomePresenterImpl implements HomeContract.Presenter {
     @Inject
     GetTransactionsDataUseCase getTransactionsDataUseCase;
     @Inject
-    GetTransactionByIdUseCase getTransactionByIdUseCase;
+    DeleteTransactionsDataUseCase deleteTransactionsDataUseCase;
 
     private HomeContract.View mView;
 
@@ -45,6 +47,11 @@ public class HomePresenterImpl implements HomeContract.Presenter {
         getTransactionsDataUseCase.execute(new GetAllTransactionsObserver(), new EmptyParam());
     }
 
+    @Override
+    public void deleteAllTransactionData() {
+        deleteTransactionsDataUseCase.execute(new DeleteTransactionsObserver(),new EmptyParam());
+    }
+
     private class GetAllTransactionsObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
@@ -64,6 +71,17 @@ public class HomePresenterImpl implements HomeContract.Presenter {
         @Override
         public void onComplete() {
             Log.d("onComplete", "Completed");
+        }
+    }
+    private class DeleteTransactionsObserver extends DisposableCompletableObserver{
+        @Override
+        public void onComplete() {
+            Log.e("TRANSACTION","DELETE SUCCESSFULL");
+        }
+
+        @Override
+        public void onError(@NonNull Throwable e) {
+
         }
     }
 

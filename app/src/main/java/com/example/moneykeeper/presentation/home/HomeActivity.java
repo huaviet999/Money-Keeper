@@ -115,6 +115,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         }
         switch (item.getItemId()) {
             case R.id.item_sync:
+                presenter.deleteAllTransactionData();
                 showToastMessage("Synced");
                 break;
             case R.id.item_option:

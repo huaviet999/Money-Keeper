@@ -10,5 +10,6 @@ public interface DetailContract {
     }
     interface Presenter extends BasePresenter<View>{
         void getTransactionDataById(int transactionId);
+        void deleteTransactionById(int transactionId);
     }
 }

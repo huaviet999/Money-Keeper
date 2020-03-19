@@ -42,6 +42,8 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
     @Inject
     DetailContract.Presenter presenter;
 
+    private int transactionId;
+
     public static void startDetailActivity(AppCompatActivity activity, int transactionId) {
         Intent intent = new Intent(activity, DetailActivity.class);
         intent.putExtra(KEY_TRANSACTION_ID, transactionId);
@@ -54,6 +56,9 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
         super.onCreate(savedInstanceState);
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
+
+        Bundle bundle = getIntent().getExtras();
+        transactionId = bundle.getInt(KEY_TRANSACTION_ID);
         setupViews();
     }
 
@@ -62,8 +67,6 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
-        Bundle bundle = getIntent().getExtras();
-        int transactionId = bundle.getInt(KEY_TRANSACTION_ID);
         presenter.getTransactionDataById(transactionId);
     }
 
@@ -87,7 +90,8 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
                 finish();
                 break;
             case R.id.item_delete:
-                showToastMessage("Delete");
+                presenter.deleteTransactionById(transactionId);
+                finish();
                 break;
             case R.id.item_edit:
                 showToastMessage("Edit");

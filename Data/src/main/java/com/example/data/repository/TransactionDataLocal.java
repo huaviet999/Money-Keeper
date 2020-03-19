@@ -10,6 +10,8 @@ import io.reactivex.rxjava3.core.Maybe;
 
 public interface TransactionDataLocal {
     Completable saveTransaction(String type,String categoryName,long amount,long date,String memo);
+    Completable deleteAllTransactionsData();
+    Completable deleteTransactionById(int transactionId);
     Maybe<List<TransactionEntity>> getAllTransactionData();
     Maybe<TransactionEntity> getTransactionById(int transactionId);
 }
