@@ -12,6 +12,6 @@ public interface CategoryContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void setDefaultCategoriesList();
+        void getDefaultCategoriesList();
     }
 }

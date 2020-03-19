@@ -1,6 +1,8 @@
 package com.example.moneykeeper.di;
 
+import com.example.data.repository.CategoryDataLocal;
 import com.example.data.repository.TransactionDataLocal;
+import com.example.local.CategoryDataLocalImpl;
 import com.example.local.TransactionDataLocalImpl;
 
 import dagger.Binds;
@@ -13,4 +15,7 @@ import dagger.Module;
 public abstract class LocalModule {
     @Binds
     public abstract TransactionDataLocal bindTransactionDataLocal(TransactionDataLocalImpl impl);
+
+    @Binds
+    public abstract CategoryDataLocal bindCategoryDataLocal(CategoryDataLocalImpl impl);
 }

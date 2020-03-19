@@ -1,21 +1,14 @@
 package com.example.moneykeeper.presentation.category;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.domain.model.Category;
-import com.example.domain.model.ExpenseType;
-import com.example.domain.model.ModelTest1;
 import com.example.moneykeeper.R;
-import com.example.moneykeeper.myapp.MyApp;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
-import com.example.moneykeeper.presentation.newtransaction.NewTransactionActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +56,7 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
-        presenter.setDefaultCategoriesList();
+        presenter.getDefaultCategoriesList();
     }
 
     @Override

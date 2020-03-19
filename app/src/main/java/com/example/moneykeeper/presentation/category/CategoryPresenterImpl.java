@@ -2,15 +2,23 @@ package com.example.moneykeeper.presentation.category;
 
 import android.util.Log;
 
+import com.example.domain.interactor.category.GetCategoriesUseCase;
 import com.example.domain.model.Category;
+import com.example.domain.model.EmptyParam;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+
 public class CategoryPresenterImpl implements CategoryContract.Presenter {
     CategoryContract.View mView;
+
+    @Inject
+    GetCategoriesUseCase getCategoriesUseCase;
 
     @Inject
     public CategoryPresenterImpl() {
@@ -28,7 +36,24 @@ public class CategoryPresenterImpl implements CategoryContract.Presenter {
     }
 
     @Override
-    public void setDefaultCategoriesList() {
-        mView.showCategoriesList(Category.getDefaultCategoriesList());
+    public void getDefaultCategoriesList() {
+        getCategoriesUseCase.execute(new GetCategoriesListObserver(), new EmptyParam());
+    }
+
+    private class GetCategoriesListObserver extends DisposableMaybeObserver<List<Category>> {
+        @Override
+        public void onSuccess(@NonNull List<Category> categories) {
+            mView.showCategoriesList(categories);
+        }
+
+        @Override
+        public void onError(@NonNull Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
     }
 }

@@ -1,13 +1,32 @@
-package com.example.domain.model;
+package com.example.local.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
-public class Category {
+@Entity(tableName = "category_table")
+public class CategoryModel {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "category_id")
     private int categoryId;
+    @ColumnInfo(name = "name")
     private String name;
+    @ColumnInfo(name = "n_image")
     private String nImage;
+    @ColumnInfo(name = "c_image")
     private String cImage;
+
+    public CategoryModel(){
+
+    }
+
+    @Ignore
+    public CategoryModel(String name, String nImage, String cImage) {
+        this.name = name;
+        this.nImage = nImage;
+        this.cImage = cImage;
+    }
 
     public int getCategoryId() {
         return categoryId;

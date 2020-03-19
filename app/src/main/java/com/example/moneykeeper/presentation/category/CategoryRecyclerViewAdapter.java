@@ -50,9 +50,9 @@ public class CategoryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Categor
         public void renderUI(Category data) {
             tvCategory.setText(data.getName());
             if (categoryIndex == getAdapterPosition()) {
-                imageCategory.setImageResource(context.getResources().getIdentifier(data.getcImage(), "drawable", context.getPackageName()));
+                imageCategory.setImageResource(context.getResources().getIdentifier(data.getCImage(), "drawable", context.getPackageName()));
             } else {
-                imageCategory.setImageResource(context.getResources().getIdentifier(data.getnImage(), "drawable", context.getPackageName()));
+                imageCategory.setImageResource(context.getResources().getIdentifier(data.getNImage(), "drawable", context.getPackageName()));
             }
 
         }

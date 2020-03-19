@@ -1,6 +1,8 @@
 package com.example.moneykeeper.di;
 
+import com.example.data.CategoryRepositoryImpl;
 import com.example.data.TransactionRepositoryImpl;
+import com.example.domain.repository.CategoryRepository;
 import com.example.domain.repository.TransactionRepository;
 
 import dagger.Binds;
@@ -13,4 +15,7 @@ import dagger.Module;
 public abstract class DataModule {
     @Binds
     public abstract TransactionRepository bindTransactionRepository(TransactionRepositoryImpl impl);
+
+    @Binds
+    public abstract CategoryRepository bindCategoryRepository(CategoryRepositoryImpl impl);
 }

@@ -1,13 +1,20 @@
-package com.example.domain.model;
+package com.example.data.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Category {
+public class CategoryEntity {
     private int categoryId;
     private String name;
     private String nImage;
     private String cImage;
+
+    public CategoryEntity(){
+
+    }
+
+    public CategoryEntity(String name, String nImage, String cImage) {
+        this.name = name;
+        this.nImage = nImage;
+        this.cImage = cImage;
+    }
 
     public int getCategoryId() {
         return categoryId;

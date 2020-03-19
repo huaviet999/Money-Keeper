@@ -26,7 +26,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public MoneyKeeperDatabase provideMoneyKeeperDB(Context context){
+    public MoneyKeeperDatabase provideMoneyKeeperDB(Context context,ExecutionThread executionThread){
         return MoneyKeeperDatabase.getInstance(context);
     }
 }

@@ -1,0 +1,35 @@
+package com.example.data;
+
+import com.example.data.entity.CategoryEntity;
+import com.example.data.mapper.CategoryEntityMapper;
+import com.example.data.repository.CategoryDataLocal;
+import com.example.domain.model.Category;
+import com.example.domain.repository.CategoryRepository;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.functions.Function;
+
+public class CategoryRepositoryImpl implements CategoryRepository {
+
+    CategoryDataLocal categoryDataLocal;
+    CategoryEntityMapper categoryEntityMapper;
+    @Inject
+    public CategoryRepositoryImpl(CategoryDataLocal categoryDataLocal){
+        this.categoryDataLocal = categoryDataLocal;
+        categoryEntityMapper = new CategoryEntityMapper();
+    }
+
+    @Override
+    public Maybe<List<Category>> getAllCategories() {
+        return categoryDataLocal.getAllCategories().map(new Function<List<CategoryEntity>, List<Category>>() {
+            @Override
+            public List<Category> apply(List<CategoryEntity> categoryEntities) throws Throwable {
+                return categoryEntityMapper.mapFromEntities(categoryEntities);
+            }
+        });
+    }
+}
