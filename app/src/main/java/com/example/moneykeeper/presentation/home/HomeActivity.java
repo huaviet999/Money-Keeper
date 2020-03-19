@@ -10,6 +10,7 @@ import android.view.View;
 
 
 import com.example.domain.model.Account;
+import com.example.domain.model.Category;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.Navigator;
@@ -307,6 +308,11 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @Override
     public void showTransactionsList(List<Transaction> transactionList) {
         transactionRecyclerViewAdapter.setData(transactionList);
+    }
+
+    @Override
+    public void showCategoryImages(Category category) {
+            transactionRecyclerViewAdapter.category = category;
     }
 
     private List<Account> testData2() {

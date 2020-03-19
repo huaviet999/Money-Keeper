@@ -17,8 +17,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     CategoryDataLocal categoryDataLocal;
     CategoryEntityMapper categoryEntityMapper;
+
     @Inject
-    public CategoryRepositoryImpl(CategoryDataLocal categoryDataLocal){
+    public CategoryRepositoryImpl(CategoryDataLocal categoryDataLocal) {
         this.categoryDataLocal = categoryDataLocal;
         categoryEntityMapper = new CategoryEntityMapper();
     }
@@ -29,6 +30,16 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             @Override
             public List<Category> apply(List<CategoryEntity> categoryEntities) throws Throwable {
                 return categoryEntityMapper.mapFromEntities(categoryEntities);
+            }
+        });
+    }
+
+    @Override
+    public Maybe<Category> getCategoryByName(String name) {
+        return categoryDataLocal.getCategoryByName(name).map(new Function<CategoryEntity, Category>() {
+            @Override
+            public Category apply(CategoryEntity categoryEntity) throws Throwable {
+                return categoryEntityMapper.mapFromEntity(categoryEntity);
             }
         });
     }

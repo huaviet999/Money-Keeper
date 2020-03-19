@@ -8,4 +8,5 @@ import io.reactivex.rxjava3.core.Maybe;
 
 public interface CategoryRepository {
     Maybe<List<Category>> getAllCategories();
+    Maybe<Category> getCategoryByName(String name);
 }

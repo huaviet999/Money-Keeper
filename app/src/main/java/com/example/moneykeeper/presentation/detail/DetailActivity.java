@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.domain.model.Category;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
@@ -39,6 +41,8 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
     TextView tvDate;
     @BindView(R.id.txt_memo)
     TextView tvMemo;
+    @BindView(R.id.img_category)
+    ImageView imgCategory;
     @Inject
     DetailContract.Presenter presenter;
 
@@ -124,5 +128,10 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
         tvAmount.setText(amount);
         tvMemo.setText(transaction.getMemo());
         tvDate.setText(date);
+    }
+
+    @Override
+    public void showCategoryImage(Category category) {
+        imgCategory.setImageResource(getResources().getIdentifier(category.getCImage(), "drawable", getPackageName()));
     }
 }

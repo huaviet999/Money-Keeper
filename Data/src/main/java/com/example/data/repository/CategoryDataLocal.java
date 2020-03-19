@@ -8,4 +8,5 @@ import io.reactivex.rxjava3.core.Maybe;
 
 public interface CategoryDataLocal {
     Maybe<List<CategoryEntity>> getAllCategories();
+    Maybe<CategoryEntity> getCategoryByName(String name);
 }

@@ -43,6 +43,10 @@ public class CategoryPresenterImpl implements CategoryContract.Presenter {
     private class GetCategoriesListObserver extends DisposableMaybeObserver<List<Category>> {
         @Override
         public void onSuccess(@NonNull List<Category> categories) {
+            for (Category category : categories) {
+                Log.e("CATEGORYDATA", category.getCategoryId() + " "
+                        + category.getName() + " " + category.getNImage() + " " + category.getCImage());
+            }
             mView.showCategoriesList(categories);
         }
 

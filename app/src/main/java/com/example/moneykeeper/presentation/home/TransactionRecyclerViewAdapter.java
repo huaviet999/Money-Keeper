@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.domain.model.Category;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
@@ -20,6 +21,8 @@ import utils.TimeUtils;
  * Created by Viet Hua on 3/11/2020
  */
 public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Transaction, TransactionRecyclerViewAdapter.ViewHolder> {
+    public Category category;
+
     public TransactionRecyclerViewAdapter(Context context, ItemClickListener<Transaction> listener) {
         super(context);
         setListener(listener);
@@ -35,7 +38,8 @@ public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Tran
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Transaction data = mListData.get(position);
-        holder.renderUI(data);
+        holder.renderUI(data, category);
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -51,14 +55,19 @@ public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Tran
             tvAmount = itemView.findViewById(R.id.txt_amount);
             tvAccountName = itemView.findViewById(R.id.txt_wallet_name);
             tvDate = itemView.findViewById(R.id.txt_date);
+
         }
 
-        public void renderUI(Transaction data) {
+        public void renderUI(Transaction data, Category category) {
             String date = TimeUtils.convertMillisecondsToShortDateFormat(data.getDate());
             String amount = MathUtils.getFormatNumberFromLong(data.getAmount());
             tvDate.setText(date);
             tvAmount.setText(amount);
             tvCategory.setText(data.getCategoryName());
+        }
+
+        public void setCategoryImage(Category category) {
+            imgCategory.setImageResource(context.getResources().getIdentifier(category.getCImage(), "drawable", context.getPackageName()));
         }
 
         @Override

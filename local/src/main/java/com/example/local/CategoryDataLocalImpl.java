@@ -45,4 +45,15 @@ public class CategoryDataLocalImpl implements CategoryDataLocal {
 
 
     }
+
+    @Override
+    public Maybe<CategoryEntity> getCategoryByName(final String name) {
+        return Maybe.create(new MaybeOnSubscribe<CategoryEntity>() {
+            @Override
+            public void subscribe(@NonNull MaybeEmitter<CategoryEntity> emitter) throws Throwable {
+                CategoryModel categoryModel = categoryDao.getCategoryByName(name);
+                emitter.onSuccess(categoryModelMapper.mapFromModel(categoryModel));
+            }
+        });
+    }
 }

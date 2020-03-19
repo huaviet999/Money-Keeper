@@ -2,12 +2,15 @@ package com.example.moneykeeper.presentation.home;
 
 import android.util.Log;
 
+import com.example.domain.interactor.category.GetCategoryByNameUseCase;
 import com.example.domain.interactor.transaction.DeleteTransactionsDataUseCase;
 import com.example.domain.interactor.transaction.GetTransactionByIdUseCase;
 import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
+import com.example.domain.model.Category;
 import com.example.domain.model.EmptyParam;
 import com.example.domain.model.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,7 +26,8 @@ public class HomePresenterImpl implements HomeContract.Presenter {
     GetTransactionsDataUseCase getTransactionsDataUseCase;
     @Inject
     DeleteTransactionsDataUseCase deleteTransactionsDataUseCase;
-
+    @Inject
+    GetCategoryByNameUseCase getCategoryByNameUseCase;
     private HomeContract.View mView;
 
     @Inject
@@ -57,10 +61,12 @@ public class HomePresenterImpl implements HomeContract.Presenter {
         public void onSuccess(@NonNull List<Transaction> transactions) {
             for (Transaction transaction : transactions) {
                 String formattedDate = TimeUtils.convertMillisecondsToDateFormat(transaction.getDate());
+                getCategoryByNameUseCase.execute(new GetCategotyByNameObserver(),transaction.getCategoryName());
                 Log.e("TRANSACTIONDATA", transaction.getTransactionId() + " " + transaction.getType() + " " +
                         transaction.getCategoryName() + " " + transaction.getAmount() + " " + formattedDate + " " + transaction.getMemo());
             }
             mView.showTransactionsList(transactions);
+
         }
 
         @Override
@@ -73,14 +79,32 @@ public class HomePresenterImpl implements HomeContract.Presenter {
             Log.d("onComplete", "Completed");
         }
     }
+
     private class DeleteTransactionsObserver extends DisposableCompletableObserver{
         @Override
         public void onComplete() {
-            Log.e("TRANSACTION","DELETE SUCCESSFULL");
+            Log.e("TRANSACTION","DELETE SUCCESSFUL");
         }
 
         @Override
         public void onError(@NonNull Throwable e) {
+
+        }
+    }
+    private class GetCategotyByNameObserver extends DisposableMaybeObserver<Category> {
+        @Override
+        public void onSuccess(@NonNull Category category) {
+
+
+        }
+
+        @Override
+        public void onError(@NonNull Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
 
         }
     }
