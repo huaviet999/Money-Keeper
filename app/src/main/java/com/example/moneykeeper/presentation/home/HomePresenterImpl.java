@@ -6,8 +6,11 @@ import com.example.domain.interactor.category.GetCategoriesByNameUseCase;
 import com.example.domain.interactor.transaction.DeleteTransactionsDataUseCase;
 import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
 import com.example.domain.model.EmptyParam;
+import com.example.domain.model.MonthType;
+import com.example.domain.model.Record;
 import com.example.domain.model.Transaction;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -16,6 +19,9 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+import utils.MathUtils;
+import utils.MoneyKeeperUtils;
+import utils.TimeUtils;
 
 public class HomePresenterImpl implements HomeContract.Presenter {
 
@@ -26,7 +32,6 @@ public class HomePresenterImpl implements HomeContract.Presenter {
     @Inject
     GetCategoriesByNameUseCase getCategoriesByNameUseCase;
 
-    HashSet<Transaction> transactionList;
     private HomeContract.View mView;
 
     @Inject
@@ -35,7 +40,6 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
     @Override
     public void attachView(HomeContract.View view) {
-        transactionList = new HashSet<>();
         mView = view;
     }
 
@@ -56,10 +60,29 @@ public class HomePresenterImpl implements HomeContract.Presenter {
         deleteTransactionsDataUseCase.execute(new DeleteTransactionsObserver(), new EmptyParam());
     }
 
+    private List<Record> getSummaryRecordList(List<Transaction> transactionList) {
+        long expenseSum;
+        long incomeSum;
+        List<Record> recordList = new ArrayList<>(2);
+        //Get today record
+        List<Transaction> todayTransactions = MoneyKeeperUtils.getTodayTransactionList(transactionList);
+        expenseSum = MathUtils.getExpenseSum(todayTransactions);
+        incomeSum = MathUtils.getIncomeSum(todayTransactions);
+        recordList.add(new Record(incomeSum, expenseSum, TimeUtils.getCurrentDate(), TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear()));
+
+        //Get Monthly record
+        List<Transaction> currentMonthTransactions = MoneyKeeperUtils.getTransactionListFromSpecificMonth(transactionList, TimeUtils.getCurrentMonth());
+        expenseSum = MathUtils.getExpenseSum(currentMonthTransactions);
+        incomeSum = MathUtils.getIncomeSum(currentMonthTransactions);
+        recordList.add(new Record(incomeSum, expenseSum, 0, TimeUtils.getCurrentMonth(), TimeUtils.getCurrentYear()));
+        return recordList;
+    }
+
     private class GetAllTransactionsObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
-                getCategoriesByNameUseCase.execute(new GetCategotyByNameObserver(), transactions);
+            getCategoriesByNameUseCase.execute(new GetCategotyByNameObserver(), transactions);
+
         }
 
         @Override
@@ -89,7 +112,9 @@ public class HomePresenterImpl implements HomeContract.Presenter {
     private class GetCategotyByNameObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
-           mView.showTransactionList(transactions);
+            List<Record> recordList = getSummaryRecordList(transactions);
+            mView.showSummaryList(recordList);
+            mView.showTransactionList(transactions);
         }
 
         @Override

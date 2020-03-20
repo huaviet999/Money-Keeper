@@ -86,8 +86,8 @@ public class SummaryActivity extends BaseActivity implements SummaryContract.Vie
 
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        summaryRecyclerViewAdapter = new SummaryRecyclerViewAdapter(this, listener);
-        summaryRecyclerViewAdapter.setData(testData2());
+//        summaryRecyclerViewAdapter = new SummaryRecyclerViewAdapter(this, listener);
+//        summaryRecyclerViewAdapter.setData(testData2());
         rvSummary.setLayoutManager(linearLayoutManager);
         rvSummary.setAdapter(summaryRecyclerViewAdapter);
     }

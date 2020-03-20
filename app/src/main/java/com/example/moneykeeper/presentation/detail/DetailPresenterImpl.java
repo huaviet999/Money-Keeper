@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+import utils.TimeUtils;
 
 public class DetailPresenterImpl implements DetailContract.Presenter {
     DetailContract.View mView;
@@ -81,6 +82,8 @@ public class DetailPresenterImpl implements DetailContract.Presenter {
     private class GetCategoryByNameObserver extends DisposableMaybeObserver<Transaction> {
         @Override
         public void onSuccess(@NonNull Transaction transaction) {
+            int test = TimeUtils.getYearFromMilliseconds(transaction.getDate());
+            Log.d("MONTH",String.valueOf(test));
             mView.showCategoryImage(transaction.getCategory());
         }
 

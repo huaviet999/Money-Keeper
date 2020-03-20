@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.example.domain.model.Account;
 import com.example.domain.model.Category;
+import com.example.domain.model.Record;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.Navigator;
@@ -160,6 +161,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     public void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setReverseLayout(true);
         //TRANSACTION RECYCLER VIEW
         transactionRecyclerViewAdapter = new TransactionRecyclerViewAdapter(this, transactionListener);
         transactionRecyclerView.setLayoutManager(linearLayoutManager);
@@ -167,7 +169,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
         //SUMMARY RECYCLER VIEW
         summaryRecyclerViewAdapter = new SummaryRecyclerViewAdapter(this, accountListener);
-        summaryRecyclerViewAdapter.setData(testData2());
         summaryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         summaryRecyclerView.setAdapter(summaryRecyclerViewAdapter);
 
@@ -240,14 +241,14 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             showToastMessage("On Long Click");
         }
     };
-    private ItemClickListener<Account> accountListener = new ItemClickListener<Account>() {
+    private ItemClickListener<Record> accountListener = new ItemClickListener<Record>() {
         @Override
-        public void onClickListener(int position, Account transaction) {
+        public void onClickListener(int position, Record record) {
             showToastMessage("On Click");
         }
 
         @Override
-        public void onLongClickListener(int position, Account transaction) {
+        public void onLongClickListener(int position, Record record) {
             showToastMessage("On Long Click");
         }
     };
@@ -311,10 +312,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         transactionRecyclerViewAdapter.setData(transactionsList);
     }
 
-    private List<Account> testData2() {
-        List<Account> mData = new ArrayList<>();
-        mData.add(new Account(1000000, 300000));
-        mData.add(new Account(2000, 500000));
-        return mData;
+
+
+    @Override
+    public void showSummaryList(List<Record> recordList) {
+        summaryRecyclerViewAdapter.setData(recordList);
     }
 }

@@ -36,7 +36,7 @@ import dagger.android.AndroidInjection;
  * Created by Viet Hua on 15/3/2020
  */
 public class NewTransactionActivity extends BaseActivity implements NewTransactionContract.View, CalcDialog.CalcDialogCallback {
-    public static String KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME; //Default transaction mode is Income
+    public  String KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME; //Default transaction mode is Income
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.btn_income)

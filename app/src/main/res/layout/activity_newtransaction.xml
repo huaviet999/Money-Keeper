@@ -129,6 +129,7 @@
                 android:textStyle="bold"></TextView>
 
             <EditText
+                android:text="Food"
                 android:id="@+id/edt_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

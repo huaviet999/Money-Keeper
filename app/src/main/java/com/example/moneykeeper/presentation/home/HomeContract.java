@@ -1,6 +1,7 @@
 package com.example.moneykeeper.presentation.home;
 
 import com.example.domain.model.Category;
+import com.example.domain.model.Record;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.presentation.base.BasePresenter;
 import com.example.moneykeeper.presentation.base.BaseView;
@@ -11,6 +12,7 @@ import java.util.List;
 public interface HomeContract {
     interface View extends BaseView {
         void showTransactionList(List<Transaction> transactionsList);
+        void showSummaryList(List<Record> recordList);
     }
 
     interface Presenter extends BasePresenter<View> {

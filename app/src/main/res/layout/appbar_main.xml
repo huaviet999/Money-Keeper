@@ -71,6 +71,7 @@
                     android:layout_height="wrap_content"></include>
 
                 <include
+                    android:visibility="gone"
                     layout="@layout/layout_seven_days_expense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

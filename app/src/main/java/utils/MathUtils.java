@@ -1,6 +1,10 @@
 package utils;
 
+import com.example.domain.model.Transaction;
+import com.example.moneykeeper.presentation.base.Constants;
+
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -32,4 +36,23 @@ public class MathUtils {
     public static String getNumberWithVietNamCurrency(String value) {
         return String.valueOf(getFormatNumberWithCommas(value) + " " + VN_CURRENCY);
     }
+    public static long getExpenseSum(List<Transaction> transactions){
+        long expenseSum = 0;
+        for(Transaction transaction:transactions){
+            if(transaction.getType().equals(Constants.KEY_EXPENSE)){
+                expenseSum += transaction.getAmount();
+            }
+        }
+        return expenseSum;
+    }
+    public static long getIncomeSum(List<Transaction> transactions){
+        long incomeSum = 0;
+        for(Transaction transaction:transactions){
+            if(transaction.getType().equals(Constants.KEY_INCOME)){
+                incomeSum += transaction.getAmount();
+            }
+        }
+        return incomeSum;
+    }
+
 }

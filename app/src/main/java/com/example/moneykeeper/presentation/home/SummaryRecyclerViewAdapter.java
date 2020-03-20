@@ -1,12 +1,11 @@
 package com.example.moneykeeper.presentation.home;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.domain.model.Account;
+import com.example.domain.model.Record;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
@@ -15,13 +14,16 @@ import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import utils.MathUtils;
+import utils.TimeUtils;
 
 /**
  * Created by Viet Hua on 3/12/2020
  */
-public class SummaryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Account, SummaryRecyclerViewAdapter.ViewHolder> {
-    public SummaryRecyclerViewAdapter(Context context, ItemClickListener<Account> listener) {
+public class SummaryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Record, SummaryRecyclerViewAdapter.ViewHolder> {
+    public SummaryRecyclerViewAdapter(Context context, ItemClickListener<Record> listener) {
         super(context);
         setListener(listener);
     }
@@ -35,13 +37,14 @@ public class SummaryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Account,
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Account data = mListData.get(position);
+        Record data = mListData.get(position);
         holder.renderUI(data);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         AnimatedPieView animatedPieView;
-        TextView tvIncome , tvExpense , tvTotal;
+        TextView tvIncome, tvExpense, tvTotal, tvDate;
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -50,23 +53,30 @@ public class SummaryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Account,
             tvIncome = itemView.findViewById(R.id.txt_income_number);
             tvExpense = itemView.findViewById(R.id.txt_amount);
             tvTotal = itemView.findViewById(R.id.txt_total_number);
+            tvDate = itemView.findViewById(R.id.txt_date);
 
         }
-        public void renderUI(Account data){
+
+        public void renderUI(Record data) {
             AnimatedPieViewConfig config = new AnimatedPieViewConfig();
             config.strokeMode(false);
             config.strokeWidth(150);
             config.startAngle(-90)// Starting angle offset
-                    .addData(new SimplePieInfo(data.getIncome(), Color.parseColor("#00ff00"), "Income"))
-                    .addData(new SimplePieInfo(data.getExpense(), Color.parseColor("#ff0000"), "Expense"))
+                    .addData(new SimplePieInfo(data.getIncome(), ResourcesCompat.getColor(context.getResources(), R.color.income_button_color, null), "Income"))
+                    .addData(new SimplePieInfo(data.getExpense(), ResourcesCompat.getColor(context.getResources(), R.color.expense_button_color, null), "Expense"))
                     .duration(1000);// draw pie animation duration
             animatedPieView.applyConfig(config);
             animatedPieView.start();
-            tvIncome.setText(String.valueOf(data.getIncome()));
-            tvExpense.setText("-" + String.valueOf(data.getExpense()));
-            float total = data.getIncome() - data.getExpense();
-            tvTotal.setText(String.valueOf(total));
+            tvIncome.setText(MathUtils.getFormatNumberFromLong(data.getIncome()));
+            tvExpense.setText("-" + MathUtils.getFormatNumberFromLong(data.getExpense()));
+            tvTotal.setText(MathUtils.getFormatNumberFromLong(data.getTotal()));
+            if (data.getDay() == TimeUtils.getCurrentDate() && data.getMonth() == TimeUtils.getCurrentMonth() && data.getYear() == TimeUtils.getCurrentYear()) {
+                tvDate.setText("Today");
+            } else {
+                tvDate.setText(data.getMonth() + " " + data.getYear());
+            }
         }
+
         @Override
         public void onClick(View view) {
             if (mListener == null) return;
