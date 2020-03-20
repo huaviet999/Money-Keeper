@@ -12,6 +12,7 @@ import com.example.domain.model.Category;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
+import com.example.moneykeeper.presentation.base.Constants;
 
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
@@ -121,13 +123,25 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
 
     @Override
     public void showTransactionDetail(Transaction transaction) {
-        String amount = MathUtils.getFormatNumberFromLong(transaction.getAmount());
         String date = TimeUtils.convertMillisecondsToDateFormat(transaction.getDate());
         tvCategory.setText(transaction.getCategory().getName());
-        tvTransactionType.setText(transaction.getType());
-        tvAmount.setText(amount);
+
         tvMemo.setText(transaction.getMemo());
         tvDate.setText(date);
+        changeTextColor(transaction);
+    }
+
+    private void changeTextColor(Transaction transaction){
+        String amount = MathUtils.getFormatNumberFromLong(transaction.getAmount());
+        tvAmount.setTextColor(transaction.getType().equals(Constants.KEY_INCOME) ?
+                ResourcesCompat.getColor(getResources(), R.color.income_button_color, null) :
+                ResourcesCompat.getColor(getResources(), R.color.expense_button_color, null));
+        tvAmount.setText(transaction.getType().equals(Constants.KEY_INCOME) ? amount : "-" + amount);
+
+        tvTransactionType.setTextColor(transaction.getType().equals(Constants.KEY_INCOME) ?
+                ResourcesCompat.getColor(getResources(), R.color.income_button_color, null) :
+                ResourcesCompat.getColor(getResources(), R.color.expense_button_color, null));
+        tvTransactionType.setText(transaction.getType());
     }
 
     @Override

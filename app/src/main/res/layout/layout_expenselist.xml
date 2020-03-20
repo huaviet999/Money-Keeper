@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/expense"
-            android:textColor="@color/gray_7"
+            android:textColor="@color/expense_button_color"
             android:textSize="@dimen/font_22"
             android:textStyle="bold"></TextView>
 

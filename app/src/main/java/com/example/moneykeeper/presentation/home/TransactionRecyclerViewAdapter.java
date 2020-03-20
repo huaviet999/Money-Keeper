@@ -10,9 +10,11 @@ import com.example.domain.model.Category;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
+import com.example.moneykeeper.presentation.base.Constants;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import utils.MathUtils;
 import utils.TimeUtils;
@@ -59,15 +61,22 @@ public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Tran
 
         public void renderUI(Transaction data) {
             String date = TimeUtils.convertMillisecondsToShortDateFormat(data.getDate());
-            String amount = MathUtils.getFormatNumberFromLong(data.getAmount());
             tvDate.setText(date);
-            tvAmount.setText(amount);
             tvCategory.setText(data.getCategory().getName());
             setCategoryImage(data.getCategory());
+            setAmountTextColor(data);
         }
 
         public void setCategoryImage(Category category) {
             imgCategory.setImageResource(context.getResources().getIdentifier(category.getCImage(), "drawable", context.getPackageName()));
+        }
+
+        public void setAmountTextColor(Transaction data) {
+            String amount = MathUtils.getFormatNumberFromLong(data.getAmount());
+            tvAmount.setTextColor(data.getType().equals(Constants.KEY_INCOME) ?
+                    ResourcesCompat.getColor(context.getResources(), R.color.income_button_color, null) :
+                    ResourcesCompat.getColor(context.getResources(), R.color.expense_button_color, null));
+            tvAmount.setText(data.getType().equals(Constants.KEY_INCOME) ? amount : "-" + amount);
         }
 
         @Override

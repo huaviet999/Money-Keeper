@@ -6,8 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.domain.model.Record;
+import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
+import com.example.moneykeeper.presentation.base.Constants;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
@@ -69,12 +71,25 @@ public class SummaryRecyclerViewAdapter extends BaseRecyclerViewAdapter<Record, 
             animatedPieView.start();
             tvIncome.setText(MathUtils.getFormatNumberFromLong(data.getIncome()));
             tvExpense.setText("-" + MathUtils.getFormatNumberFromLong(data.getExpense()));
-            tvTotal.setText(MathUtils.getFormatNumberFromLong(data.getTotal()));
+
+            setSummaryTitle(data);
+            setTotalTextColor(data);
+
+
+        }
+
+        private void setSummaryTitle(Record data) {
             if (data.getDay() == TimeUtils.getCurrentDate() && data.getMonth() == TimeUtils.getCurrentMonth() && data.getYear() == TimeUtils.getCurrentYear()) {
-                tvDate.setText("Today");
+                tvDate.setText("Hôm nay");
             } else {
-                tvDate.setText(data.getMonth() + " " + data.getYear());
+                tvDate.setText("Tháng " + data.getMonth() + " Năm " + data.getYear());
             }
+        }
+        private void setTotalTextColor(Record data){
+            tvTotal.setText(MathUtils.getFormatNumberFromLong(data.getTotal()));
+            tvTotal.setTextColor(data.getTotal() >= 0 ?
+                    ResourcesCompat.getColor(context.getResources(), R.color.income_button_color, null) :
+                    ResourcesCompat.getColor(context.getResources(), R.color.expense_button_color, null));
         }
 
         @Override

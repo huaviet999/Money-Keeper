@@ -4,6 +4,6 @@
     <item
         android:title="check"
         android:id="@+id/item_confirm"
-        android:icon="@drawable/ic_check_black_24dp"
+        android:icon="@drawable/ic_check_white_24dp"
         app:showAsAction="always"></item>
 </menu>

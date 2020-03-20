@@ -36,7 +36,7 @@ import dagger.android.AndroidInjection;
  * Created by Viet Hua on 15/3/2020
  */
 public class NewTransactionActivity extends BaseActivity implements NewTransactionContract.View, CalcDialog.CalcDialogCallback {
-    public  String KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME; //Default transaction mode is Income
+    public String KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME; //Default transaction mode is Income
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.btn_income)
@@ -51,10 +51,17 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
     EditText edtMemo;
     @BindView(R.id.edt_category)
     EditText edtCategory;
+    @BindView(R.id.txt_date)
+    TextView tvDate;
+    @BindView(R.id.txt_amount)
+    TextView tvAmount;
+    @BindView(R.id.txt_category)
+    TextView tvCategory;
+    @BindView(R.id.txt_memo)
+    TextView tvMemo;
 
     @Inject
     NewTransactionContract.Presenter presenter;
-
 
 
     public static void startNewTransactionActivity(AppCompatActivity activity) {
@@ -76,7 +83,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
-        presenter.getDateFormat(0,0,0); //Get current date
+        presenter.getDateFormat(0, 0, 0); //Get current date
 
     }
 
@@ -181,7 +188,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
     }
 
 
-    private void transactionButtonColorChange() {
+    private void transactionColorChange() {
         int whiteColor = ResourcesCompat.getColor(getResources(), R.color.white, null);
         int blackColor = ResourcesCompat.getColor(getResources(), R.color.black, null);
         int incomeButtonColor = ResourcesCompat.getColor(getResources(), R.color.income_button_color, null);
@@ -191,7 +198,15 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         btnIncome.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? whiteColor : blackColor);
         btnExpense.setBackgroundColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_EXPENSE) ? expenseButtonColor : whiteColor);
         btnExpense.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_EXPENSE) ? whiteColor : blackColor);
+
+        tvDate.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : expenseButtonColor);
+        tvAmount.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : expenseButtonColor);
+        tvCategory.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : expenseButtonColor);
+        tvMemo.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : expenseButtonColor);
+
+        edtMemo.setCompoundDrawablesWithIntrinsicBounds(0, 0, KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? R.drawable.ic_photo_camera_blue_24dp : R.drawable.ic_photo_camera_red_24dp, 0);
     }
+
 
     @Override
     public void onValueEntered(int requestCode, @Nullable BigDecimal value) {
@@ -223,7 +238,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
             } else {
                 KEY_TRANSACTION_SELECTED = Constants.KEY_EXPENSE;
             }
-            transactionButtonColorChange();
+            transactionColorChange();
         }
     };
 
