@@ -2,6 +2,7 @@ package com.example.moneykeeper.presentation.newtransaction;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -137,6 +138,8 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_new_transaction);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+
     }
 
     private void setupCalculator() {
@@ -203,6 +206,9 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         tvAmount.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : expenseButtonColor);
         tvCategory.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : expenseButtonColor);
         tvMemo.setTextColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? incomeButtonColor : expenseButtonColor);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? R.color.income_button_color : R.color.expense_button_color)));
 
         edtMemo.setCompoundDrawablesWithIntrinsicBounds(0, 0, KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? R.drawable.ic_photo_camera_blue_24dp : R.drawable.ic_photo_camera_red_24dp, 0);
     }
