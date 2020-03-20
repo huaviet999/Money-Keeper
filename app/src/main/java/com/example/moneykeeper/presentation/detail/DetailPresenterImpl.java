@@ -5,9 +5,7 @@ import android.util.Log;
 import com.example.domain.interactor.category.GetCategoryByNameUseCase;
 import com.example.domain.interactor.transaction.DeleteTransactionByIdUseCase;
 import com.example.domain.interactor.transaction.GetTransactionByIdUseCase;
-import com.example.domain.model.Category;
 import com.example.domain.model.Transaction;
-import com.example.moneykeeper.presentation.home.HomePresenterImpl;
 
 import javax.inject.Inject;
 
@@ -24,7 +22,6 @@ public class DetailPresenterImpl implements DetailContract.Presenter {
     DeleteTransactionByIdUseCase deleteTransactionByIdUseCase;
     @Inject
     GetCategoryByNameUseCase getCategoryByNameUseCase;
-
 
     @Inject
     public DetailPresenterImpl() {
@@ -54,7 +51,7 @@ public class DetailPresenterImpl implements DetailContract.Presenter {
     private class GetTransactionByIdObserver extends DisposableMaybeObserver<Transaction> {
         @Override
         public void onSuccess(@NonNull Transaction transaction) {
-            getCategoryByNameUseCase.execute(new GetCategotyByNameObserver(), transaction.getCategoryName());
+            getCategoryByNameUseCase.execute(new GetCategoryByNameObserver(), transaction);
             mView.showTransactionDetail(transaction);
         }
 
@@ -81,11 +78,10 @@ public class DetailPresenterImpl implements DetailContract.Presenter {
         }
     }
 
-    private class GetCategotyByNameObserver extends DisposableMaybeObserver<Category> {
+    private class GetCategoryByNameObserver extends DisposableMaybeObserver<Transaction> {
         @Override
-        public void onSuccess(@NonNull Category category) {
-            Log.e("CATEGORY", category.getName());
-            mView.showCategoryImage(category);
+        public void onSuccess(@NonNull Transaction transaction) {
+            mView.showCategoryImage(transaction.getCategory());
         }
 
         @Override

@@ -2,15 +2,13 @@ package com.example.moneykeeper.presentation.home;
 
 import android.util.Log;
 
-import com.example.domain.interactor.category.GetCategoryByNameUseCase;
+import com.example.domain.interactor.category.GetCategoriesByNameUseCase;
 import com.example.domain.interactor.transaction.DeleteTransactionsDataUseCase;
-import com.example.domain.interactor.transaction.GetTransactionByIdUseCase;
 import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
-import com.example.domain.model.Category;
 import com.example.domain.model.EmptyParam;
 import com.example.domain.model.Transaction;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,7 +16,6 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
-import utils.TimeUtils;
 
 public class HomePresenterImpl implements HomeContract.Presenter {
 
@@ -27,7 +24,9 @@ public class HomePresenterImpl implements HomeContract.Presenter {
     @Inject
     DeleteTransactionsDataUseCase deleteTransactionsDataUseCase;
     @Inject
-    GetCategoryByNameUseCase getCategoryByNameUseCase;
+    GetCategoriesByNameUseCase getCategoriesByNameUseCase;
+
+    HashSet<Transaction> transactionList;
     private HomeContract.View mView;
 
     @Inject
@@ -36,6 +35,7 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
     @Override
     public void attachView(HomeContract.View view) {
+        transactionList = new HashSet<>();
         mView = view;
     }
 
@@ -53,20 +53,13 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
     @Override
     public void deleteAllTransactionData() {
-        deleteTransactionsDataUseCase.execute(new DeleteTransactionsObserver(),new EmptyParam());
+        deleteTransactionsDataUseCase.execute(new DeleteTransactionsObserver(), new EmptyParam());
     }
 
     private class GetAllTransactionsObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
-            for (Transaction transaction : transactions) {
-                String formattedDate = TimeUtils.convertMillisecondsToDateFormat(transaction.getDate());
-                getCategoryByNameUseCase.execute(new GetCategotyByNameObserver(),transaction.getCategoryName());
-                Log.e("TRANSACTIONDATA", transaction.getTransactionId() + " " + transaction.getType() + " " +
-                        transaction.getCategoryName() + " " + transaction.getAmount() + " " + formattedDate + " " + transaction.getMemo());
-            }
-            mView.showTransactionsList(transactions);
-
+                getCategoriesByNameUseCase.execute(new GetCategotyByNameObserver(), transactions);
         }
 
         @Override
@@ -80,10 +73,11 @@ public class HomePresenterImpl implements HomeContract.Presenter {
         }
     }
 
-    private class DeleteTransactionsObserver extends DisposableCompletableObserver{
+
+    private class DeleteTransactionsObserver extends DisposableCompletableObserver {
         @Override
         public void onComplete() {
-            Log.e("TRANSACTION","DELETE SUCCESSFUL");
+            Log.e("TRANSACTION", "DELETE SUCCESSFUL");
         }
 
         @Override
@@ -91,11 +85,11 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
         }
     }
-    private class GetCategotyByNameObserver extends DisposableMaybeObserver<Category> {
+
+    private class GetCategotyByNameObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
-        public void onSuccess(@NonNull Category category) {
-
-
+        public void onSuccess(@NonNull List<Transaction> transactions) {
+           mView.showTransactionList(transactions);
         }
 
         @Override

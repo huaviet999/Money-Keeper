@@ -1,9 +1,12 @@
 package com.example.data;
 
 import com.example.data.entity.CategoryEntity;
+import com.example.data.entity.TransactionEntity;
 import com.example.data.mapper.CategoryEntityMapper;
+import com.example.data.mapper.TransactionEntityMapper;
 import com.example.data.repository.CategoryDataLocal;
 import com.example.domain.model.Category;
+import com.example.domain.model.Transaction;
 import com.example.domain.repository.CategoryRepository;
 
 import java.util.List;
@@ -17,10 +20,12 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     CategoryDataLocal categoryDataLocal;
     CategoryEntityMapper categoryEntityMapper;
+    TransactionEntityMapper transactionEntityMapper;
 
     @Inject
     public CategoryRepositoryImpl(CategoryDataLocal categoryDataLocal) {
         this.categoryDataLocal = categoryDataLocal;
+        transactionEntityMapper = new TransactionEntityMapper();
         categoryEntityMapper = new CategoryEntityMapper();
     }
 
@@ -35,11 +40,21 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public Maybe<Category> getCategoryByName(String name) {
-        return categoryDataLocal.getCategoryByName(name).map(new Function<CategoryEntity, Category>() {
+    public Maybe<List<Transaction>> getCategoriesByName(List<Transaction> transaction) {
+        return categoryDataLocal.getCategoriesByName(transactionEntityMapper.mapToEntities(transaction)).map(new Function<List<TransactionEntity>, List<Transaction>>() {
             @Override
-            public Category apply(CategoryEntity categoryEntity) throws Throwable {
-                return categoryEntityMapper.mapFromEntity(categoryEntity);
+            public List<Transaction> apply(List<TransactionEntity> transactionEntities) throws Throwable {
+                return transactionEntityMapper.mapFromEntities(transactionEntities);
+            }
+        });
+    }
+
+    @Override
+    public Maybe<Transaction> getCategoryByName(Transaction transaction) {
+        return categoryDataLocal.getCategoryByName(transactionEntityMapper.mapToEntity(transaction)).map(new Function<TransactionEntity, Transaction>() {
+            @Override
+            public Transaction apply(TransactionEntity transactionEntity) throws Throwable {
+                return transactionEntityMapper.mapFromEntity(transactionEntity);
             }
         });
     }

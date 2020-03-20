@@ -3,10 +3,14 @@ package com.example.domain.model;
 public class Transaction {
     private int transactionId;
     private String type;
-    private String categoryName;
+    private Category category;
     private String memo;
     private long amount;
     private long date;
+
+    public Transaction() {
+        category = new Category(); //Default constructor
+    }
 
     public String getType() {
         return type;
@@ -16,12 +20,12 @@ public class Transaction {
         this.type = type;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getMemo() {

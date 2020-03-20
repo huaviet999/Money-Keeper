@@ -12,7 +12,12 @@ import java.util.List;
 public class CategoryEntityMapper implements BaseMapper<CategoryEntity, Category> {
     @Override
     public CategoryEntity mapToEntity(Category category) {
-        return null;
+        CategoryEntity categoryEntity = new CategoryEntity();
+        categoryEntity.setCategoryId(category.getCategoryId());
+        categoryEntity.setName(category.getName());
+        categoryEntity.setNImage(category.getNImage());
+        categoryEntity.setCImage(category.getCImage());
+        return categoryEntity;
     }
 
     @Override

@@ -1,13 +1,17 @@
 package com.example.local;
 
 import com.example.data.entity.CategoryEntity;
+import com.example.data.entity.TransactionEntity;
+import com.example.data.mapper.TransactionEntityMapper;
 import com.example.data.repository.CategoryDataLocal;
 import com.example.domain.executor.ExecutionThread;
 import com.example.local.database.MoneyKeeperDatabase;
 import com.example.local.database.dao.CategoryDao;
 import com.example.local.mapper.CategoryModelMapper;
+import com.example.local.mapper.TransactionModelMapper;
 import com.example.local.model.CategoryModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,12 +51,30 @@ public class CategoryDataLocalImpl implements CategoryDataLocal {
     }
 
     @Override
-    public Maybe<CategoryEntity> getCategoryByName(final String name) {
-        return Maybe.create(new MaybeOnSubscribe<CategoryEntity>() {
+    public Maybe<List<TransactionEntity>> getCategoriesByName(final List<TransactionEntity> transactionEntities) {
+        return Maybe.create(new MaybeOnSubscribe<List<TransactionEntity>>() {
             @Override
-            public void subscribe(@NonNull MaybeEmitter<CategoryEntity> emitter) throws Throwable {
-                CategoryModel categoryModel = categoryDao.getCategoryByName(name);
-                emitter.onSuccess(categoryModelMapper.mapFromModel(categoryModel));
+            public void subscribe(@NonNull MaybeEmitter<List<TransactionEntity>> emitter) throws Throwable {
+                List<TransactionEntity> result = new ArrayList<>();
+                for (TransactionEntity transactionEntity : transactionEntities) {
+                    CategoryModel categoryModel = categoryDao.getCategoryByName(transactionEntity.getCategoryEntity().getName());
+                    transactionEntity.setCategoryEntity(categoryModelMapper.mapFromModel(categoryModel));
+                    result.add(transactionEntity);
+                }
+                emitter.onSuccess(result);
+
+            }
+        });
+    }
+
+    @Override
+    public Maybe<TransactionEntity> getCategoryByName(final TransactionEntity transactionEntity) {
+        return Maybe.create(new MaybeOnSubscribe<TransactionEntity>() {
+            @Override
+            public void subscribe(@NonNull MaybeEmitter<TransactionEntity> emitter) throws Throwable {
+                CategoryModel categoryModel = categoryDao.getCategoryByName(transactionEntity.getCategoryEntity().getName());
+                transactionEntity.setCategoryEntity(categoryModelMapper.mapFromModel(categoryModel));
+                emitter.onSuccess(transactionEntity);
             }
         });
     }

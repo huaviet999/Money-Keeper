@@ -21,7 +21,6 @@ import utils.TimeUtils;
  * Created by Viet Hua on 3/11/2020
  */
 public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Transaction, TransactionRecyclerViewAdapter.ViewHolder> {
-    public Category category;
 
     public TransactionRecyclerViewAdapter(Context context, ItemClickListener<Transaction> listener) {
         super(context);
@@ -38,7 +37,7 @@ public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Tran
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Transaction data = mListData.get(position);
-        holder.renderUI(data, category);
+        holder.renderUI(data);
 
     }
 
@@ -58,12 +57,13 @@ public class TransactionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Tran
 
         }
 
-        public void renderUI(Transaction data, Category category) {
+        public void renderUI(Transaction data) {
             String date = TimeUtils.convertMillisecondsToShortDateFormat(data.getDate());
             String amount = MathUtils.getFormatNumberFromLong(data.getAmount());
             tvDate.setText(date);
             tvAmount.setText(amount);
-            tvCategory.setText(data.getCategoryName());
+            tvCategory.setText(data.getCategory().getName());
+            setCategoryImage(data.getCategory());
         }
 
         public void setCategoryImage(Category category) {

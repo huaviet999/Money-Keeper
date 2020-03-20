@@ -3,10 +3,14 @@ package com.example.data.entity;
 public class TransactionEntity {
     private int transactionId;
     private String type;
-    private String categoryName;
+    private CategoryEntity categoryEntity;
     private String memo;
     private long amount;
     private long date;
+
+    public TransactionEntity() {
+        categoryEntity = new CategoryEntity();
+    }
 
     public String getType() {
         return type;
@@ -16,12 +20,12 @@ public class TransactionEntity {
         this.type = type;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public CategoryEntity getCategoryEntity() {
+        return categoryEntity;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
     }
 
     public String getMemo() {

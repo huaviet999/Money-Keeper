@@ -10,9 +10,29 @@ import java.util.List;
  * Created by Viet Hua on 3/18/2020
  */
 public class TransactionEntityMapper implements BaseMapper<TransactionEntity, Transaction> {
+    CategoryEntityMapper categoryEntityMapper;
+
+    public TransactionEntityMapper() {
+        categoryEntityMapper = new CategoryEntityMapper();
+    }
+
     @Override
     public TransactionEntity mapToEntity(Transaction transaction) {
-        return null;
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.setTransactionId(transaction.getTransactionId());
+        transactionEntity.setCategoryEntity(categoryEntityMapper.mapToEntity(transaction.getCategory()));
+        transactionEntity.setMemo(transaction.getMemo());
+        transactionEntity.setDate(transaction.getDate());
+        transactionEntity.setAmount(transaction.getAmount());
+        transactionEntity.setType(transaction.getType());
+        return transactionEntity;
+    }
+    public List<TransactionEntity> mapToEntities(List<Transaction> transactions) {
+        List<TransactionEntity> transactionEntities = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            transactionEntities.add(mapToEntity(transaction));
+        }
+        return transactionEntities;
     }
 
     @Override
@@ -23,7 +43,7 @@ public class TransactionEntityMapper implements BaseMapper<TransactionEntity, Tr
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionEntity.getTransactionId());
         transaction.setType(transactionEntity.getType());
-        transaction.setCategoryName(transactionEntity.getCategoryName());
+        transaction.setCategory(categoryEntityMapper.mapFromEntity(transactionEntity.getCategoryEntity()));
         transaction.setAmount(transactionEntity.getAmount());
         transaction.setDate(transactionEntity.getDate());
         transaction.setMemo(transactionEntity.getMemo());

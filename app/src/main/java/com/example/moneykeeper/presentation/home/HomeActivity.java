@@ -28,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -306,13 +307,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     }
 
     @Override
-    public void showTransactionsList(List<Transaction> transactionList) {
-        transactionRecyclerViewAdapter.setData(transactionList);
-    }
-
-    @Override
-    public void showCategoryImages(Category category) {
-            transactionRecyclerViewAdapter.category = category;
+    public void showTransactionList(List<Transaction> transactionsList) {
+        transactionRecyclerViewAdapter.setData(transactionsList);
     }
 
     private List<Account> testData2() {

@@ -123,7 +123,7 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
     public void showTransactionDetail(Transaction transaction) {
         String amount = MathUtils.getFormatNumberFromLong(transaction.getAmount());
         String date = TimeUtils.convertMillisecondsToDateFormat(transaction.getDate());
-        tvCategory.setText(transaction.getCategoryName());
+        tvCategory.setText(transaction.getCategory().getName());
         tvTransactionType.setText(transaction.getType());
         tvAmount.setText(amount);
         tvMemo.setText(transaction.getMemo());
