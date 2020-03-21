@@ -40,6 +40,16 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
+    public Maybe<List<Category>> getCategoriesByType(String type) {
+        return categoryDataLocal.getCategoriesByType(type).map(new Function<List<CategoryEntity>, List<Category>>() {
+            @Override
+            public List<Category> apply(List<CategoryEntity> categoryEntities) throws Throwable {
+                return categoryEntityMapper.mapFromEntities(categoryEntities);
+            }
+        });
+    }
+
+    @Override
     public Maybe<List<Transaction>> getCategoriesByName(List<Transaction> transaction) {
         return categoryDataLocal.getCategoriesByName(transactionEntityMapper.mapToEntities(transaction)).map(new Function<List<TransactionEntity>, List<Transaction>>() {
             @Override
@@ -58,4 +68,5 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             }
         });
     }
+
 }

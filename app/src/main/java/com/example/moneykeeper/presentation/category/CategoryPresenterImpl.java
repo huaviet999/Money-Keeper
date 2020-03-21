@@ -2,6 +2,7 @@ package com.example.moneykeeper.presentation.category;
 
 import android.util.Log;
 
+import com.example.domain.interactor.category.GetCategoriesByTypeUseCase;
 import com.example.domain.interactor.category.GetCategoriesUseCase;
 import com.example.domain.model.Category;
 import com.example.domain.model.EmptyParam;
@@ -18,7 +19,7 @@ public class CategoryPresenterImpl implements CategoryContract.Presenter {
     CategoryContract.View mView;
 
     @Inject
-    GetCategoriesUseCase getCategoriesUseCase;
+    GetCategoriesByTypeUseCase getCategoriesByTypeUseCase;
 
     @Inject
     public CategoryPresenterImpl() {
@@ -36,18 +37,14 @@ public class CategoryPresenterImpl implements CategoryContract.Presenter {
     }
 
     @Override
-    public void getDefaultCategoriesList() {
-        getCategoriesUseCase.execute(new GetCategoriesListObserver(), new EmptyParam());
+    public void getDefaultCategoriesListByType(String type) {
+        getCategoriesByTypeUseCase.execute(new GetCategoriesByTypeObserver(), type);
     }
 
-    private class GetCategoriesListObserver extends DisposableMaybeObserver<List<Category>> {
+    private class GetCategoriesByTypeObserver extends DisposableMaybeObserver<List<Category>> {
         @Override
-        public void onSuccess(@NonNull List<Category> categories) {
-            for (Category category : categories) {
-                Log.e("CATEGORYDATA", category.getCategoryId() + " "
-                        + category.getName() + " " + category.getNImage() + " " + category.getCImage());
-            }
-            mView.showCategoriesList(categories);
+        public void onSuccess(@NonNull List<Category> categoryList) {
+            mView.showCategoriesList(categoryList);
         }
 
         @Override

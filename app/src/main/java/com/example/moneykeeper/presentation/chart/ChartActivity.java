@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.example.domain.model.ExpenseType;
 import com.example.domain.model.ModelTest1;
+import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
@@ -65,6 +66,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
+        presenter.getAllTransactionList();
     }
 
     @Override
@@ -130,6 +132,11 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
                 .duration(1000);// dr// aw pie animation duration
         animatedPieView.applyConfig(config);
         animatedPieView.start();
+    }
+
+    @Override
+    public void showTransactionList(List<Transaction> transactionList) {
+
     }
 
     private List<ModelTest1> testData() {

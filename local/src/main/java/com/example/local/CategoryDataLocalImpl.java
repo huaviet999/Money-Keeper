@@ -46,8 +46,17 @@ public class CategoryDataLocalImpl implements CategoryDataLocal {
                 emitter.onSuccess(categoryModelMapper.mapFromModels(categoryModelList));
             }
         }).subscribeOn(executionThread.io());
+    }
 
-
+    @Override
+    public Maybe<List<CategoryEntity>> getCategoriesByType(final String type) {
+        return Maybe.create(new MaybeOnSubscribe<List<CategoryEntity>>() {
+            @Override
+            public void subscribe(@NonNull MaybeEmitter<List<CategoryEntity>> emitter) throws Throwable {
+                List<CategoryModel> categoryModelList = categoryDao.getCategoriesByType(type);
+                emitter.onSuccess(categoryModelMapper.mapFromModels(categoryModelList));
+            }
+        });
     }
 
     @Override

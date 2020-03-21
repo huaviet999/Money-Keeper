@@ -16,16 +16,19 @@ public class CategoryModel {
     private String nImage;
     @ColumnInfo(name = "c_image")
     private String cImage;
+    @ColumnInfo(name = "type")
+    private String type;
 
-    public CategoryModel(){
+    public CategoryModel() {
 
     }
 
     @Ignore
-    public CategoryModel(String name, String nImage, String cImage) {
+    public CategoryModel(String name, String nImage, String cImage, String type) {
         this.name = name;
         this.nImage = nImage;
         this.cImage = cImage;
+        this.type = type;
     }
 
     public int getCategoryId() {
@@ -58,5 +61,13 @@ public class CategoryModel {
 
     public void setCImage(String cImage) {
         this.cImage = cImage;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

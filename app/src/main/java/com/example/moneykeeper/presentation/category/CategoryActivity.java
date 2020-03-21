@@ -31,14 +31,16 @@ import dagger.android.AndroidInjection;
 public class CategoryActivity extends BaseActivity implements CategoryContract.View {
     public static final int CATEGORY_REQUEST_CODE = 100;
     public static final String KEY_CATEGORY_NAME = "KEY_CATEGORY_NAME";
+    public static final String KEY_TRANSACTION_TYPE = "KEY_TRANSACTION_TYPE";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_category)
     RecyclerView rvCategory;
 
-    public static void startCategoryActivityForResult(AppCompatActivity activity) {
-        Intent intent = new Intent(activity,CategoryActivity.class);
-        activity.startActivityForResult(intent,CATEGORY_REQUEST_CODE);
+    public static void startCategoryActivityForResult(AppCompatActivity activity, String type) {
+        Intent intent = new Intent(activity, CategoryActivity.class);
+        intent.putExtra(KEY_TRANSACTION_TYPE, type);
+        activity.startActivityForResult(intent, CATEGORY_REQUEST_CODE);
     }
 
     @Inject
@@ -56,7 +58,10 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
-        presenter.getDefaultCategoriesList();
+
+        Bundle bundle = getIntent().getExtras();
+        String type = bundle.getString(KEY_TRANSACTION_TYPE);
+        presenter.getDefaultCategoriesListByType(type);
     }
 
     @Override
@@ -107,8 +112,8 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
             Intent intent = new Intent();
             Category category = categoryRecyclerViewAdapter.getItem(position);
 
-            intent.putExtra(KEY_CATEGORY_NAME,category.getName()); //Send category name back to NewTransaction activity
-            setResult(RESULT_OK,intent);
+            intent.putExtra(KEY_CATEGORY_NAME, category.getName()); //Send category name back to NewTransaction activity
+            setResult(RESULT_OK, intent);
             finish();
         }
 

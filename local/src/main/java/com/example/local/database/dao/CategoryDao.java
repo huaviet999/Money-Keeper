@@ -16,6 +16,9 @@ public abstract class CategoryDao {
     @Query("SELECT * FROM category_table")
     public abstract List<CategoryModel> getAllCategories();
 
+    @Query("SELECT * FROM category_table WHERE type=:type")
+    public abstract List<CategoryModel> getCategoriesByType(String type);
+
     @Query("SELECT * FROM category_table WHERE name=:categoryName")
     public abstract CategoryModel getCategoryByName(String categoryName);
 }

@@ -5,15 +5,17 @@ public class CategoryEntity {
     private String name;
     private String nImage;
     private String cImage;
+    private String type;
 
-    public CategoryEntity(){
+    public CategoryEntity() {
 
     }
 
-    public CategoryEntity(String name, String nImage, String cImage) {
+    public CategoryEntity(String name, String nImage, String cImage, String type) {
         this.name = name;
         this.nImage = nImage;
         this.cImage = cImage;
+        this.type = type;
     }
 
     public int getCategoryId() {
@@ -46,5 +48,13 @@ public class CategoryEntity {
 
     public void setCImage(String cImage) {
         this.cImage = cImage;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

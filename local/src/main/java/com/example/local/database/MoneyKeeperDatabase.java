@@ -54,20 +54,32 @@ public abstract class MoneyKeeperDatabase extends RoomDatabase {
                 @Override
                 public void subscribe(@io.reactivex.rxjava3.annotations.NonNull CompletableEmitter emitter) throws Throwable {
                     //Add Default Category Data
-                    categoryDao.insert(new CategoryModel("Food", "nfood", "cfood"));
-                    categoryDao.insert(new CategoryModel("Transport", "ntransport", "ctransport"));
-                    categoryDao.insert(new CategoryModel("Shopping", "nshopping", "cshopping"));
-                    categoryDao.insert(new CategoryModel("Bills", "nbill", "cbill"));
-                    categoryDao.insert(new CategoryModel("Health", "nhealth", "chealth"));
-                    categoryDao.insert(new CategoryModel("Telephone", "nphone", "cphone"));
-                    categoryDao.insert(new CategoryModel("Home", "nhome", "chome"));
-                    categoryDao.insert(new CategoryModel("Education", "neducation", "ceducation"));
-                    categoryDao.insert(new CategoryModel("Travel", "ntravel", "ctravel"));
-                    categoryDao.insert(new CategoryModel("Insurance", "ninsurance", "cinsurance"));
-                    categoryDao.insert(new CategoryModel("Social", "nsocial", "csocial"));
-                    categoryDao.insert(new CategoryModel("Sport", "nsport", "csport"));
-                    categoryDao.insert(new CategoryModel("Gift", "ngift", "cgift"));
-                    categoryDao.insert(new CategoryModel("Others", "nother", "cother"));
+                    categoryDao.insert(new CategoryModel("Food", "nfood", "cfood", "Expense"));
+                    categoryDao.insert(new CategoryModel("Transport", "ntransport", "ctransport", "Expense"));
+                    categoryDao.insert(new CategoryModel("Shopping", "nshopping", "cshopping", "Expense"));
+                    categoryDao.insert(new CategoryModel("Bills", "nbill", "cbill", "Expense"));
+                    categoryDao.insert(new CategoryModel("Health", "nhealth", "chealth", "Expense"));
+                    categoryDao.insert(new CategoryModel("Telephone", "nphone", "cphone", "Expense"));
+                    categoryDao.insert(new CategoryModel("Home", "nhome", "chome", "Expense"));
+                    categoryDao.insert(new CategoryModel("Education", "neducation", "ceducation", "Expense"));
+                    categoryDao.insert(new CategoryModel("Travel", "ntravel", "ctravel", "Expense"));
+                    categoryDao.insert(new CategoryModel("Insurance", "ninsurance", "cinsurance", "Expense"));
+                    categoryDao.insert(new CategoryModel("Social", "nsocial", "csocial", "Expense"));
+                    categoryDao.insert(new CategoryModel("Sport", "nsport", "csport", "Expense"));
+                    categoryDao.insert(new CategoryModel("Gift", "ngift", "cgift", "Expense"));
+                    categoryDao.insert(new CategoryModel("Others", "nother", "cother", "Expense"));
+
+                    categoryDao.insert(new CategoryModel("Salary", "nsalary", "csalary", "Income"));
+                    categoryDao.insert(new CategoryModel("Awards", "naward", "caward", "Income"));
+                    categoryDao.insert(new CategoryModel("Grants", "ngrant", "cgrant", "Income"));
+                    categoryDao.insert(new CategoryModel("Sale", "nsale", "csale", "Income"));
+                    categoryDao.insert(new CategoryModel("Rental", "nrental", "crental", "Income"));
+                    categoryDao.insert(new CategoryModel("Coupons", "ncoupon", "ccoupon", "Income"));
+                    categoryDao.insert(new CategoryModel("Lottery", "nlottery", "clottery", "Income"));
+                    categoryDao.insert(new CategoryModel("Dividend", "ndividend", "cdividend", "Income"));
+                    categoryDao.insert(new CategoryModel("Invest", "ninvestment", "cinvestment", "Income"));
+                    categoryDao.insert(new CategoryModel("Others", "nother", "cother", "Income"));
+
                     emitter.onComplete();
                 }
             }).subscribeOn(Schedulers.io())

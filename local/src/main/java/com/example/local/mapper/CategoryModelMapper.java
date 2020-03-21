@@ -22,6 +22,7 @@ public class CategoryModelMapper implements BaseMapper<CategoryEntity, CategoryM
         categoryEntity.setName(categoryModel.getName());
         categoryEntity.setCImage(categoryModel.getCImage());
         categoryEntity.setNImage(categoryModel.getNImage());
+        categoryEntity.setType(categoryModel.getType());
         return categoryEntity;
     }
 

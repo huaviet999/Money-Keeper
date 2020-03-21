@@ -177,7 +177,7 @@ public class NewTransactionActivity extends BaseActivity implements NewTransacti
         edtCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CategoryActivity.startCategoryActivityForResult(NewTransactionActivity.this);
+                CategoryActivity.startCategoryActivityForResult(NewTransactionActivity.this,KEY_TRANSACTION_SELECTED);
             }
         });
 

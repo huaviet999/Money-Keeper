@@ -6,12 +6,10 @@ import com.example.domain.interactor.category.GetCategoriesByNameUseCase;
 import com.example.domain.interactor.transaction.DeleteTransactionsDataUseCase;
 import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
 import com.example.domain.model.EmptyParam;
-import com.example.domain.model.MonthType;
 import com.example.domain.model.Record;
 import com.example.domain.model.Transaction;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;

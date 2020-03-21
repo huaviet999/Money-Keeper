@@ -1,5 +1,6 @@
 package utils;
 
+import com.example.domain.model.ExpenseType;
 import com.example.domain.model.Transaction;
 
 import java.util.ArrayList;
@@ -37,4 +38,5 @@ public class MoneyKeeperUtils {
         }
         return sortedTransactionList;
     }
+
 }
