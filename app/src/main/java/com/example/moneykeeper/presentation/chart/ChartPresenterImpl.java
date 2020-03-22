@@ -4,11 +4,14 @@ import android.util.Log;
 
 import com.example.domain.interactor.transaction.GetTransactionByTypeUseCase;
 import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
+import com.example.domain.model.Category;
 import com.example.domain.model.EmptyParam;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.presentation.base.Constants;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -45,8 +48,13 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
     private class GetTrasacntionsByTypeObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
+            Set<Category> categories = new HashSet<>();
             for (Transaction transaction : transactions) {
                 Log.e("TRANSACTION", transaction.getCategory().getName());
+                categories.add(transaction.getCategory());
+            }
+            for (Category category : categories) {
+                Log.e("CATEGORY", category.getName());
             }
         }
 

@@ -2,6 +2,7 @@ package com.example.domain.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Category {
 
@@ -49,5 +50,21 @@ public class Category {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category)) return false;
+        Category category = (Category) o;
+        return Objects.equals(name, category.name) &&
+                Objects.equals(type, category.type) &&
+                Objects.equals(nImage, category.nImage) &&
+                Objects.equals(cImage, category.cImage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type, nImage, cImage);
     }
 }

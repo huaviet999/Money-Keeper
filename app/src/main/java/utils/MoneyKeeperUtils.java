@@ -1,10 +1,15 @@
 package utils;
 
+import android.util.Log;
+
+import com.example.domain.model.Category;
 import com.example.domain.model.ExpenseType;
 import com.example.domain.model.Transaction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Viet Hua on 3/20/2020
@@ -37,6 +42,20 @@ public class MoneyKeeperUtils {
             }
         }
         return sortedTransactionList;
+    }
+    public static void  getTransactionListByCategory(List<Transaction> transactions,Category category){
+        List<Transaction> sortedList = new ArrayList<>();
+        Map<Category, List<Transaction>> map = new HashMap<Category, List<Transaction>>();
+        for (Transaction transaction : transactions) {
+            List<Transaction> list = map.get(transaction.getCategory());
+            if (list == null) {
+                list = new ArrayList<Transaction>();
+                map.put(transaction.getCategory(), list);
+            }
+            list.add(transaction);
+        }
+        Log.d("MAPTEST",map.toString());
+
     }
 
 }
