@@ -43,11 +43,11 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public Maybe<Transaction> getTransactionById(int transactionId) {
-        return transactionDataLocal.getTransactionById(transactionId).map(new Function<TransactionEntity, Transaction>() {
+    public Maybe<List<Transaction>> getTransactionsByType(String transactionType) {
+        return transactionDataLocal.getTransactionByType(transactionType).map(new Function<List<TransactionEntity>, List<Transaction>>() {
             @Override
-            public Transaction apply(TransactionEntity transactionEntity) throws Throwable {
-                return transactionEntityMapper.mapFromEntity(transactionEntity);
+            public List<Transaction> apply(List<TransactionEntity> transactionEntities) throws Throwable {
+                return transactionEntityMapper.mapFromEntities(transactionEntities);
             }
         });
     }

@@ -13,5 +13,5 @@ public interface TransactionDataLocal {
     Completable deleteAllTransactionsData();
     Completable deleteTransactionById(int transactionId);
     Maybe<List<TransactionEntity>> getAllTransactionData();
-    Maybe<TransactionEntity> getTransactionById(int transactionId);
+    Maybe<List<TransactionEntity>> getTransactionByType(String transactionType);
 }

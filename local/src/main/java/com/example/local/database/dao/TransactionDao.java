@@ -19,8 +19,8 @@ public abstract class TransactionDao {
     @Query("SELECT * FROM transaction_table")
     public abstract List<TransactionModel> getAllTransactionData();
 
-    @Query("SELECT * FROM transaction_table WHERE transaction_id=:transactionId")
-    public abstract TransactionModel getTransactionById(int transactionId);
+    @Query("SELECT * FROM transaction_table WHERE type=:transactionType")
+    public abstract List<TransactionModel> getTransactionByType(String transactionType);
 
     @Query("DELETE FROM transaction_table")
     public abstract void deleteAllTransactionData();

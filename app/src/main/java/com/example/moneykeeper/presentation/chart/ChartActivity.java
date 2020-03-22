@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.domain.model.ExpenseType;
 import com.example.domain.model.ModelTest1;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
+import com.example.moneykeeper.presentation.base.Constants;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
@@ -28,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
@@ -36,6 +41,7 @@ import dagger.android.AndroidInjection;
  * Created by Viet Hua on 3/11/2020
  */
 public class ChartActivity extends BaseActivity implements ChartContract.View {
+    public String KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME; //Default income show
     @Inject
     ChartContract.Presenter presenter;
     @BindView(R.id.chart_pie)
@@ -46,6 +52,10 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     RecyclerView rvExpensePercent;
     @BindView(R.id.rv_expense)
     RecyclerView rvExpenseList;
+    @BindView(R.id.btn_transaction_swap)
+    ImageView btnTransactionSwap;
+    @BindView(R.id.txt_transaction_type)
+    TextView tvTransactionType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +76,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     protected void onStart() {
         super.onStart();
         presenter.attachView(this);
-        presenter.getAllTransactionList();
+        presenter.getTransactionListByType(KEY_TRANSACTION_SELECTED);
     }
 
     @Override
@@ -96,6 +106,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         setupToolbar();
         setupPieChart();
         setupRecyclerView();
+        btnTransactionSwap.setOnClickListener(swapTransactionListener);
     }
 
     private void setupToolbar() {
@@ -133,6 +144,19 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         animatedPieView.applyConfig(config);
         animatedPieView.start();
     }
+
+    private View.OnClickListener swapTransactionListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            KEY_TRANSACTION_SELECTED = KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME)
+                    ? Constants.KEY_EXPENSE : Constants.KEY_INCOME;
+
+            tvTransactionType.setText(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? Constants.KEY_INCOME
+                    : Constants.KEY_EXPENSE);
+            presenter.getTransactionListByType(KEY_TRANSACTION_SELECTED);
+        }
+    };
+
 
     @Override
     public void showTransactionList(List<Transaction> transactionList) {

@@ -7,10 +7,11 @@ import com.example.moneykeeper.presentation.base.BaseView;
 import java.util.List;
 
 public interface ChartContract {
-    interface View extends BaseView{
+    interface View extends BaseView {
         void showTransactionList(List<Transaction> transactionList);
     }
-    interface Presenter extends BasePresenter<View>{
-            void getAllTransactionList();
+
+    interface Presenter extends BasePresenter<View> {
+        void getTransactionListByType(String transactionType);
     }
 }

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.domain.interactor.category.GetCategoryByNameUseCase;
 import com.example.domain.interactor.transaction.DeleteTransactionByIdUseCase;
-import com.example.domain.interactor.transaction.GetTransactionByIdUseCase;
+import com.example.domain.interactor.transaction.GetTransactionByTypeUseCase;
 import com.example.domain.model.Transaction;
 
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ public class DetailPresenterImpl implements DetailContract.Presenter {
     DetailContract.View mView;
 
     @Inject
-    GetTransactionByIdUseCase getTransactionByIdUseCase;
+    GetTransactionByTypeUseCase getTransactionByTypeUseCase;
     @Inject
     DeleteTransactionByIdUseCase deleteTransactionByIdUseCase;
     @Inject
@@ -41,7 +41,7 @@ public class DetailPresenterImpl implements DetailContract.Presenter {
 
     @Override
     public void getTransactionDataById(int transactionId) {
-        getTransactionByIdUseCase.execute(new GetTransactionByIdObserver(), transactionId);
+        getTransactionByTypeUseCase.execute(new GetTransactionByIdObserver(), transactionId);
     }
 
     @Override

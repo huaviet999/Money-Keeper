@@ -2,6 +2,7 @@ package com.example.moneykeeper.presentation.chart;
 
 import android.util.Log;
 
+import com.example.domain.interactor.transaction.GetTransactionByTypeUseCase;
 import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
 import com.example.domain.model.EmptyParam;
 import com.example.domain.model.Transaction;
@@ -17,7 +18,7 @@ import utils.MathUtils;
 
 public class ChartPresenterImpl implements ChartContract.Presenter {
     @Inject
-    GetTransactionsDataUseCase getTransactionsDataUseCase;
+    GetTransactionByTypeUseCase getTransactionByTypeUseCase;
 
     ChartContract.View mView;
 
@@ -37,14 +38,16 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
     }
 
     @Override
-    public void getAllTransactionList() {
-        getTransactionsDataUseCase.execute(new GetAllTransactionListObserver(), new EmptyParam());
+    public void getTransactionListByType(String transactionType) {
+        getTransactionByTypeUseCase.execute(new GetTrasacntionsByTypeObserver(), transactionType);
     }
 
-    private class GetAllTransactionListObserver extends DisposableMaybeObserver<List<Transaction>> {
+    private class GetTrasacntionsByTypeObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
-//            float test = MathUtils.getPercentByCategoryType(transactions,"Travel",Constants.KEY_EXPENSE);
+            for (Transaction transaction : transactions) {
+                Log.e("TRANSACTION", transaction.getCategory().getName());
+            }
         }
 
         @Override

@@ -4,7 +4,6 @@ package com.example.local;
 import com.example.data.entity.TransactionEntity;
 import com.example.data.repository.TransactionDataLocal;
 import com.example.domain.executor.ExecutionThread;
-import com.example.domain.model.Transaction;
 import com.example.local.database.MoneyKeeperDatabase;
 import com.example.local.database.dao.TransactionDao;
 import com.example.local.mapper.TransactionModelMapper;
@@ -67,12 +66,12 @@ public class TransactionDataLocalImpl implements TransactionDataLocal {
     }
 
     @Override
-    public Maybe<TransactionEntity> getTransactionById(final int transactionId) {
-        return Maybe.create(new MaybeOnSubscribe<TransactionEntity>() {
+    public Maybe<List<TransactionEntity>> getTransactionByType(final String transactionType) {
+        return Maybe.create(new MaybeOnSubscribe<List<TransactionEntity>>() {
             @Override
-            public void subscribe(@NonNull MaybeEmitter<TransactionEntity> emitter) throws Throwable {
-                TransactionModel transactionModel = transactionDao.getTransactionById(transactionId);
-                emitter.onSuccess(transactionModelMapper.mapFromModel(transactionModel));
+            public void subscribe(@NonNull MaybeEmitter<List<TransactionEntity>> emitter) throws Throwable {
+                List<TransactionModel> transactionModelList = transactionDao.getTransactionByType(transactionType);
+                emitter.onSuccess(transactionModelMapper.mapFromModels(transactionModelList));
             }
         });
     }
