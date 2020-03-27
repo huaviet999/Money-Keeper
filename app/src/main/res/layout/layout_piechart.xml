@@ -24,14 +24,16 @@
             android:orientation="vertical">
 
             <TextView
+                android:textColor="@color/income_button_color"
                 android:id="@+id/txt_transaction_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Expenses"
+                android:text="Incomes"
                 android:textSize="@dimen/font_14"></TextView>
 
             <TextView
+                android:id="@+id/txt_total_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

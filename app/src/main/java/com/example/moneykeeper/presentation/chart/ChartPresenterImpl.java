@@ -2,11 +2,13 @@ package com.example.moneykeeper.presentation.chart;
 
 import android.util.Log;
 
+import com.example.domain.interactor.transaction.GetSumAndPercentUseCase;
 import com.example.domain.interactor.transaction.GetTransactionByTypeUseCase;
-import com.example.domain.interactor.transaction.GetTransactionListByCategoryUseCase;
 import com.example.domain.model.Category;
+import com.example.domain.model.Percent;
 import com.example.domain.model.Transaction;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,13 +17,15 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+import utils.MathUtils;
+import utils.MoneyKeeperUtils;
 
 public class ChartPresenterImpl implements ChartContract.Presenter {
     @Inject
     GetTransactionByTypeUseCase getTransactionByTypeUseCase;
 
     @Inject
-    GetTransactionListByCategoryUseCase getTransactionListByCategoryUseCase;
+    GetSumAndPercentUseCase getSumAndPercentUseCase;
 
     ChartContract.View mView;
 
@@ -48,14 +52,15 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
     private class GetTransactionsByTypeObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
-            Set<Category> categories = new HashSet<>();
-            for (Transaction transaction : transactions) {
-                categories.add(transaction.getCategory());
+            long total = MathUtils.getTransactionSum(transactions);
+            List<Percent> percents = new ArrayList<>();
+            List<Category> categoryList = MoneyKeeperUtils.getUniqueCategoryList(transactions);
+            for (Category category : categoryList) {
+                percents.add(new Percent(category));
             }
 
-            for(Category category : categories){
-                getTransactionListByCategoryUseCase.execute(new GetTransactionListByCategoryObserver(),category.getName());
-            }
+            mView.showTotal(total);
+            getSumAndPercentUseCase.execute(new GetTransactionListByCategoryObserver(), percents);
 
 
         }
@@ -70,12 +75,11 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
 
         }
     }
-    private class GetTransactionListByCategoryObserver extends DisposableMaybeObserver<List<Transaction>>{
+
+    private class GetTransactionListByCategoryObserver extends DisposableMaybeObserver<List<Percent>> {
         @Override
-        public void onSuccess(@NonNull List<Transaction> transactions) {
-            for (Transaction transaction : transactions) {
-                Log.d("TRANSACTION",transaction.getCategory().getName());
-            }
+        public void onSuccess(@NonNull List<Percent> percents) {
+            mView.showPercentList(percents);
         }
 
         @Override

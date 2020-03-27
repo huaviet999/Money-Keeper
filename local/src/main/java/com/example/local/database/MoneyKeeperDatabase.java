@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.domain.executor.ExecutionThread;
 import com.example.domain.model.Category;
 import com.example.local.database.dao.CategoryDao;
+import com.example.local.database.dao.PercentDao;
 import com.example.local.database.dao.TransactionDao;
 import com.example.local.model.CategoryModel;
 import com.example.local.model.TransactionModel;
@@ -32,6 +33,8 @@ public abstract class MoneyKeeperDatabase extends RoomDatabase {
     public abstract TransactionDao transactionDao();
 
     public abstract CategoryDao categoryDao();
+
+    public abstract PercentDao percentDao();
 
     public static MoneyKeeperDatabase getInstance(Context context) {
         if (instance == null) {

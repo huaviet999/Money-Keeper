@@ -60,32 +60,30 @@ public class MathUtils {
         return incomeSum;
     }
 
-    public static long getSumByCategoryType(List<Transaction> transactionList, String categoryType) {
+    public static long getTransactionSum(List<Transaction> transactionList) {
         long sum = 0;
         for (Transaction transaction : transactionList) {
-            if (transaction.getCategory().getName().equals(categoryType)) {
                 sum += transaction.getAmount();
-            }
         }
         return sum;
     }
 
-    public static float getPercentByCategoryType(List<Transaction> transactionList, String categoryType, String transactionType) {
-        float percent;
-        long total = 0;
-        long categorySum = getSumByCategoryType(transactionList, categoryType);
-        switch (transactionType) {
-            case Constants.KEY_INCOME:
-                total = getIncomeSum(transactionList);
-                break;
-            case Constants.KEY_EXPENSE:
-                total = getExpenseSum(transactionList);
-                break;
-        }
-        percent = ((float) categorySum / total)*100;
-        Log.e("SUM",String.valueOf(categorySum));
-        Log.e("SUM",String.valueOf(total));
-        Log.e("SUM",String.valueOf(percent));
-        return percent;
-    }
+//    public static float getPercentByCategoryType(List<Transaction> transactionList, String categoryType, String transactionType) {
+//        float percent;
+//        long total = 0;
+//        long categorySum = getSumByCategoryType(transactionList, categoryType);
+//        switch (transactionType) {
+//            case Constants.KEY_INCOME:
+//                total = getIncomeSum(transactionList);
+//                break;
+//            case Constants.KEY_EXPENSE:
+//                total = getExpenseSum(transactionList);
+//                break;
+//        }
+//        percent = ((float) categorySum / total)*100;
+//        Log.e("SUM",String.valueOf(categorySum));
+//        Log.e("SUM",String.valueOf(total));
+//        Log.e("SUM",String.valueOf(percent));
+//        return percent;
+//    }
 }

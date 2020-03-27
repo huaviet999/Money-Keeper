@@ -1,14 +1,17 @@
 package com.example.local;
 
 
+import com.example.data.entity.PercentEntity;
 import com.example.data.entity.TransactionEntity;
 import com.example.data.repository.TransactionDataLocal;
 import com.example.domain.executor.ExecutionThread;
 import com.example.local.database.MoneyKeeperDatabase;
+import com.example.local.database.dao.PercentDao;
 import com.example.local.database.dao.TransactionDao;
 import com.example.local.mapper.TransactionModelMapper;
 import com.example.local.model.TransactionModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,12 +31,15 @@ public class TransactionDataLocalImpl implements TransactionDataLocal {
 
     private ExecutionThread executionThread;
     private TransactionDao transactionDao;
+    private PercentDao percentDao;
     private TransactionModelMapper transactionModelMapper;
+
 
     @Inject
     public TransactionDataLocalImpl(MoneyKeeperDatabase moneyKeeperDatabase, ExecutionThread executionThread) {
         this.executionThread = executionThread;
         this.transactionDao = moneyKeeperDatabase.transactionDao();
+        this.percentDao = moneyKeeperDatabase.percentDao();
         this.transactionModelMapper = new TransactionModelMapper();
     }
 
@@ -88,12 +94,17 @@ public class TransactionDataLocalImpl implements TransactionDataLocal {
     }
 
     @Override
-    public Maybe<List<TransactionEntity>> getTransactionListByCategory(final String categoryName) {
-        return Maybe.create(new MaybeOnSubscribe<List<TransactionEntity>>() {
+    public Maybe<List<PercentEntity>> getSumAndPercent(final List<PercentEntity> percentEntityList) {
+        return Maybe.create(new MaybeOnSubscribe<List<PercentEntity>>() {
             @Override
-            public void subscribe(@NonNull MaybeEmitter<List<TransactionEntity>> emitter) throws Throwable {
-                List<TransactionModel> transactionModelList = transactionDao.getTransactionListByCategory(categoryName);
-                emitter.onSuccess(transactionModelMapper.mapFromModels(transactionModelList));
+            public void subscribe(@NonNull MaybeEmitter<List<PercentEntity>> emitter) throws Throwable {
+                List<PercentEntity> result = new ArrayList<>();
+                for(PercentEntity percentEntity : percentEntityList){
+                    long sum = percentDao.getSumAmount(percentEntity.getCategoryEntity().getName());
+                    percentEntity.setSum(sum);
+                    result.add(percentEntity);
+                }
+                emitter.onSuccess(result);
             }
         });
     }

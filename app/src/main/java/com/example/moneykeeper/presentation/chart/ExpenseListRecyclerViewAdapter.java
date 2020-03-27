@@ -5,18 +5,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.domain.model.ModelTest1;
+import com.example.domain.model.Percent;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import utils.MathUtils;
+
 /**
  * Created by Viet Hua on 3/14/2020
  */
-public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTest1, ExpenseListRecyclerViewAdapter.ViewHolder> {
-    public ExpenseListRecyclerViewAdapter(Context context, ItemClickListener<ModelTest1> listener) {
+public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Percent, ExpenseListRecyclerViewAdapter.ViewHolder> {
+    public ExpenseListRecyclerViewAdapter(Context context, ItemClickListener<Percent> listener) {
         super(context);
         setListener(listener);
     }
@@ -30,26 +32,27 @@ public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Mode
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelTest1 data = mListData.get(position);
+        Percent data = mListData.get(position);
         holder.renderUI(data);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView tvType, tvPercent, tvNumber;
+        TextView tvCategory, tvPercent, tvAmount;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            tvType = itemView.findViewById(R.id.txt_category);
+            tvCategory = itemView.findViewById(R.id.txt_category);
             tvPercent = itemView.findViewById(R.id.txt_percent);
-            tvNumber = itemView.findViewById(R.id.txt_amount);
+            tvAmount = itemView.findViewById(R.id.txt_amount);
         }
 
-        public void renderUI(ModelTest1 data) {
-            tvType.setText(data.getExpenseType().toString());
-            tvPercent.setText(data.getPercent());
-            tvNumber.setText(data.getMoney());
+        public void renderUI(Percent data) {
+            tvCategory.setText(data.getCategory().getName());
+            tvPercent.setText(String.valueOf(data.getPercent()));
+            String amount = MathUtils.getFormatNumberFromLong(data.getSum());
+            tvAmount.setText(amount);
         }
 
         @Override

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.domain.model.ExpenseType;
 import com.example.domain.model.ModelTest1;
+import com.example.domain.model.Percent;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
@@ -30,12 +31,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import utils.MathUtils;
 
 /**
  * Created by Viet Hua on 3/11/2020
@@ -56,6 +60,10 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     ImageView btnTransactionSwap;
     @BindView(R.id.txt_transaction_type)
     TextView tvTransactionType;
+    @BindView(R.id.txt_total_number)
+    TextView tvTotal;
+    @BindView(R.id.txt_percent_title)
+    TextView tvPercentTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,12 +130,10 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         percentRecyclerViewAdapter = new PercentRecyclerViewAdapter(this, null);
-        percentRecyclerViewAdapter.setData(testData());
         rvExpensePercent.setLayoutManager(linearLayoutManager);
         rvExpensePercent.setAdapter(percentRecyclerViewAdapter);
 
         expenseListRecyclerViewAdapter = new ExpenseListRecyclerViewAdapter(this, null);
-        expenseListRecyclerViewAdapter.setData(testData());
         rvExpenseList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvExpenseList.setAdapter(expenseListRecyclerViewAdapter);
     }
@@ -151,34 +157,33 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
             KEY_TRANSACTION_SELECTED = KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME)
                     ? Constants.KEY_EXPENSE : Constants.KEY_INCOME;
 
-            tvTransactionType.setText(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? Constants.KEY_INCOME
-                    : Constants.KEY_EXPENSE);
+            changeTextViewTitle();
             presenter.getTransactionListByType(KEY_TRANSACTION_SELECTED);
         }
     };
 
+    private void changeTextViewTitle() {
+        tvTransactionType.setText(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? Constants.KEY_INCOME
+                : Constants.KEY_EXPENSE);
 
-    @Override
-    public void showTransactionList(List<Transaction> transactionList) {
+        tvTransactionType.setTextColor( ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
+                R.color.income_button_color : R.color.expense_button_color, null));
 
+        tvPercentTitle.setText(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? getString(R.string.income)
+                : getString(R.string.expense));
+
+        tvPercentTitle.setTextColor( ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
+                 R.color.income_button_color : R.color.expense_button_color, null));
     }
 
-    private List<ModelTest1> testData() {
-        List<ModelTest1> mData = new ArrayList<>();
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Food));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Transport));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Shopping));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Bills));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Health));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Telephones));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Home));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Education));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Travel));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Insurance));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Social));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Sport));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Gift));
-        mData.add(new ModelTest1("46.5%", "40000", ExpenseType.Others));
-        return mData;
+    @Override
+    public void showPercentList(List<Percent> percentList) {
+        percentRecyclerViewAdapter.setData(percentList);
+        expenseListRecyclerViewAdapter.setData(percentList);
+    }
+
+    @Override
+    public void showTotal(long total) {
+        tvTotal.setText(MathUtils.getFormatNumberFromLong(total));
     }
 }

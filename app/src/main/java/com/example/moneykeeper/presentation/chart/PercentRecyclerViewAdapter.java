@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.domain.model.ModelTest1;
+import com.example.domain.model.Percent;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
 import com.example.moneykeeper.presentation.base.ItemClickListener;
@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by Viet Hua on 3/14/2020
  */
-public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTest1, PercentRecyclerViewAdapter.ViewHolder> {
+public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<Percent, PercentRecyclerViewAdapter.ViewHolder> {
     private static final int MAX_ITEM = 5;
 
-    public PercentRecyclerViewAdapter(Context context, ItemClickListener<ModelTest1> listener) {
+    public PercentRecyclerViewAdapter(Context context, ItemClickListener<Percent> listener) {
         super(context);
         setListener(listener);
     }
@@ -44,25 +44,25 @@ public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<ModelTes
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ModelTest1 data = mListData.get(position);
+        Percent data = mListData.get(position);
         holder.renderUI(data);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView tvType, tvPercent;
+        TextView tvCategory, tvPercent;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            tvType = itemView.findViewById(R.id.txt_category);
+            tvCategory = itemView.findViewById(R.id.txt_category);
             tvPercent = itemView.findViewById(R.id.txt_percent);
 
         }
 
-        public void renderUI(ModelTest1 data) {
-            tvType.setText(data.getExpenseType().toString());
-            tvPercent.setText(data.getPercent());
+        public void renderUI(Percent data) {
+            tvCategory.setText(data.getCategory().getName());
+            tvPercent.setText(String.valueOf(data.getPercent()));
         }
 
         @Override

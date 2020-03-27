@@ -1,5 +1,6 @@
 package com.example.data.repository;
 
+import com.example.data.entity.PercentEntity;
 import com.example.data.entity.TransactionEntity;
 import com.example.domain.model.Transaction;
 
@@ -14,6 +15,6 @@ public interface TransactionDataLocal {
     Completable deleteTransactionById(int transactionId);
     Maybe<List<TransactionEntity>> getAllTransactionData();
     Maybe<List<TransactionEntity>> getTransactionByType(String transactionType);
-    Maybe<List<TransactionEntity>> getTransactionListByCategory(String categoryName);
+    Maybe<List<PercentEntity>> getSumAndPercent(List<PercentEntity> percentEntityList);
     Maybe<TransactionEntity> getTransactionById(int transactionId);
 }

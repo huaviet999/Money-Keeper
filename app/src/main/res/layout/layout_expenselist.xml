@@ -11,10 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_10">
         <TextView
+            android:id="@+id/txt_percent_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/expense"
-            android:textColor="@color/expense_button_color"
+            android:text="@string/income"
+            android:textColor="@color/income_button_color"
             android:textSize="@dimen/font_22"
             android:textStyle="bold"></TextView>
 

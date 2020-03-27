@@ -1,5 +1,6 @@
 package com.example.domain.repository;
 
+import com.example.domain.model.Percent;
 import com.example.domain.model.Transaction;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface TransactionRepository {
     Completable deleteTransactionById(int transactionId);
     Maybe<List<Transaction>> getAllTransactionData();
     Maybe<List<Transaction>> getTransactionsByType(String transactionType);
-    Maybe<List<Transaction>> getTransactionListByCategory(String categoryName);
+    Maybe<List<Percent>> getSumAndPercent(List<Percent> percentList);
     Maybe<Transaction> getTransactionById(int transactionId);
 }
