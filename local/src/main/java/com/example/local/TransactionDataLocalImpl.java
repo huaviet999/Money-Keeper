@@ -77,6 +77,28 @@ public class TransactionDataLocalImpl implements TransactionDataLocal {
     }
 
     @Override
+    public Maybe<TransactionEntity> getTransactionById(final int transactionId) {
+        return Maybe.create(new MaybeOnSubscribe<TransactionEntity>() {
+            @Override
+            public void subscribe(@NonNull MaybeEmitter<TransactionEntity> emitter) throws Throwable {
+                TransactionModel transactionModel = transactionDao.getTransactionById(transactionId);
+                emitter.onSuccess(transactionModelMapper.mapFromModel(transactionModel));
+            }
+        });
+    }
+
+    @Override
+    public Maybe<List<TransactionEntity>> getTransactionListByCategory(final String categoryName) {
+        return Maybe.create(new MaybeOnSubscribe<List<TransactionEntity>>() {
+            @Override
+            public void subscribe(@NonNull MaybeEmitter<List<TransactionEntity>> emitter) throws Throwable {
+                List<TransactionModel> transactionModelList = transactionDao.getTransactionListByCategory(categoryName);
+                emitter.onSuccess(transactionModelMapper.mapFromModels(transactionModelList));
+            }
+        });
+    }
+
+    @Override
     public Completable deleteAllTransactionsData() {
         return Completable.create(new CompletableOnSubscribe() {
             @Override

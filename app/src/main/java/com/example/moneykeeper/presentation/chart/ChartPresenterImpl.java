@@ -3,11 +3,9 @@ package com.example.moneykeeper.presentation.chart;
 import android.util.Log;
 
 import com.example.domain.interactor.transaction.GetTransactionByTypeUseCase;
-import com.example.domain.interactor.transaction.GetTransactionsDataUseCase;
+import com.example.domain.interactor.transaction.GetTransactionListByCategoryUseCase;
 import com.example.domain.model.Category;
-import com.example.domain.model.EmptyParam;
 import com.example.domain.model.Transaction;
-import com.example.moneykeeper.presentation.base.Constants;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +15,13 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
-import utils.MathUtils;
 
 public class ChartPresenterImpl implements ChartContract.Presenter {
     @Inject
     GetTransactionByTypeUseCase getTransactionByTypeUseCase;
+
+    @Inject
+    GetTransactionListByCategoryUseCase getTransactionListByCategoryUseCase;
 
     ChartContract.View mView;
 
@@ -42,19 +42,39 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
 
     @Override
     public void getTransactionListByType(String transactionType) {
-        getTransactionByTypeUseCase.execute(new GetTrasacntionsByTypeObserver(), transactionType);
+        getTransactionByTypeUseCase.execute(new GetTransactionsByTypeObserver(), transactionType);
     }
 
-    private class GetTrasacntionsByTypeObserver extends DisposableMaybeObserver<List<Transaction>> {
+    private class GetTransactionsByTypeObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
             Set<Category> categories = new HashSet<>();
             for (Transaction transaction : transactions) {
-                Log.e("TRANSACTION", transaction.getCategory().getName());
                 categories.add(transaction.getCategory());
             }
-            for (Category category : categories) {
-                Log.e("CATEGORY", category.getName());
+
+            for(Category category : categories){
+                getTransactionListByCategoryUseCase.execute(new GetTransactionListByCategoryObserver(),category.getName());
+            }
+
+
+        }
+
+        @Override
+        public void onError(@NonNull Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
+    }
+    private class GetTransactionListByCategoryObserver extends DisposableMaybeObserver<List<Transaction>>{
+        @Override
+        public void onSuccess(@NonNull List<Transaction> transactions) {
+            for (Transaction transaction : transactions) {
+                Log.d("TRANSACTION",transaction.getCategory().getName());
             }
         }
 

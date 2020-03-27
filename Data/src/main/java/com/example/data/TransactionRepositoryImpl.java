@@ -53,6 +53,26 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
+    public Maybe<Transaction> getTransactionById(int transactionId) {
+        return transactionDataLocal.getTransactionById(transactionId).map(new Function<TransactionEntity, Transaction>() {
+            @Override
+            public Transaction apply(TransactionEntity transactionEntity) throws Throwable {
+                return transactionEntityMapper.mapFromEntity(transactionEntity);
+            }
+        });
+    }
+
+    @Override
+    public Maybe<List<Transaction>> getTransactionListByCategory(String categoryName) {
+        return transactionDataLocal.getTransactionListByCategory(categoryName).map(new Function<List<TransactionEntity>, List<Transaction>>() {
+            @Override
+            public List<Transaction> apply(List<TransactionEntity> transactionEntities) throws Throwable {
+                return transactionEntityMapper.mapFromEntities(transactionEntities);
+            }
+        });
+    }
+
+    @Override
     public Completable deleteAllTransactionData() {
         return transactionDataLocal.deleteAllTransactionsData();
     }
