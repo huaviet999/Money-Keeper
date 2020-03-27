@@ -2,6 +2,7 @@ package com.example.moneykeeper.presentation.chart;
 
 import android.util.Log;
 
+import com.example.domain.interactor.category.GetCategoriesByNameUseCase;
 import com.example.domain.interactor.transaction.GetSumAndPercentUseCase;
 import com.example.domain.interactor.transaction.GetTransactionByTypeUseCase;
 import com.example.domain.model.Category;
@@ -26,6 +27,8 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
 
     @Inject
     GetSumAndPercentUseCase getSumAndPercentUseCase;
+    @Inject
+    GetCategoriesByNameUseCase getCategoriesByNameUseCase;
 
     ChartContract.View mView;
 
@@ -52,16 +55,9 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
     private class GetTransactionsByTypeObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
+            getCategoriesByNameUseCase.execute(new GetCategotyByNameObserver(),transactions);
             long total = MathUtils.getTransactionSum(transactions);
-            List<Percent> percents = new ArrayList<>();
-            List<Category> categoryList = MoneyKeeperUtils.getUniqueCategoryList(transactions);
-            for (Category category : categoryList) {
-                percents.add(new Percent(category));
-            }
-
             mView.showTotal(total);
-            getSumAndPercentUseCase.execute(new GetTransactionListByCategoryObserver(), percents);
-
 
         }
 
@@ -80,6 +76,31 @@ public class ChartPresenterImpl implements ChartContract.Presenter {
         @Override
         public void onSuccess(@NonNull List<Percent> percents) {
             mView.showPercentList(percents);
+        }
+
+        @Override
+        public void onError(@NonNull Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
+    }
+    private class GetCategotyByNameObserver extends DisposableMaybeObserver<List<Transaction>> {
+        @Override
+        public void onSuccess(@NonNull List<Transaction> transactions) {
+
+            List<Percent> percents = new ArrayList<>();
+            List<Category> categoryList = MoneyKeeperUtils.getUniqueCategoryList(transactions);
+            for (Category category : categoryList) {
+
+                percents.add(new Percent(category));
+            }
+
+
+            getSumAndPercentUseCase.execute(new GetTransactionListByCategoryObserver(), percents);
         }
 
         @Override

@@ -15,6 +15,7 @@ public class CategoryEntityMapper implements BaseMapper<CategoryEntity, Category
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setCategoryId(category.getCategoryId());
         categoryEntity.setName(category.getName());
+        categoryEntity.setType(category.getType());
         categoryEntity.setNImage(category.getNImage());
         categoryEntity.setCImage(category.getCImage());
         return categoryEntity;
@@ -28,6 +29,7 @@ public class CategoryEntityMapper implements BaseMapper<CategoryEntity, Category
         Category category = new Category();
         category.setCategoryId(categoryEntity.getCategoryId());
         category.setName(categoryEntity.getName());
+        category.setType(categoryEntity.getType());
         category.setCImage(categoryEntity.getCImage());
         category.setNImage(categoryEntity.getNImage());
         return category;

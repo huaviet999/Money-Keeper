@@ -50,7 +50,7 @@ public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Perc
 
         public void renderUI(Percent data) {
             tvCategory.setText(data.getCategory().getName());
-            tvPercent.setText(String.format("%.2f %%",data.getPercent()));
+            tvPercent.setText(String.format("%.0f %%",data.getPercent()));
             String amount = MathUtils.getFormatNumberFromLong(data.getSum());
             tvAmount.setText(amount);
         }

@@ -101,7 +101,7 @@ public class TransactionDataLocalImpl implements TransactionDataLocal {
                 List<PercentEntity> result = new ArrayList<>();
                 for(PercentEntity percentEntity : percentEntityList){
                     long sumByCategory = percentDao.getSumAmountByCategory(percentEntity.getCategoryEntity().getName());
-                    long total = percentDao.getSumAmount();
+                    long total = percentDao.getSumAmount(percentEntity.getCategoryEntity().getType());
                     float percent = ((float) sumByCategory / total)* 100;
                     percentEntity.setSum(sumByCategory);
                     percentEntity.setPercent(percent);
