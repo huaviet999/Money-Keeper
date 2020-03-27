@@ -9,6 +9,7 @@
         android:icon="@drawable/ic_summary_black_24dp"
         android:title="@string/summary"></item>
     <item
+        android:visible="false"
         android:id="@+id/item_transaction"
         android:icon="@drawable/ic_transaction_black_24dp"
         android:title="@string/transaction"></item>
