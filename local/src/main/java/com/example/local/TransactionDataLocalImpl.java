@@ -100,8 +100,11 @@ public class TransactionDataLocalImpl implements TransactionDataLocal {
             public void subscribe(@NonNull MaybeEmitter<List<PercentEntity>> emitter) throws Throwable {
                 List<PercentEntity> result = new ArrayList<>();
                 for(PercentEntity percentEntity : percentEntityList){
-                    long sum = percentDao.getSumAmount(percentEntity.getCategoryEntity().getName());
-                    percentEntity.setSum(sum);
+                    long sumByCategory = percentDao.getSumAmountByCategory(percentEntity.getCategoryEntity().getName());
+                    long total = percentDao.getSumAmount();
+                    float percent = ((float) sumByCategory / total)* 100;
+                    percentEntity.setSum(sumByCategory);
+                    percentEntity.setPercent(percent);
                     result.add(percentEntity);
                 }
                 emitter.onSuccess(result);

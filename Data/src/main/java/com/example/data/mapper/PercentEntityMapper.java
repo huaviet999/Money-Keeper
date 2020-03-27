@@ -32,6 +32,7 @@ public class PercentEntityMapper implements BaseMapper<PercentEntity, Percent> {
     public Percent mapFromEntity(PercentEntity percentEntity) {
         Percent percent = new Percent();
         percent.setSum(percentEntity.getSum());
+        percent.setPercent(percentEntity.getPercent());
         percent.setCategory(categoryEntityMapper.mapFromEntity(percentEntity.getCategoryEntity()));
         return percent;
     }

@@ -62,7 +62,7 @@ public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<Percent,
 
         public void renderUI(Percent data) {
             tvCategory.setText(data.getCategory().getName());
-            tvPercent.setText(String.valueOf(data.getPercent()));
+            tvPercent.setText(String.format("%.2f %%",data.getPercent()));
         }
 
         @Override
