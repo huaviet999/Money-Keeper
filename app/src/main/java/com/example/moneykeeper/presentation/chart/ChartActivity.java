@@ -3,6 +3,7 @@ package com.example.moneykeeper.presentation.chart;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -112,7 +114,6 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
 
     private void setupViews() {
         setupToolbar();
-        setupPieChart();
         setupRecyclerView();
         btnTransactionSwap.setOnClickListener(swapTransactionListener);
     }
@@ -138,15 +139,17 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         rvExpenseList.setAdapter(expenseListRecyclerViewAdapter);
     }
 
-    private void setupPieChart() {
+    private void setupPieChart(List<Percent> percentList) {
+        Log.d("SetupPieChart","start");
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
         config.strokeWidth(80);
-        config.startAngle(-90)// Starting angle offset
-                .addData(new SimplePieInfo(50f, Color.parseColor("#00ff00"), "Income"))
-                .addData(new SimplePieInfo(50f, Color.parseColor("#d34ede"), "CC"))
-                .addData(new SimplePieInfo(50f, Color.parseColor("#ff45ed"), "SS"))
-                .addData(new SimplePieInfo(50f, Color.parseColor("#ff0000"), "Expense"))
-                .duration(1000);// dr// aw pie animation duration
+        config.startAngle(-90);
+        config.duration(1000);
+        for(Percent percent : percentList){
+            Random rnd = new Random();
+            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            config.addData(new SimplePieInfo(percent.getSum(), color, percent.getCategory().getName()));
+        }
         animatedPieView.applyConfig(config);
         animatedPieView.start();
     }
@@ -166,24 +169,27 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         tvTransactionType.setText(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? Constants.KEY_INCOME
                 : Constants.KEY_EXPENSE);
 
-        tvTransactionType.setTextColor( ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
+        tvTransactionType.setTextColor(ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
                 R.color.income_button_color : R.color.expense_button_color, null));
 
         tvPercentTitle.setText(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? getString(R.string.income)
                 : getString(R.string.expense));
 
-        tvPercentTitle.setTextColor( ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
-                 R.color.income_button_color : R.color.expense_button_color, null));
+        tvPercentTitle.setTextColor(ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
+                R.color.income_button_color : R.color.expense_button_color, null));
     }
 
     @Override
     public void showPercentList(List<Percent> percentList) {
         percentRecyclerViewAdapter.setData(percentList);
         expenseListRecyclerViewAdapter.setData(percentList);
+        setupPieChart(percentList);
+
     }
 
     @Override
     public void showTotal(long total) {
-        tvTotal.setText(MathUtils.getFormatNumberFromLong(total));
+        tvTotal.setText(MathUtils.getFormatNumberFromLongWithoutCurrency(total));
+
     }
 }
