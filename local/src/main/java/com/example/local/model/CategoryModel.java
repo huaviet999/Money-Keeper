@@ -18,17 +18,20 @@ public class CategoryModel {
     private String cImage;
     @ColumnInfo(name = "type")
     private String type;
+    @ColumnInfo(name = "color_id")
+    private String colorId;
 
     public CategoryModel() {
 
     }
 
     @Ignore
-    public CategoryModel(String name, String nImage, String cImage, String type) {
+    public CategoryModel(String name, String nImage, String cImage, String type, String colorId) {
         this.name = name;
         this.nImage = nImage;
         this.cImage = cImage;
         this.type = type;
+        this.colorId = colorId;
     }
 
     public int getCategoryId() {
@@ -69,5 +72,13 @@ public class CategoryModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(String colorId) {
+        this.colorId = colorId;
     }
 }

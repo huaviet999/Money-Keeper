@@ -3,8 +3,10 @@ package com.example.moneykeeper.presentation.chart;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.domain.model.Category;
 import com.example.domain.model.Percent;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
@@ -38,7 +40,7 @@ public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Perc
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView tvCategory, tvPercent, tvAmount;
-
+        ImageView imgCategory;
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -46,6 +48,7 @@ public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Perc
             tvCategory = itemView.findViewById(R.id.txt_category);
             tvPercent = itemView.findViewById(R.id.txt_percent);
             tvAmount = itemView.findViewById(R.id.txt_amount);
+            imgCategory = itemView.findViewById(R.id.img_category);
         }
 
         public void renderUI(Percent data) {
@@ -53,6 +56,10 @@ public class ExpenseListRecyclerViewAdapter extends BaseRecyclerViewAdapter<Perc
             tvPercent.setText(String.format("%.0f %%",data.getPercent()));
             String amount = MathUtils.getFormatNumberFromLong(data.getSum());
             tvAmount.setText(amount);
+            setCategoryImage(data.getCategory());
+        }
+        public void setCategoryImage(Category category) {
+            imgCategory.setImageResource(context.getResources().getIdentifier(category.getCImage(), "drawable", context.getPackageName()));
         }
 
         @Override

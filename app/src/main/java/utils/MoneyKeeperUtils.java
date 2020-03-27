@@ -47,19 +47,18 @@ public class MoneyKeeperUtils {
         return sortedTransactionList;
     }
 
-    public static void getTransactionListByCategory(List<Transaction> transactions, Category category) {
-        List<Transaction> sortedList = new ArrayList<>();
-        Map<Category, List<Transaction>> map = new HashMap<Category, List<Transaction>>();
-        for (Transaction transaction : transactions) {
-            List<Transaction> list = map.get(transaction.getCategory());
-            if (list == null) {
-                list = new ArrayList<Transaction>();
-                map.put(transaction.getCategory(), list);
+    //Bubble sort
+    public static List<Percent> sortListBySum(List<Percent> percentList) {
+        for (int i = 0; i < percentList.size() - 1; i++) {
+            for (int j = 1; j < percentList.size(); j++) {
+                if (percentList.get(j - 1).getSum() < percentList.get(j).getSum()) {
+                    Percent temp = percentList.get(j - 1);
+                    percentList.set(j - 1, percentList.get(j));
+                    percentList.set(j, temp);
+                }
             }
-            list.add(transaction);
         }
-        Log.d("MAPTEST", map.toString());
-
+        return percentList;
     }
 
     public static List<Category> getUniqueCategoryList(List<Transaction> transactions) {

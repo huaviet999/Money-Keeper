@@ -6,6 +6,7 @@ public class CategoryEntity {
     private String nImage;
     private String cImage;
     private String type;
+    private String colorId;
 
     public CategoryEntity() {
 
@@ -56,5 +57,13 @@ public class CategoryEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(String colorId) {
+        this.colorId = colorId;
     }
 }

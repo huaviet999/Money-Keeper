@@ -42,6 +42,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import utils.MathUtils;
+import utils.MoneyKeeperUtils;
 
 /**
  * Created by Viet Hua on 3/11/2020
@@ -140,15 +141,13 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     }
 
     private void setupPieChart(List<Percent> percentList) {
-        Log.d("SetupPieChart","start");
+        Log.d("SetupPieChart", "start");
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
         config.strokeWidth(80);
         config.startAngle(-90);
         config.duration(1000);
-        for(Percent percent : percentList){
-            Random rnd = new Random();
-            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-            config.addData(new SimplePieInfo(percent.getSum(), color, percent.getCategory().getName()));
+        for (Percent percent : percentList) {
+            config.addData(new SimplePieInfo(percent.getSum(), Color.parseColor(percent.getCategory().getColorId()), percent.getCategory().getName()));
         }
         animatedPieView.applyConfig(config);
         animatedPieView.start();
@@ -181,6 +180,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
 
     @Override
     public void showPercentList(List<Percent> percentList) {
+        percentList = MoneyKeeperUtils.sortListBySum(percentList);
         percentRecyclerViewAdapter.setData(percentList);
         expenseListRecyclerViewAdapter.setData(percentList);
         setupPieChart(percentList);

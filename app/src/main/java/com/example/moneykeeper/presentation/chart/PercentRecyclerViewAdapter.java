@@ -3,8 +3,10 @@ package com.example.moneykeeper.presentation.chart;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.domain.model.Category;
 import com.example.domain.model.Percent;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseRecyclerViewAdapter;
@@ -28,9 +30,9 @@ public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<Percent,
     public int getItemCount() {
         if (mListData == null) {
             return 0;
-        } else if(mListData.size() > MAX_ITEM){
+        } else if (mListData.size() > MAX_ITEM) {
             return MAX_ITEM;
-        } else{
+        } else {
             return mListData.size();
         }
     }
@@ -50,6 +52,7 @@ public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<Percent,
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView tvCategory, tvPercent;
+        ImageView imgCategory;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -57,12 +60,18 @@ public class PercentRecyclerViewAdapter extends BaseRecyclerViewAdapter<Percent,
             itemView.setOnLongClickListener(this);
             tvCategory = itemView.findViewById(R.id.txt_category);
             tvPercent = itemView.findViewById(R.id.txt_percent);
+            imgCategory = itemView.findViewById(R.id.img_category);
 
         }
 
         public void renderUI(Percent data) {
             tvCategory.setText(data.getCategory().getName());
-            tvPercent.setText(String.format("%.1f%%",data.getPercent()));
+            tvPercent.setText(String.format("%.1f%%", data.getPercent()));
+            setCategoryImage(data.getCategory());
+        }
+
+        public void setCategoryImage(Category category) {
+            imgCategory.setImageResource(context.getResources().getIdentifier(category.getCImage(), "drawable", context.getPackageName()));
         }
 
         @Override

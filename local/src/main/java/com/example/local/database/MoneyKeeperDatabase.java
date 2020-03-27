@@ -57,31 +57,31 @@ public abstract class MoneyKeeperDatabase extends RoomDatabase {
                 @Override
                 public void subscribe(@io.reactivex.rxjava3.annotations.NonNull CompletableEmitter emitter) throws Throwable {
                     //Add Default Category Data
-                    categoryDao.insert(new CategoryModel("Food", "nfood", "cfood", "Expense"));
-                    categoryDao.insert(new CategoryModel("Transport", "ntransport", "ctransport", "Expense"));
-                    categoryDao.insert(new CategoryModel("Shopping", "nshopping", "cshopping", "Expense"));
-                    categoryDao.insert(new CategoryModel("Bills", "nbill", "cbill", "Expense"));
-                    categoryDao.insert(new CategoryModel("Health", "nhealth", "chealth", "Expense"));
-                    categoryDao.insert(new CategoryModel("Telephone", "nphone", "cphone", "Expense"));
-                    categoryDao.insert(new CategoryModel("Home", "nhome", "chome", "Expense"));
-                    categoryDao.insert(new CategoryModel("Education", "neducation", "ceducation", "Expense"));
-                    categoryDao.insert(new CategoryModel("Travel", "ntravel", "ctravel", "Expense"));
-                    categoryDao.insert(new CategoryModel("Insurance", "ninsurance", "cinsurance", "Expense"));
-                    categoryDao.insert(new CategoryModel("Social", "nsocial", "csocial", "Expense"));
-                    categoryDao.insert(new CategoryModel("Sport", "nsport", "csport", "Expense"));
-                    categoryDao.insert(new CategoryModel("Gift", "ngift", "cgift", "Expense"));
-                    categoryDao.insert(new CategoryModel("Others", "nother", "cother", "Expense"));
+                    categoryDao.insert(new CategoryModel("Food", "nfood", "cfood", "Expense","#00A591"));
+                    categoryDao.insert(new CategoryModel("Transport", "ntransport", "ctransport", "Expense","#DC4C46"));
+                    categoryDao.insert(new CategoryModel("Shopping", "nshopping", "cshopping", "Expense","#95DEE3"));
+                    categoryDao.insert(new CategoryModel("Bills", "nbill", "cbill", "Expense","#004B8D"));
+                    categoryDao.insert(new CategoryModel("Health", "nhealth", "chealth", "Expense","#CE3175"));
+                    categoryDao.insert(new CategoryModel("Telephone", "nphone", "cphone", "Expense","#006E51"));
+                    categoryDao.insert(new CategoryModel("Home", "nhome", "chome", "Expense","#F7786B"));
+                    categoryDao.insert(new CategoryModel("Education", "neducation", "ceducation", "Expense","#91A8D0"));
+                    categoryDao.insert(new CategoryModel("Travel", "ntravel", "ctravel", "Expense","#DD4132"));
+                    categoryDao.insert(new CategoryModel("Insurance", "ninsurance", "cinsurance", "Expense","#9B1B30"));
+                    categoryDao.insert(new CategoryModel("Social", "nsocial", "csocial", "Expense","#FA9A85"));
+                    categoryDao.insert(new CategoryModel("Sport", "nsport", "csport", "Expense","#CE5B78"));
+                    categoryDao.insert(new CategoryModel("Gift", "ngift", "cgift", "Expense","#F96714"));
+                    categoryDao.insert(new CategoryModel("Others", "nother", "cother", "Expense","#EC9787"));
 
-                    categoryDao.insert(new CategoryModel("Salary", "nsalary", "csalary", "Income"));
-                    categoryDao.insert(new CategoryModel("Awards", "naward", "caward", "Income"));
-                    categoryDao.insert(new CategoryModel("Grants", "ngrant", "cgrant", "Income"));
-                    categoryDao.insert(new CategoryModel("Sale", "nsale", "csale", "Income"));
-                    categoryDao.insert(new CategoryModel("Rental", "nrental", "crental", "Income"));
-                    categoryDao.insert(new CategoryModel("Coupons", "ncoupon", "ccoupon", "Income"));
-                    categoryDao.insert(new CategoryModel("Lottery", "nlottery", "clottery", "Income"));
-                    categoryDao.insert(new CategoryModel("Dividend", "ndividend", "cdividend", "Income"));
-                    categoryDao.insert(new CategoryModel("Invest", "ninvestment", "cinvestment", "Income"));
-                    categoryDao.insert(new CategoryModel("Others", "nother", "cother", "Income"));
+                    categoryDao.insert(new CategoryModel("Salary", "nsalary", "csalary", "Income","#FF6F61"));
+                    categoryDao.insert(new CategoryModel("Awards", "naward", "caward", "Income","#009B77"));
+                    categoryDao.insert(new CategoryModel("Grants", "ngrant", "cgrant", "Income","#B565A7"));
+                    categoryDao.insert(new CategoryModel("Sale", "nsale", "csale", "Income","#D65076"));
+                    categoryDao.insert(new CategoryModel("Rental", "nrental", "crental", "Income","#45B8AC"));
+                    categoryDao.insert(new CategoryModel("Coupons", "ncoupon", "ccoupon", "Income","#C3447A"));
+                    categoryDao.insert(new CategoryModel("Lottery", "nlottery", "clottery", "Income","#EFC050"));
+                    categoryDao.insert(new CategoryModel("Dividend", "ndividend", "cdividend", "Income","#C62168"));
+                    categoryDao.insert(new CategoryModel("Invest", "ninvestment", "cinvestment", "Income","#E94B3C"));
+                    categoryDao.insert(new CategoryModel("Others", "nother", "cother", "Income","#EC9787"));
 
                     emitter.onComplete();
                 }

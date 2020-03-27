@@ -11,6 +11,7 @@ public class Category {
     private String type;
     private String nImage;
     private String cImage;
+    private String colorId;
 
     public int getCategoryId() {
         return categoryId;
@@ -50,6 +51,14 @@ public class Category {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(String colorId) {
+        this.colorId = colorId;
     }
 
     @Override
