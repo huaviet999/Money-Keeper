@@ -12,6 +12,7 @@ public class Constants {
     public static final String TAG_SETTING = "TAG_SETTING";
     public static final String TAG_NEW_TRANSACTION = "TAG_NEW_TRANSACTION";
     public static final String TAG_DETAIL = "TAG_DETAIL";
+    public static final String TAG_ABOUT = "TAG_ABOUT";
     //TRANSACTION KEY
     public static final String KEY_INCOME = "Income";
     public static final String KEY_EXPENSE = "Expense";

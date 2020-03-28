@@ -2,6 +2,7 @@ package com.example.moneykeeper.presentation.chart;
 
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -160,6 +161,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
                     ? Constants.KEY_EXPENSE : Constants.KEY_INCOME;
 
             changeTextViewTitle();
+            changeToolbarColor();
             presenter.getTransactionListByType(KEY_TRANSACTION_SELECTED);
         }
     };
@@ -176,6 +178,10 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
 
         tvPercentTitle.setTextColor(ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
                 R.color.income_button_color : R.color.expense_button_color, null));
+    }
+    private void changeToolbarColor(){
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? R.color.income_button_color : R.color.expense_button_color)));
     }
 
     @Override

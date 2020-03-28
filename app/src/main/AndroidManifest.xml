@@ -22,6 +22,7 @@
         <activity android:name=".presentation.category.CategoryActivity"></activity>
         <activity android:name=".presentation.newtransaction.NewTransactionActivity"></activity>
         <activity android:name=".presentation.detail.DetailActivity"></activity>
+        <activity android:name=".presentation.about.AboutActivity"></activity>
     </application>
 
 </manifest>

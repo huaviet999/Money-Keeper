@@ -15,6 +15,7 @@ import com.example.domain.model.Record;
 import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.Navigator;
+import com.example.moneykeeper.presentation.about.AboutActivity;
 import com.example.moneykeeper.presentation.base.Constants;
 import com.example.moneykeeper.presentation.category.CategoryActivity;
 import com.example.moneykeeper.presentation.base.BaseActivity;
@@ -271,6 +272,9 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 case R.id.item_setting:
                     openScreenByTag(Constants.TAG_SETTING);
                     break;
+                case R.id.item_about:
+                    openScreenByTag(Constants.TAG_ABOUT);
+                    break;
                 default:
                     return false;
             }
@@ -300,8 +304,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             case Constants.TAG_NEW_TRANSACTION:
                 NewTransactionActivity.startNewTransactionActivity(this);
                 break;
-            case Constants.TAG_DETAIL:
-
+            case Constants.TAG_ABOUT:
+                navigator.openAboutActivity(this);
                 break;
 
         }
@@ -311,7 +315,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     public void showTransactionList(List<Transaction> transactionsList) {
         transactionRecyclerViewAdapter.setData(transactionsList);
     }
-
 
 
     @Override

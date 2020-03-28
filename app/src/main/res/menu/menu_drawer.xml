@@ -21,4 +21,8 @@
         android:id="@+id/item_setting"
         android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/setting"></item>
+    <item
+        android:id="@+id/item_about"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="@string/about"></item>
 </menu>
