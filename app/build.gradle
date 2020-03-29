@@ -44,6 +44,12 @@ dependencies {
     //Butterknife
     implementation "com.jakewharton:butterknife:$rootProject.ext.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnifeVersion"
+    //Room
+    implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.ext.roomVersion"
+    //Timber
+    implementation "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
+
     //RxJava , RxAndroid
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
@@ -53,11 +59,9 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //Calculator
     implementation 'com.maltaisn:calcdialog:2.1.2'
+
     //Import Module
     implementation project(":Domain")
     implementation project(":Data")
     implementation project(":local")
-    //Room
-    implementation "androidx.room:room-runtime:2.2.4"
-    annotationProcessor "androidx.room:room-compiler:2.2.4"
 }

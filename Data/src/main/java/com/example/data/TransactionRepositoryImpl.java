@@ -22,14 +22,12 @@ import io.reactivex.rxjava3.functions.Function;
  */
 public class TransactionRepositoryImpl implements TransactionRepository {
     private TransactionEntityMapper transactionEntityMapper;
-    private PercentEntityMapper percentEntityMapper;
     TransactionDataLocal transactionDataLocal;
 
     @Inject
     public TransactionRepositoryImpl(TransactionDataLocal transactionDataLocal) {
         this.transactionDataLocal = transactionDataLocal;
         transactionEntityMapper = new TransactionEntityMapper();
-        percentEntityMapper = new PercentEntityMapper();
     }
 
     @Override
@@ -67,15 +65,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         });
     }
 
-    @Override
-    public Maybe<List<Percent>> getSumAndPercent(List<Percent> percentList) {
-        return transactionDataLocal.getSumAndPercent(percentEntityMapper.mapToEntities(percentList)).map(new Function<List<PercentEntity>, List<Percent>>() {
-            @Override
-            public List<Percent> apply(List<PercentEntity> percentEntities) throws Throwable {
-                return percentEntityMapper.mapFromEntities(percentEntities);
-            }
-        });
-    }
+
 
     @Override
     public Completable deleteAllTransactionData() {

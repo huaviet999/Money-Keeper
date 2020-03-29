@@ -4,44 +4,32 @@ package com.example.moneykeeper.presentation.chart;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.domain.model.ExpenseType;
-import com.example.domain.model.ModelTest1;
 import com.example.domain.model.Percent;
-import com.example.domain.model.Transaction;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.base.BaseActivity;
 import com.example.moneykeeper.presentation.base.Constants;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
-
 import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 import utils.MathUtils;
 import utils.MoneyKeeperUtils;
 
@@ -50,8 +38,7 @@ import utils.MoneyKeeperUtils;
  */
 public class ChartActivity extends BaseActivity implements ChartContract.View {
     public String KEY_TRANSACTION_SELECTED = Constants.KEY_INCOME; //Default income show
-    @Inject
-    ChartContract.Presenter presenter;
+
     @BindView(R.id.chart_pie)
     AnimatedPieView animatedPieView;
     @BindView(R.id.toolbar)
@@ -69,14 +56,11 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     @BindView(R.id.txt_percent_title)
     TextView tvPercentTitle;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AndroidInjection.inject(this);
-        ButterKnife.bind(this);
-        setupViews();
+    @Inject
+    ChartContract.Presenter presenter;
 
-    }
+    private PercentRecyclerViewAdapter percentRecyclerViewAdapter;
+    private ExpenseListRecyclerViewAdapter expenseListRecyclerViewAdapter;
 
 
     @Override
@@ -85,8 +69,20 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Timber.d("onCreate");
+        AndroidInjection.inject(this);
+        ButterKnife.bind(this);
+        setupViews();
+
+    }
+
+
+    @Override
     protected void onStart() {
         super.onStart();
+        Timber.d("onStart");
         presenter.attachView(this);
         presenter.getTransactionListByType(KEY_TRANSACTION_SELECTED);
     }
@@ -94,11 +90,13 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Timber.d("onDestroy");
         presenter.dropView();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Timber.d("onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_summary, menu);
         return true;
@@ -106,6 +104,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Timber.d("onOptionsItemSelected: %s", item.getTitle());
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -114,26 +113,41 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         return true;
     }
 
+    @Override
+    public void showPercentList(List<Percent> percentList) {
+        Timber.d("showPercentList: %s", percentList.toString());
+        List<Percent> sortedList = MoneyKeeperUtils.sortListBySum(percentList);
+        percentRecyclerViewAdapter.setData(sortedList);
+        expenseListRecyclerViewAdapter.setData(sortedList);
+        setupPieChart(sortedList);
+
+    }
+
+    @Override
+    public void showTotal(long total) {
+        Timber.d("showTotal: %d", total);
+        tvTotal.setText(MathUtils.getFormatNumberFromLongWithoutCurrency(total));
+    }
+
     private void setupViews() {
+        Timber.d("setupViews");
         setupToolbar();
         setupRecyclerView();
         btnTransactionSwap.setOnClickListener(swapTransactionListener);
     }
 
     private void setupToolbar() {
+        Timber.d("setupToolbar");
         toolbar.inflateMenu(R.menu.menu_summary);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    private PercentRecyclerViewAdapter percentRecyclerViewAdapter;
-    private ExpenseListRecyclerViewAdapter expenseListRecyclerViewAdapter;
 
     private void setupRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
+        Timber.d("setupRecyclerView");
         percentRecyclerViewAdapter = new PercentRecyclerViewAdapter(this, null);
-        rvExpensePercent.setLayoutManager(linearLayoutManager);
+        rvExpensePercent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvExpensePercent.setAdapter(percentRecyclerViewAdapter);
 
         expenseListRecyclerViewAdapter = new ExpenseListRecyclerViewAdapter(this, null);
@@ -142,7 +156,7 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
     }
 
     private void setupPieChart(List<Percent> percentList) {
-        Log.d("SetupPieChart", "start");
+        Timber.d("setupPieChart: %s", percentList.toString());
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
         config.strokeWidth(80);
         config.startAngle(-90);
@@ -154,19 +168,8 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         animatedPieView.start();
     }
 
-    private View.OnClickListener swapTransactionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            KEY_TRANSACTION_SELECTED = KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME)
-                    ? Constants.KEY_EXPENSE : Constants.KEY_INCOME;
-
-            changeTextViewTitle();
-            changeToolbarColor();
-            presenter.getTransactionListByType(KEY_TRANSACTION_SELECTED);
-        }
-    };
-
     private void changeTextViewTitle() {
+        Timber.d("changeTextViewTitle");
         tvTransactionType.setText(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? Constants.KEY_INCOME
                 : Constants.KEY_EXPENSE);
 
@@ -179,23 +182,26 @@ public class ChartActivity extends BaseActivity implements ChartContract.View {
         tvPercentTitle.setTextColor(ResourcesCompat.getColor(getResources(), KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ?
                 R.color.income_button_color : R.color.expense_button_color, null));
     }
-    private void changeToolbarColor(){
+
+    private void changeToolbarColor() {
+        Timber.d("changeToolbarColor");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME) ? R.color.income_button_color : R.color.expense_button_color)));
     }
 
-    @Override
-    public void showPercentList(List<Percent> percentList) {
-        percentList = MoneyKeeperUtils.sortListBySum(percentList);
-        percentRecyclerViewAdapter.setData(percentList);
-        expenseListRecyclerViewAdapter.setData(percentList);
-        setupPieChart(percentList);
 
-    }
+    private View.OnClickListener swapTransactionListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Timber.d("swapTransaction Clicked");
+            KEY_TRANSACTION_SELECTED = KEY_TRANSACTION_SELECTED.equals(Constants.KEY_INCOME)
+                    ? Constants.KEY_EXPENSE : Constants.KEY_INCOME;
 
-    @Override
-    public void showTotal(long total) {
-        tvTotal.setText(MathUtils.getFormatNumberFromLongWithoutCurrency(total));
+            changeTextViewTitle();
+            changeToolbarColor();
+            presenter.getTransactionListByType(KEY_TRANSACTION_SELECTED);
+        }
+    };
 
-    }
+
 }

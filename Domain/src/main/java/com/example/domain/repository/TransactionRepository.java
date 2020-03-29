@@ -17,6 +17,5 @@ public interface TransactionRepository {
     Completable deleteTransactionById(int transactionId);
     Maybe<List<Transaction>> getAllTransactionData();
     Maybe<List<Transaction>> getTransactionsByType(String transactionType);
-    Maybe<List<Percent>> getSumAndPercent(List<Percent> percentList);
     Maybe<Transaction> getTransactionById(int transactionId);
 }

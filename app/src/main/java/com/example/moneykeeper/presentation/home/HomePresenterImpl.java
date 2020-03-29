@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+import timber.log.Timber;
 import utils.MathUtils;
 import utils.MoneyKeeperUtils;
 import utils.TimeUtils;
@@ -34,15 +35,18 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
     @Inject
     HomePresenterImpl() {
+        Timber.d("HomePresenterImpl Constructor");
     }
 
     @Override
     public void attachView(HomeContract.View view) {
+        Timber.d("attachView");
         mView = view;
     }
 
     @Override
     public void dropView() {
+        Timber.d("dropView");
         if (mView != null) {
             mView = null;
         }
@@ -50,15 +54,18 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
     @Override
     public void getAllTransactionData() {
+        Timber.d("getAllTransactionData");
         getTransactionsDataUseCase.execute(new GetAllTransactionsObserver(), new EmptyParam());
     }
 
     @Override
     public void deleteAllTransactionData() {
+        Timber.d("deleteAllTransactionData");
         deleteTransactionsDataUseCase.execute(new DeleteTransactionsObserver(), new EmptyParam());
     }
 
     private List<Record> getSummaryRecordList(List<Transaction> transactionList) {
+        Timber.d("getSummaryRecordList: %s", transactionList.toString());
         long expenseSum;
         long incomeSum;
         List<Record> recordList = new ArrayList<>(2);
@@ -79,18 +86,19 @@ public class HomePresenterImpl implements HomeContract.Presenter {
     private class GetAllTransactionsObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
+            Timber.d("onSuccess: %s", transactions.toString());
             getCategoriesByNameUseCase.execute(new GetCategotyByNameObserver(), transactions);
 
         }
 
         @Override
         public void onError(@NonNull Throwable e) {
-            Log.e("onError", e.getMessage());
+            Timber.e("onError: %s", e.getMessage());
         }
 
         @Override
         public void onComplete() {
-            Log.d("onComplete", "Completed");
+            Timber.d("onComplete");
         }
     }
 
@@ -98,18 +106,19 @@ public class HomePresenterImpl implements HomeContract.Presenter {
     private class DeleteTransactionsObserver extends DisposableCompletableObserver {
         @Override
         public void onComplete() {
-            Log.e("TRANSACTION", "DELETE SUCCESSFUL");
+            Timber.d("onComplete");
         }
 
         @Override
         public void onError(@NonNull Throwable e) {
-
+            Timber.e("onError: %s", e.getMessage());
         }
     }
 
     private class GetCategotyByNameObserver extends DisposableMaybeObserver<List<Transaction>> {
         @Override
         public void onSuccess(@NonNull List<Transaction> transactions) {
+            Timber.d("onSuccess: %s", transactions.toString());
             List<Record> recordList = getSummaryRecordList(transactions);
             mView.showSummaryList(recordList);
             mView.showTransactionList(transactions);
@@ -117,12 +126,12 @@ public class HomePresenterImpl implements HomeContract.Presenter {
 
         @Override
         public void onError(@NonNull Throwable e) {
-
+            Timber.e("onError: %s", e.getMessage());
         }
 
         @Override
         public void onComplete() {
-
+            Timber.d("onComplete");
         }
     }
 

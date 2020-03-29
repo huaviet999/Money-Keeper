@@ -52,4 +52,13 @@ public class Percent {
     public int hashCode() {
         return Objects.hash(category, sum, percent);
     }
+
+    @Override
+    public String toString() {
+        return "Percent{" +
+                "category=" + category +
+                ", sum=" + sum +
+                ", percent=" + percent +
+                '}';
+    }
 }

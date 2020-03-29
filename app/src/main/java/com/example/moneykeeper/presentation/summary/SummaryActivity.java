@@ -22,21 +22,33 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 
 public class SummaryActivity extends BaseActivity implements SummaryContract.View {
-    @Inject
-    SummaryContract.Presenter presenter;
+    private static final String TAG = SummaryActivity.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_summary)
     RecyclerView rvSummary;
 
+    @Inject
+    SummaryContract.Presenter presenter;
+
+    private SummaryRecyclerViewAdapter summaryRecyclerViewAdapter;
+
+    @Override
+    protected int getResLayoutId() {
+        return R.layout.activity_summary;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.d("onCreate");
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
         setupToolbar();
@@ -45,29 +57,21 @@ public class SummaryActivity extends BaseActivity implements SummaryContract.Vie
 
     @Override
     protected void onStart() {
+        Timber.d("onStart");
         super.onStart();
         presenter.attachView(this);
     }
 
     @Override
     protected void onDestroy() {
+        Timber.d("onDestroy");
         super.onDestroy();
         presenter.dropView();
     }
 
     @Override
-    protected int getResLayoutId() {
-        return R.layout.activity_summary;
-    }
-
-    private void setupToolbar() {
-        toolbar.inflateMenu(R.menu.menu_summary);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Timber.d("onCreateOptionMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_summary, menu);
         return true;
@@ -75,6 +79,7 @@ public class SummaryActivity extends BaseActivity implements SummaryContract.Vie
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Timber.d("onOptionsItemSelected: %s", item.getTitle());
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -82,32 +87,32 @@ public class SummaryActivity extends BaseActivity implements SummaryContract.Vie
         return true;
     }
 
-    private SummaryRecyclerViewAdapter summaryRecyclerViewAdapter;
+
+    private void setupToolbar() {
+        Timber.d("setupToolbar");
+        toolbar.inflateMenu(R.menu.menu_summary);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+    }
 
     private void setupRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        Timber.d("setupRecyclerView");
 //        summaryRecyclerViewAdapter = new SummaryRecyclerViewAdapter(this, listener);
-//        summaryRecyclerViewAdapter.setData(testData2());
-        rvSummary.setLayoutManager(linearLayoutManager);
+        rvSummary.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvSummary.setAdapter(summaryRecyclerViewAdapter);
     }
 
     private ItemClickListener<Account> listener = new ItemClickListener<Account>() {
         @Override
         public void onClickListener(int position, Account account) {
-            showToastMessage("On click");
+            Timber.d("onClick: %d", position);
         }
 
         @Override
         public void onLongClickListener(int position, Account account) {
-            showToastMessage("On Long click");
+            Timber.d("onLongClick: %d", position);
+
         }
     };
 
-    private List<Account> testData2() {
-        List<Account> mData = new ArrayList<>();
-        mData.add(new Account(1000000, 300000));
-        mData.add(new Account(2000, 500000));
-        return mData;
-    }
 }

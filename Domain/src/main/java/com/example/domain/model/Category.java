@@ -76,4 +76,16 @@ public class Category {
     public int hashCode() {
         return Objects.hash(name, type, nImage, cImage);
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryId=" + categoryId +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", nImage='" + nImage + '\'' +
+                ", cImage='" + cImage + '\'' +
+                ", colorId='" + colorId + '\'' +
+                '}';
+    }
 }

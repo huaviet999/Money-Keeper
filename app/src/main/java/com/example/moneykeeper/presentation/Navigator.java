@@ -12,6 +12,8 @@ import javax.inject.Singleton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import timber.log.Timber;
+
 @Singleton
 public class Navigator {
     @Inject
@@ -20,16 +22,19 @@ public class Navigator {
     }
 
     public void openChartActivity(HomeActivity homeActivity) {
+        Timber.d("openChartActivity");
         Intent intent = new Intent(homeActivity, ChartActivity.class);
         homeActivity.startActivity(intent);
     }
 
     public void openSummaryActivity(HomeActivity homeActivity) {
+        Timber.d("openSummaryActivity");
         Intent intent = new Intent(homeActivity, SummaryActivity.class);
         homeActivity.startActivity(intent);
     }
 
     public void openAboutActivity(HomeActivity activity) {
+        Timber.d("openAboutActivity");
         Intent intent = new Intent(activity, AboutActivity.class);
         activity.startActivity(intent);
     }

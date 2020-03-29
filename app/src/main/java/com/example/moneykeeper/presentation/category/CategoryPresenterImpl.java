@@ -14,8 +14,10 @@ import javax.inject.Inject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+import timber.log.Timber;
 
 public class CategoryPresenterImpl implements CategoryContract.Presenter {
+
     CategoryContract.View mView;
 
     @Inject
@@ -28,33 +30,37 @@ public class CategoryPresenterImpl implements CategoryContract.Presenter {
 
     @Override
     public void attachView(CategoryContract.View view) {
+        Timber.d("attachView");
         mView = view;
     }
 
     @Override
     public void dropView() {
+        Timber.d("dropView");
         mView = null;
     }
 
     @Override
     public void getDefaultCategoriesListByType(String type) {
+        Timber.d("getDefaultCatgoriesListByType: %s", type);
         getCategoriesByTypeUseCase.execute(new GetCategoriesByTypeObserver(), type);
     }
 
     private class GetCategoriesByTypeObserver extends DisposableMaybeObserver<List<Category>> {
         @Override
         public void onSuccess(@NonNull List<Category> categoryList) {
+            Timber.d("onSuccess: %s", categoryList.toString());
             mView.showCategoriesList(categoryList);
         }
 
         @Override
         public void onError(@NonNull Throwable e) {
-
+            Timber.e("onError: %s", e.getMessage());
         }
 
         @Override
         public void onComplete() {
-
+            Timber.d("onComplete");
         }
     }
 }

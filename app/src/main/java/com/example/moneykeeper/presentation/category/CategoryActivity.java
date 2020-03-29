@@ -21,9 +21,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 
 /**
  * Created by Viet Hua on 3/15/2020
@@ -32,22 +34,34 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
     public static final int CATEGORY_REQUEST_CODE = 100;
     public static final String KEY_CATEGORY_NAME = "KEY_CATEGORY_NAME";
     public static final String KEY_TRANSACTION_TYPE = "KEY_TRANSACTION_TYPE";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_category)
     RecyclerView rvCategory;
 
+    @Inject
+    CategoryContract.Presenter presenter;
+
+    private CategoryRecyclerViewAdapter categoryRecyclerViewAdapter;
+
     public static void startCategoryActivityForResult(AppCompatActivity activity, String type) {
+        Timber.d("startCategoryActivityForResult: %s", type);
         Intent intent = new Intent(activity, CategoryActivity.class);
         intent.putExtra(KEY_TRANSACTION_TYPE, type);
         activity.startActivityForResult(intent, CATEGORY_REQUEST_CODE);
     }
 
-    @Inject
-    CategoryContract.Presenter presenter;
+
+    @Override
+    protected int getResLayoutId() {
+        return R.layout.activity_category;
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Timber.d("onCreate");
         super.onCreate(savedInstanceState);
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
@@ -56,9 +70,9 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
 
     @Override
     protected void onStart() {
+        Timber.d("onStart");
         super.onStart();
         presenter.attachView(this);
-
         Bundle bundle = getIntent().getExtras();
         String type = bundle.getString(KEY_TRANSACTION_TYPE);
         presenter.getDefaultCategoriesListByType(type);
@@ -66,17 +80,15 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
 
     @Override
     protected void onDestroy() {
+        Timber.d("onDestroy");
         super.onDestroy();
         presenter.dropView();
     }
 
-    @Override
-    protected int getResLayoutId() {
-        return R.layout.activity_category;
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Timber.d("onOptionItemSelected: %s", item.getTitle());
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -84,21 +96,29 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
         return true;
     }
 
+    @Override
+    public void showCategoriesList(List<Category> categoryList) {
+        Timber.d("showCategoriesList: %s", categoryList.toString());
+        categoryRecyclerViewAdapter.setData(categoryList);
+    }
+
 
     private void setupViews() {
+        Timber.d("setupViews");
         setupToolbar();
         setupRecyclerView();
     }
 
     private void setupToolbar() {
+        Timber.d("setupToolbar");
         toolbar.inflateMenu(R.menu.menu_summary);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    private CategoryRecyclerViewAdapter categoryRecyclerViewAdapter;
 
     private void setupRecyclerView() {
+        Timber.d("setupRecyclerView");
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(this, 4);
         categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(this, listener);
         rvCategory.setLayoutManager(linearLayoutManager);
@@ -109,6 +129,7 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
     private ItemClickListener<Category> listener = new ItemClickListener<Category>() {
         @Override
         public void onClickListener(int position, Category mCategory) {
+            Timber.d("onCategoryClicked : %d", position);
             Intent intent = new Intent();
             Category category = categoryRecyclerViewAdapter.getItem(position);
 
@@ -119,12 +140,8 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
 
         @Override
         public void onLongClickListener(int position, Category mCategory) {
+            Timber.d("onCategoryLongClicked : %d", position);
             showToastMessage("On Long Click");
         }
     };
-
-    @Override
-    public void showCategoriesList(List<Category> categoryList) {
-        categoryRecyclerViewAdapter.setData(categoryList);
-    }
 }

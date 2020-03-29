@@ -23,14 +23,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 import utils.MathUtils;
 import utils.TimeUtils;
 
 public class DetailActivity extends BaseActivity implements DetailContract.View {
     public static final String KEY_TRANSACTION_ID = "KEY_TRANSACTION_ID";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.txt_category)
@@ -51,15 +54,21 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
     private int transactionId;
 
     public static void startDetailActivity(AppCompatActivity activity, int transactionId) {
+        Timber.d("startDetailActivity");
         Intent intent = new Intent(activity, DetailActivity.class);
         intent.putExtra(KEY_TRANSACTION_ID, transactionId);
         activity.startActivity(intent);
+    }
 
+    @Override
+    protected int getResLayoutId() {
+        return R.layout.activity_detail;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.d("onCreate");
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
 
@@ -71,6 +80,7 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
 
     @Override
     protected void onStart() {
+        Timber.d("onStart");
         super.onStart();
         presenter.attachView(this);
         presenter.getTransactionDataById(transactionId);
@@ -78,12 +88,14 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
 
     @Override
     protected void onDestroy() {
+        Timber.d("onDestroy");
         super.onDestroy();
         presenter.dropView();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Timber.d("onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
         return true;
@@ -91,6 +103,7 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Timber.d("onOptionsItemSelected: %s", item.getTitle());
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -107,22 +120,8 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
     }
 
     @Override
-    protected int getResLayoutId() {
-        return R.layout.activity_detail;
-    }
-
-    private void setupViews() {
-        setupToolBar();
-    }
-
-    private void setupToolBar() {
-        setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.menu_detail);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
     public void showTransactionDetail(Transaction transaction) {
+        Timber.d("showTransactionDetail");
         String date = TimeUtils.convertMillisecondsToDateFormat(transaction.getDate());
         tvCategory.setText(transaction.getCategory().getName());
 
@@ -131,7 +130,28 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
         changeTextColor(transaction);
     }
 
-    private void changeTextColor(Transaction transaction){
+    @Override
+    public void showCategoryImage(Category category) {
+        Timber.d("showCategoryImage");
+        imgCategory.setImageResource(getResources().getIdentifier(category.getCImage(), "drawable", getPackageName()));
+    }
+
+
+    private void setupViews() {
+        Timber.d("setupViews");
+        setupToolBar();
+    }
+
+    private void setupToolBar() {
+        Timber.d("setupToolbar");
+        setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_detail);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+    }
+
+
+    private void changeTextColor(Transaction transaction) {
+        Timber.d("changeTextColor");
         String amount = MathUtils.getFormatNumberFromLong(transaction.getAmount());
         tvAmount.setTextColor(transaction.getType().equals(Constants.KEY_INCOME) ?
                 ResourcesCompat.getColor(getResources(), R.color.income_button_color, null) :
@@ -142,10 +162,5 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
                 ResourcesCompat.getColor(getResources(), R.color.income_button_color, null) :
                 ResourcesCompat.getColor(getResources(), R.color.expense_button_color, null));
         tvTransactionType.setText(transaction.getType());
-    }
-
-    @Override
-    public void showCategoryImage(Category category) {
-        imgCategory.setImageResource(getResources().getIdentifier(category.getCImage(), "drawable", getPackageName()));
     }
 }

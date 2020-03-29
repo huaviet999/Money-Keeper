@@ -2,6 +2,8 @@ package com.example.moneykeeper.presentation.about;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class AboutPresenterImpl implements AboutContract.Presenter {
 
     AboutContract.View mView;
@@ -14,11 +16,13 @@ public class AboutPresenterImpl implements AboutContract.Presenter {
 
     @Override
     public void attachView(AboutContract.View view) {
+        Timber.d("attachView");
         mView = view;
     }
 
     @Override
     public void dropView() {
+        Timber.d("dropView");
         mView = null;
     }
 }

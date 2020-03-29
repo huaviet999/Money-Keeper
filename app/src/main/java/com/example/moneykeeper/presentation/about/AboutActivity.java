@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 
 public class AboutActivity extends BaseActivity implements AboutContract.View {
 
@@ -24,7 +25,13 @@ public class AboutActivity extends BaseActivity implements AboutContract.View {
 
 
     @Override
+    protected int getResLayoutId() {
+        return R.layout.activity_about;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Timber.d("onCreate");
         super.onCreate(savedInstanceState);
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
@@ -33,23 +40,23 @@ public class AboutActivity extends BaseActivity implements AboutContract.View {
 
     @Override
     protected void onStart() {
+        Timber.d("onStart");
         super.onStart();
         presenter.attachView(this);
     }
 
     @Override
     protected void onDestroy() {
+        Timber.d("onDestroy");
         super.onDestroy();
         presenter.dropView();
     }
 
-    @Override
-    protected int getResLayoutId() {
-        return R.layout.activity_about;
-    }
+
 
     @OnClick(R.id.btn_close)
     public void onCloseButtonClick() {
+        Timber.d("onCloseButtonClicked");
         finish();
     }
 

@@ -26,7 +26,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-@Database(entities = {TransactionModel.class, CategoryModel.class}, version = 13)
+@Database(entities = {TransactionModel.class, CategoryModel.class}, version = 11)
 public abstract class MoneyKeeperDatabase extends RoomDatabase {
     public static MoneyKeeperDatabase instance;
 

@@ -59,4 +59,16 @@ public class Transaction {
     public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", type='" + type + '\'' +
+                ", category=" + category +
+                ", memo='" + memo + '\'' +
+                ", amount=" + amount +
+                ", date=" + date +
+                '}';
+    }
 }

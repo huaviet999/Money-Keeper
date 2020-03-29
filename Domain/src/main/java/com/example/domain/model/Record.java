@@ -1,6 +1,5 @@
 package com.example.domain.model;
 
-import java.util.Date;
 
 public class Record {
     private long income;
@@ -66,5 +65,17 @@ public class Record {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "income=" + income +
+                ", expense=" + expense +
+                ", total=" + total +
+                ", day=" + day +
+                ", month=" + month +
+                ", year=" + year +
+                '}';
     }
 }

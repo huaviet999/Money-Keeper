@@ -2,6 +2,7 @@ package com.example.moneykeeper.presentation.home;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,7 @@ import com.example.domain.model.Account;
 import com.example.domain.model.Category;
 import com.example.domain.model.Record;
 import com.example.domain.model.Transaction;
+import com.example.moneykeeper.BuildConfig;
 import com.example.moneykeeper.R;
 import com.example.moneykeeper.presentation.Navigator;
 import com.example.moneykeeper.presentation.about.AboutActivity;
@@ -43,14 +45,18 @@ import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 
 /**
  * Created by Viet Hua on 3/11/2020
  */
 public class HomeActivity extends BaseActivity implements HomeContract.View {
+    private static final String TAG = HomeActivity.class.getSimpleName();
+
     @Nullable
     @BindView(R.id.nav_view)
     NavigationView navigationView;
@@ -71,6 +77,11 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @Inject
     Navigator navigator;
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private TransactionRecyclerViewAdapter transactionRecyclerViewAdapter;
+    private SummaryRecyclerViewAdapter summaryRecyclerViewAdapter;
+
     @Override
     protected int getResLayoutId() {
         return R.layout.activity_main;
@@ -79,6 +90,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.d("onCreate");
         AndroidInjection.inject(this);
         ButterKnife.bind(this);
         setupViews();
@@ -87,6 +99,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @Override
     protected void onStart() {
         super.onStart();
+        Timber.d("onStart");
         presenter.attachView(this);
         presenter.getAllTransactionData();
     }
@@ -94,58 +107,73 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Timber.d("onDestroy");
         presenter.dropView();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Timber.d("onCreateOptionsMenu");
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_home, menu);
         return true;
     }
 
-    private void setupViews() {
-        setupToolbar();
-        setupNavigationView();
-        setupRecyclerView();
-        setupBarChart();
-        setupFab();
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Timber.d("onOptionsItemSelected: %s", item.getTitle());
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         switch (item.getItemId()) {
             case R.id.item_sync:
                 presenter.deleteAllTransactionData();
-                showToastMessage("Synced");
                 break;
             case R.id.item_option:
-                showToastMessage("Option");
                 break;
             case R.id.item_help:
-                showToastMessage("Help");
                 break;
         }
         return true;
     }
 
-    public void setupToolbar() {
+    @Override
+    public void showTransactionList(List<Transaction> transactionsList) {
+        Timber.d("showTransactionList: %s", transactionsList.toString());
+        transactionRecyclerViewAdapter.setData(transactionsList);
+    }
+
+
+    @Override
+    public void showSummaryList(List<Record> recordList) {
+        Timber.d("showSummaryList: %s", recordList.toString());
+        summaryRecyclerViewAdapter.setData(recordList);
+    }
+
+    private void setupViews() {
+        Timber.d("setupViews");
+        setupToolbar();
+        setupNavigationView();
+        setupRecyclerView();
+        setupFab();
+    }
+
+
+    private void setupToolbar() {
+        Timber.d("setupToolbar");
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_home);
     }
 
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-
-    public void setupNavigationView() {
+    private void setupNavigationView() {
+        Timber.d("setupNavigationView");
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                Timber.d("onDrawerOpened");
             }
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -155,17 +183,12 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         navigationView.setNavigationItemSelectedListener(itemSelectedListener);
 
     }
-
-    private TransactionRecyclerViewAdapter transactionRecyclerViewAdapter;
-    private SummaryRecyclerViewAdapter summaryRecyclerViewAdapter;
-
-    public void setupRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        linearLayoutManager.setReverseLayout(true);
+    
+    private void setupRecyclerView() {
+        Timber.d("setupRecyclerView");
         //TRANSACTION RECYCLER VIEW
         transactionRecyclerViewAdapter = new TransactionRecyclerViewAdapter(this, transactionListener);
-        transactionRecyclerView.setLayoutManager(linearLayoutManager);
+        transactionRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         transactionRecyclerView.setAdapter(transactionRecyclerViewAdapter);
 
         //SUMMARY RECYCLER VIEW
@@ -175,7 +198,9 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     }
 
-    public void setupBarChart() {
+    //** BAR CHART NOT USED IN APP **//
+    private void setupBarChart() {
+        Timber.d("setupBarChart");
         List<BarEntry> barEntries = new ArrayList<>();
         barEntries.add(new BarEntry(1, 10000000));
         barEntries.add(new BarEntry(2, 500000));
@@ -208,9 +233,11 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     }
 
     private void setupFab() {
+        Timber.d("setupFab");
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Timber.d("Fab Clicked");
                 openScreenByTag(Constants.TAG_NEW_TRANSACTION);
             }
         });
@@ -219,6 +246,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                Timber.d("onScrollChange");
                 if (i1 > i3) {
                     fab.hide();
                 } else {
@@ -232,30 +260,35 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private ItemClickListener<Transaction> transactionListener = new ItemClickListener<Transaction>() {
         @Override
         public void onClickListener(int position, Transaction transaction) {
-            openScreenByTag(Constants.TAG_DETAIL);
+            Timber.d("Transaction onClicked: %d", position);
             int transactionId = transactionRecyclerViewAdapter.getItem(position).getTransactionId();
             DetailActivity.startDetailActivity(HomeActivity.this, transactionId);
+
         }
 
         @Override
         public void onLongClickListener(int position, Transaction transaction) {
-            showToastMessage("On Long Click");
+            Timber.d("Transaction onLongClicked: %d", position);
         }
     };
+
     private ItemClickListener<Record> accountListener = new ItemClickListener<Record>() {
         @Override
         public void onClickListener(int position, Record record) {
-            showToastMessage("On Click");
+            Timber.d("Record onClicked: %d", position);
+
         }
 
         @Override
         public void onLongClickListener(int position, Record record) {
-            showToastMessage("On Long Click");
+            Timber.d("Record onLongClicked: %d", position);
         }
     };
+
     private NavigationView.OnNavigationItemSelectedListener itemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Timber.d("onNavigationItemSelected: %s", item.getTitle());
             switch (item.getItemId()) {
                 case R.id.item_overview:
                     openScreenByTag(Constants.TAG_OVERVIEW);
@@ -285,9 +318,9 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
 
     private void openScreenByTag(String tag) {
+        Timber.d("openScreenByTag: %s", tag);
         switch (tag) {
             case Constants.TAG_OVERVIEW:
-                showToastMessage("OVERVIEW");
                 break;
             case Constants.TAG_SUMMARY:
                 navigator.openSummaryActivity(this);
@@ -309,16 +342,5 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 break;
 
         }
-    }
-
-    @Override
-    public void showTransactionList(List<Transaction> transactionsList) {
-        transactionRecyclerViewAdapter.setData(transactionsList);
-    }
-
-
-    @Override
-    public void showSummaryList(List<Record> recordList) {
-        summaryRecyclerViewAdapter.setData(recordList);
     }
 }

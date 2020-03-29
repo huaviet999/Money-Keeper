@@ -2,6 +2,7 @@ package com.example.moneykeeper.myapp;
 
 import android.app.Application;
 
+import com.example.moneykeeper.BuildConfig;
 import com.example.moneykeeper.di.AppComponent;
 import com.example.moneykeeper.di.DaggerAppComponent;
 
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
+import timber.log.Timber;
 
 public class MyApp extends Application implements HasAndroidInjector {
     @Inject
@@ -23,6 +25,8 @@ public class MyApp extends Application implements HasAndroidInjector {
     @Override
     public void onCreate() {
         super.onCreate();
+        //Plant Timber
+        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
         //Init Dagger
         initDagger();
     }
@@ -30,6 +34,7 @@ public class MyApp extends Application implements HasAndroidInjector {
     private AppComponent appComponent;
 
     private void initDagger() {
+        Timber.d("initDagger");
         appComponent = DaggerAppComponent.builder().application(this).build();
         appComponent.inject(this);
     }

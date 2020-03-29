@@ -29,4 +29,7 @@ task clean(type: Delete) {
 ext{
     dagger2Version = '2.26'
     butterKnifeVersion = '10.1.0'
+    timberVersion = '4.7.1'
+    roomVersion = '2.2.4'
+
 }
